@@ -1,0 +1,1 @@
+Please review the documentation for the project - its overview and the implementation plan for the initial phase. Tell me if there is anything unclear or needs further elaboration. You need to be able to follow the implementation plan without making any further decisions and do it step by step.
