@@ -9,13 +9,13 @@ PerformanceMonitor.startupTimer()
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <App />
-  </React.StrictMode>,
+  </React.StrictMode>
 )
 
 document.addEventListener('DOMContentLoaded', () => {
   PerformanceMonitor.endStartupTimer()
   PerformanceMonitor.startFPSMonitoring()
-  
+
   if (import.meta.env.DEV) {
     setInterval(() => {
       PerformanceMonitor.logMemoryUsage()

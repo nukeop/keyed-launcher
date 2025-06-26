@@ -1,3 +1,9 @@
+interface MemoryInfo {
+  usedJSHeapSize: number
+  totalJSHeapSize: number
+  jsHeapSizeLimit: number
+}
+
 export class PerformanceMonitor {
   private static startTime: number | null = null
   private static frameCount = 0
@@ -22,17 +28,17 @@ export class PerformanceMonitor {
   static startFPSMonitoring() {
     const measureFPS = (currentTime: number) => {
       this.frameCount++
-      
+
       if (currentTime - this.lastTime >= 1000) {
         this.fps = Math.round((this.frameCount * 1000) / (currentTime - this.lastTime))
         console.log(`FPS: ${this.fps}`)
         this.frameCount = 0
         this.lastTime = currentTime
       }
-      
+
       requestAnimationFrame(measureFPS)
     }
-    
+
     requestAnimationFrame(measureFPS)
   }
 
@@ -42,11 +48,11 @@ export class PerformanceMonitor {
 
   static logMemoryUsage() {
     if ('memory' in performance) {
-      const memory = (performance as any).memory
+      const memory = (performance as Performance & { memory: MemoryInfo }).memory
       console.log({
         used: `${(memory.usedJSHeapSize / 1024 / 1024).toFixed(2)} MB`,
         total: `${(memory.totalJSHeapSize / 1024 / 1024).toFixed(2)} MB`,
-        limit: `${(memory.jsHeapSizeLimit / 1024 / 1024).toFixed(2)} MB`
+        limit: `${(memory.jsHeapSizeLimit / 1024 / 1024).toFixed(2)} MB`,
       })
     }
   }
