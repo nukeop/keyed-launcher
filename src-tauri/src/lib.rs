@@ -13,7 +13,7 @@ pub fn run() {
         )
         .setup(|app| {
             if let Err(e) = shortcuts::setup_global_shortcuts(app) {
-                eprintln!("Failed to setup global shortcuts: {}", e);
+                eprintln!("Failed to setup global shortcuts: {e}");
             }
 
             Ok(())

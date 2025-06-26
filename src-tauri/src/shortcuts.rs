@@ -4,7 +4,7 @@ use tauri_plugin_global_shortcut::{GlobalShortcutExt, Shortcut};
 pub fn handle_global_shortcut(app: &AppHandle) {
     if let Some(window) = app.get_webview_window("main") {
         if let Err(e) = show_window_centered(&window) {
-            eprintln!("Failed to show window on shortcut: {}", e);
+            eprintln!("Failed to show window on shortcut: {e}");
         }
     }
 }
