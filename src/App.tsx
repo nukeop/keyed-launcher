@@ -1,8 +1,20 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useLauncherStore } from './stores/launcher'
+import { invoke } from '@tauri-apps/api/core'
 
 function App() {
   const { searchQuery, setSearchQuery } = useLauncherStore()
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        invoke('hide_window').catch(console.error)
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [])
 
   return (
     <div className="w-full h-full flex flex-col items-center justify-center p-6 space-y-6">
@@ -22,8 +34,9 @@ function App() {
         />
       </div>
       
-      <div className="text-xs text-gray-500">
-        Press Escape to hide
+      <div className="text-xs text-gray-500 space-y-1 text-center">
+        <div>Press Escape to hide</div>
+        <div>Cmd+Shift+Space (macOS) / Ctrl+Shift+Space to toggle</div>
       </div>
     </div>
   )

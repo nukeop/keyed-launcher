@@ -18,38 +18,38 @@ A high-performance, multiplatform launcher built with Tauri (Rust + TypeScript) 
   - ✅ Configure Tauri for multiplatform builds
   - ✅ Set up proper folder structure (`src-tauri/`, `src/`, `public/`)
 
-#### 1.2 Performance Optimization Foundation
+#### 1.2 Performance Optimization Foundation ✅
 
 - **Goal**: Ensure sub-100ms startup and 60+ FPS capability
 - **Tasks**:
-  - Configure Tauri window settings for optimal performance
-  - Set up hardware acceleration
-  - Implement efficient state management
-  - Configure bundle optimization settings
-  - Set up performance monitoring tools
+  - ✅ Configure Tauri window settings for optimal performance
+  - ✅ Set up hardware acceleration
+  - ✅ Implement efficient state management
+  - ✅ Configure bundle optimization settings
+  - ✅ Set up performance monitoring tools
 
 ### 2. Global Shortcut System
 
-#### 2.1 Background Service Architecture
+#### 2.1 Background Service Architecture ⏳
 
 - **Goal**: Enable instant launcher activation via global shortcut
 - **Approach**: Lightweight background service that keeps app minimized/hidden
 - **Tasks**:
-  - Implement Tauri system tray integration
-  - Set up global shortcut registration (Ctrl+Space or Cmd+Space)
-  - Create window show/hide functionality
-  - Implement startup behavior (launch on system boot)
-  - Handle platform-specific permissions (accessibility on macOS, etc.)
+  - ✅ Implement Tauri system tray integration
+  - ✅ Set up global shortcut registration (Ctrl+Space or Cmd+Space)
+  - ✅ Create window show/hide functionality
+  - ⏳ Implement startup behavior (launch on system boot)
+  - ⏳ Handle platform-specific permissions (accessibility on macOS, etc.)
 
-#### 2.2 Window Management
+#### 2.2 Window Management ✅
 
 - **Goal**: Instant window appearance and proper focus handling
 - **Tasks**:
-  - Configure frameless, always-on-top window
-  - Implement proper window positioning (center of active screen)
-  - Handle multi-monitor scenarios
-  - Set up escape key and click-outside to hide functionality
-  - Implement smooth show/hide animations
+  - ✅ Configure frameless, always-on-top window
+  - ✅ Implement proper window positioning (center of active screen)
+  - ✅ Handle multi-monitor scenarios
+  - ✅ Set up escape key and click-outside to hide functionality
+  - ⏳ Implement smooth show/hide animations
 
 ### 3. CI/CD Pipeline Setup
 
@@ -163,8 +163,8 @@ based-launcher-v3/
 ## 🚀 Implementation Order
 
 1. ✅ **Setup Tauri Project** - Initialize basic structure and dependencies
-2. **Window Management** - Create frameless window with show/hide functionality
-3. **Global Shortcuts** - Implement system-wide hotkey registration
+2. ⏳ **Window Management** - Create frameless window with show/hide functionality
+3. ⏳ **Global Shortcuts** - Implement system-wide hotkey registration
 4. **Background Service** - Set up system tray and startup behavior
 5. **Performance Optimization** - Configure for speed and smoothness
 6. **CI/CD Pipelines** - Set up all four workflow files
