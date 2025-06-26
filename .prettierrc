@@ -1,9 +1,13 @@
 {
-    "semi": false,
-    "singleQuote": true,
     "tabWidth": 2,
-    "trailingComma": "es5",
-    "printWidth": 100,
-    "bracketSpacing": true,
-    "arrowParens": "avoid"
+    "singleQuote": true,
+    "trailingComma": "all",
+    "importOrderSeparation": true,
+    "importOrderSortSpecifiers": true,
+    "importOrder": [
+        "^@?(.*)$",
+        "<THIRD_PARTY_MODULES>",
+        "^[./]",
+        "^[../]"
+    ]
 }
