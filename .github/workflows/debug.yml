@@ -1,0 +1,124 @@
+name: Debug Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: 'Platform to build for'
+        required: true
+        default: 'ubuntu-22.04'
+        type: choice
+        options:
+          - ubuntu-22.04
+          - macos-latest
+          - windows-latest
+      enable_debugging:
+        description: 'Enable debug features'
+        required: true
+        default: true
+        type: boolean
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  debug-build:
+    runs-on: ${{ inputs.platform }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache cargo dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            src-tauri/target/
+          key: ${{ runner.os }}-cargo-debug-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Install dependencies (Ubuntu only)
+        if: inputs.platform == 'ubuntu-22.04'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.0-dev libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Enable debug features
+        if: inputs.enable_debugging
+        run: |
+          # Enable Tauri devtools in config
+          sed -i.bak 's/"withGlobalTauri": false/"withGlobalTauri": true/' src-tauri/tauri.conf.json
+          
+          # Enable detailed logging
+          echo "RUST_LOG=debug" >> $GITHUB_ENV
+          echo "TAURI_DEBUG=true" >> $GITHUB_ENV
+
+      - name: Build frontend (development mode)
+        run: npm run build -- --mode development
+
+      - name: Build Tauri app (debug)
+        run: |
+          cd src-tauri
+          cargo build --features debug
+
+      - name: Package debug build
+        run: |
+          mkdir -p debug-artifacts
+          
+          # Copy debug binary
+          if [ "${{ runner.os }}" = "Windows" ]; then
+            cp src-tauri/target/debug/based-launcher-v3.exe debug-artifacts/
+          else
+            cp src-tauri/target/debug/based-launcher-v3 debug-artifacts/
+          fi
+          
+          # Copy logs and config files
+          cp src-tauri/tauri.conf.json debug-artifacts/
+          
+          # Create debug info file
+          cat > debug-artifacts/DEBUG_INFO.txt << EOF
+          Debug Build Information
+          =======================
+          Platform: ${{ inputs.platform }}
+          Date: $(date)
+          Commit: ${{ github.sha }}
+          Debug Features: ${{ inputs.enable_debugging }}
+          
+          Environment Variables:
+          RUST_LOG=${RUST_LOG}
+          TAURI_DEBUG=${TAURI_DEBUG}
+          
+          Build Command:
+          cargo build --features debug
+          EOF
+
+      - name: Upload debug artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-build-${{ inputs.platform }}-${{ github.sha }}
+          path: debug-artifacts/
+          retention-days: 30
+
+      - name: Generate debug report
+        run: |
+          echo "## Debug Build Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Platform**: ${{ inputs.platform }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Debug Features**: ${{ inputs.enable_debugging }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Artifacts**: Available for 30 days" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Debug binary and configuration files have been uploaded as artifacts." >> $GITHUB_STEP_SUMMARY
