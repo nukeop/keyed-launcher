@@ -8,8 +8,6 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
-  PYTHON_VERSION: "3.11"
-  CI: true
 
 jobs:
   test-frontend:
@@ -71,9 +69,9 @@ jobs:
       matrix:
         include:
           - platform: 'macos-latest'
-            args: '--target aarch64-apple-darwin --verbose'
+            args: '--target aarch64-apple-darwin'
           - platform: 'macos-latest' 
-            args: '--target x86_64-apple-darwin --verbose'
+            args: '--target x86_64-apple-darwin'
           - platform: 'ubuntu-22.04'
             args: ''
           - platform: 'windows-latest'
@@ -94,17 +92,6 @@ jobs:
         with:
           targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
 
-      - name: Set up Python (macOS only)
-        if: matrix.platform == 'macos-latest'
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-      
-      - name: Install setup tools (macOS only)
-        if: matrix.platform == 'macos-latest'
-        run: |
-          sudo -H pip install setuptools
-
       - name: Cache cargo dependencies
         uses: actions/cache@v4
         with:
@@ -122,6 +109,10 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
 
+      - name: Install create-dmg (macOS only)
+        if: matrix.platform == 'macos-latest'
+        run: brew install create-dmg
+
       - name: Install frontend dependencies
         run: npm ci
 
@@ -132,6 +123,7 @@ jobs:
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CI: true
         with:
           args: ${{ matrix.args }}
 
