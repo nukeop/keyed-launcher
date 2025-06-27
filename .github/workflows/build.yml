@@ -9,6 +9,7 @@ on:
 env:
   CARGO_TERM_COLOR: always
   PYTHON_VERSION: "3.11"
+  CI: true
 
 jobs:
   test-frontend:
