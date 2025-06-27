@@ -8,6 +8,7 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
+  PYTHON_VERSION: "3.11"
 
 jobs:
   test-frontend:
@@ -91,6 +92,17 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
         with:
           targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+
+      - name: Set up Python (macOS only)
+        if: matrix.platform == 'macos-latest'
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      
+      - name: Install setup tools (macOS only)
+        if: matrix.platform == 'macos-latest'
+        run: |
+          sudo -H pip install setuptools
 
       - name: Cache cargo dependencies
         uses: actions/cache@v4
