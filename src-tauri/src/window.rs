@@ -1,4 +1,5 @@
 use std::time::Instant;
+use sysinfo::System;
 use tauri::{Runtime, WebviewWindow};
 
 #[tauri::command]
@@ -44,4 +45,21 @@ pub async fn performance_test<R: Runtime>(window: WebviewWindow<R>) -> Result<St
     }
 
     Ok(results.join("\n"))
+}
+
+#[cfg(debug_assertions)]
+#[tauri::command]
+pub async fn get_memory_usage() -> Result<(u64, u64), String> {
+    let mut system = System::new_all();
+    system.refresh_all();
+
+    let current_pid = sysinfo::get_current_pid().map_err(|e| e.to_string())?;
+
+    if let Some(process) = system.process(current_pid) {
+        let used_mb = process.memory() / 1024; // KB to MB
+        let total_mb = system.total_memory() / 1024; // KB to MB
+        Ok((used_mb, total_mb))
+    } else {
+        Err("Could not find current process".to_string())
+    }
 }

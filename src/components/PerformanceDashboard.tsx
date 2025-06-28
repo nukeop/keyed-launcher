@@ -8,6 +8,8 @@ interface PerformanceStats {
 }
 
 export function PerformanceDashboard() {
+  if (!import.meta.env.DEV) return null;
+
   const [stats, setStats] = useState<PerformanceStats>({
     fps: 0,
     memoryUsed: '0 MB',
@@ -15,19 +17,15 @@ export function PerformanceDashboard() {
   });
 
   useEffect(() => {
-    const updateStats = () => {
+    const updateStats = async () => {
       const fps = PerformanceMonitor.getCurrentFPS();
+      const memory = await PerformanceMonitor.getMemoryStats();
 
-      let memoryUsed = '0 MB';
-      let memoryTotal = '0 MB';
-
-      if ('memory' in performance) {
-        const memory = (performance as any).memory;
-        memoryUsed = `${(memory.usedJSHeapSize / 1024 / 1024).toFixed(1)} MB`;
-        memoryTotal = `${(memory.totalJSHeapSize / 1024 / 1024).toFixed(1)} MB`;
-      }
-
-      setStats({ fps, memoryUsed, memoryTotal });
+      setStats({
+        fps,
+        memoryUsed: memory.used,
+        memoryTotal: memory.total,
+      });
     };
 
     const interval = setInterval(updateStats, 1000);
@@ -35,10 +33,6 @@ export function PerformanceDashboard() {
 
     return () => clearInterval(interval);
   }, []);
-
-  if (process.env.NODE_ENV !== 'development') {
-    return null;
-  }
 
   return (
     <div className="fixed bottom-2 right-2 bg-black/80 text-white text-xs p-2 rounded border border-white/20 space-y-1">

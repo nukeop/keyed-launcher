@@ -1,44 +1,23 @@
 import { useEffect } from 'react';
 import { useLauncherStore } from './stores/launcher';
-import { PerformanceMonitor } from './utils/performance';
+import { usePerformanceTracking } from './utils/usePerformanceTracking';
 import { PerformanceDashboard } from './components/PerformanceDashboard';
 
 function App() {
   const { searchQuery, setSearchQuery, isVisible, showWindow, hideWindow } =
     useLauncherStore();
+  const { trackStartup, trackWindowShow, trackWindowHide, startMonitoring } =
+    usePerformanceTracking();
 
   useEffect(() => {
-    if (import.meta.env.DEV) {
-      PerformanceMonitor.startupTimer();
-    }
-
+    const startup = trackStartup();
     showWindow();
+    startup.end();
 
-    if (import.meta.env.DEV) {
-      setTimeout(() => {
-        PerformanceMonitor.endStartupTimer();
-      }, 0);
-
-      PerformanceMonitor.startFPSMonitoring();
-    }
-
-    const memoryInterval = import.meta.env.DEV
-      ? setInterval(() => {
-          PerformanceMonitor.logMemoryUsage();
-        }, 30000)
-      : null;
+    const memoryInterval = startMonitoring();
 
     const handleFocus = () => {
-      if (import.meta.env.DEV) {
-        const showStart = performance.now();
-        showWindow();
-        setTimeout(() => {
-          const showTime = performance.now() - showStart;
-          console.log(`Window show time: ${showTime.toFixed(2)}ms`);
-        }, 0);
-      } else {
-        showWindow();
-      }
+      trackWindowShow(showWindow);
     };
 
     window.addEventListener('focus', handleFocus);
@@ -53,20 +32,13 @@ function App() {
   useEffect(() => {
     const handleKeyDown = async (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        if (import.meta.env.DEV) {
-          const hideStart = performance.now();
-          await hideWindow();
-          const hideTime = performance.now() - hideStart;
-          console.log(`Window hide time: ${hideTime.toFixed(2)}ms`);
-        } else {
-          await hideWindow();
-        }
+        await trackWindowHide(hideWindow);
       }
     };
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [hideWindow]);
+  }, [hideWindow, trackWindowHide]);
 
   return (
     <div

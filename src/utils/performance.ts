@@ -52,6 +52,35 @@ export class PerformanceMonitor {
     return this.fps;
   }
 
+  static async getMemoryStats() {
+    if (!this.isEnabled) return { used: '0 MB', total: '0 MB' };
+
+    try {
+      if ('memory' in performance && (performance as any).memory) {
+        const memory = (performance as any).memory;
+        const used = memory.usedJSHeapSize || 0;
+        const total = memory.totalJSHeapSize || 0;
+
+        return {
+          used: `${(used / 1024 / 1024).toFixed(1)} MB`,
+          total: `${(total / 1024 / 1024).toFixed(1)} MB`,
+        };
+      }
+
+      const { invoke } = await import('@tauri-apps/api/core');
+      const [usedKb, totalKb] =
+        await invoke<[number, number]>('get_memory_usage');
+
+      return {
+        used: `${(usedKb / 1024).toFixed(1)} MB`,
+        total: `${(totalKb / 1024).toFixed(1)} MB`,
+      };
+    } catch (error) {
+      console.warn('Memory API error:', error);
+      return { used: 'Error', total: 'N/A' };
+    }
+  }
+
   static logMemoryUsage() {
     if (!this.isEnabled) return;
     if ('memory' in performance) {

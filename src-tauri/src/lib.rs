@@ -28,7 +28,9 @@ pub fn run() {
             window::show_window,
             window::toggle_window,
             #[cfg(debug_assertions)]
-            window::performance_test
+            window::performance_test,
+            #[cfg(debug_assertions)]
+            window::get_memory_usage
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
