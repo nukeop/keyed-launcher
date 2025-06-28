@@ -109,10 +109,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
 
-      - name: Install create-dmg (macOS only)
-        if: matrix.platform == 'macos-latest'
-        run: brew install create-dmg
-
       - name: Install frontend dependencies
         run: npm ci
 
@@ -123,7 +119,7 @@ jobs:
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CI: true
+          TAURI_BUNDLER_DMG_IGNORE_CI: false
         with:
           args: ${{ matrix.args }}
 
