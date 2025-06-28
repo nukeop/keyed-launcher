@@ -70,12 +70,16 @@ jobs:
         include:
           - platform: 'macos-latest'
             args: '--target aarch64-apple-darwin'
+            arch: 'arm64'
           - platform: 'macos-latest' 
             args: '--target x86_64-apple-darwin'
+            arch: 'x64'
           - platform: 'ubuntu-22.04'
             args: ''
+            arch: 'x64'
           - platform: 'windows-latest'
             args: ''
+            arch: 'x64'
 
     runs-on: ${{ matrix.platform }}
     steps:
@@ -126,7 +130,7 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: app-${{ matrix.platform }}-${{ matrix.args && hashFiles(matrix.args) || 'default' }}
+          name: app-${{ matrix.platform }}-${{ matrix.arch }}
           path: |
             src-tauri/target/release/bundle/
             src-tauri/target/*/release/bundle/

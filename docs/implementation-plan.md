@@ -38,7 +38,7 @@ A high-performance, multiplatform launcher built with Tauri (Rust + TypeScript) 
   - ✅ Implement Tauri system tray integration
   - ✅ Set up global shortcut registration (Ctrl+Space or Cmd+Space)
   - ✅ Create window show/hide functionality
-  - ⏳ Implement startup behavior (launch on system boot)
+  - ~~Implement startup behavior (launch on system boot)~~ (Skipped - let users handle manually)
   - ⏳ Handle platform-specific permissions (accessibility on macOS, etc.)
 
 #### 2.2 Window Management ✅
