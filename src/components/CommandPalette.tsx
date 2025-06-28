@@ -54,7 +54,7 @@ export function CommandPalette({
   };
 
   return (
-    <div className="flex flex-col h-full max-w-2xl w-full bg-black/40 backdrop-blur-sm rounded-lg border border-white/20 shadow-2xl">
+    <>
       <SearchBar
         value={searchQuery}
         onChange={onSearchChange}
@@ -69,6 +69,6 @@ export function CommandPalette({
           searchQuery.length === 0 ? emptyMessage : 'No results found'
         }
       />
-    </div>
+    </>
   );
 }

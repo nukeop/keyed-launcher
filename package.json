@@ -53,6 +53,7 @@
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.1.10",
+    "@tailwindcss/vite": "^4.1.11",
     "@tauri-apps/api": "^2.6.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

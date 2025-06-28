@@ -4,6 +4,8 @@ import { usePerformanceTracking } from './utils/usePerformanceTracking';
 import { useCommandPaletteResults } from './hooks/useCommandPaletteResults';
 import { CommandPalette } from './components/CommandPalette';
 import { PerformanceDashboard } from './components/PerformanceDashboard';
+import { AppContainer } from './components/AppContainer';
+import { LauncherTransition } from './components/LauncherTransition';
 
 function App() {
   const { searchQuery, setSearchQuery, isVisible, showWindow, hideWindow } =
@@ -44,23 +46,19 @@ function App() {
   }, [hideWindow, trackWindowHide]);
 
   return (
-    <div
-      className={`w-full h-full flex justify-center items-center transition-all duration-200 ease-out ${
-        isVisible
-          ? 'opacity-100 scale-100 translate-y-0'
-          : 'opacity-0 scale-95 translate-y-2'
-      }`}
-    >
-      <CommandPalette
-        searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
-        results={results}
-        onResultExecute={executeResult}
-        emptyMessage="Start typing to search applications..."
-      />
+    <LauncherTransition isVisible={isVisible}>
+      <AppContainer>
+        <CommandPalette
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+          results={results}
+          onResultExecute={executeResult}
+          emptyMessage="Start typing to search applications..."
+        />
 
-      <PerformanceDashboard />
-    </div>
+        <PerformanceDashboard />
+      </AppContainer>
+    </LauncherTransition>
   );
 }
 

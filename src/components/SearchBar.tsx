@@ -12,7 +12,7 @@ export function SearchBar({
   autoFocus = true,
 }: SearchBarProps) {
   return (
-    <div className="w-full px-4 py-3 border-b border-white/10">
+    <div className="w-full border-b border-white/10">
       <input
         type="text"
         value={value}
