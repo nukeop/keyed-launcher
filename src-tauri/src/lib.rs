@@ -26,7 +26,9 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![
             window::hide_window,
             window::show_window,
-            window::toggle_window
+            window::toggle_window,
+            #[cfg(debug_assertions)]
+            window::performance_test
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

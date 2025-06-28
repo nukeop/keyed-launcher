@@ -1,25 +1,66 @@
 import { useEffect } from 'react';
 import { useLauncherStore } from './stores/launcher';
+import { PerformanceMonitor } from './utils/performance';
+import { PerformanceDashboard } from './components/PerformanceDashboard';
 
 function App() {
   const { searchQuery, setSearchQuery, isVisible, showWindow, hideWindow } =
     useLauncherStore();
 
   useEffect(() => {
+    if (import.meta.env.DEV) {
+      PerformanceMonitor.startupTimer();
+    }
+
     showWindow();
 
+    if (import.meta.env.DEV) {
+      setTimeout(() => {
+        PerformanceMonitor.endStartupTimer();
+      }, 0);
+
+      PerformanceMonitor.startFPSMonitoring();
+    }
+
+    const memoryInterval = import.meta.env.DEV
+      ? setInterval(() => {
+          PerformanceMonitor.logMemoryUsage();
+        }, 30000)
+      : null;
+
     const handleFocus = () => {
-      showWindow();
+      if (import.meta.env.DEV) {
+        const showStart = performance.now();
+        showWindow();
+        setTimeout(() => {
+          const showTime = performance.now() - showStart;
+          console.log(`Window show time: ${showTime.toFixed(2)}ms`);
+        }, 0);
+      } else {
+        showWindow();
+      }
     };
 
     window.addEventListener('focus', handleFocus);
-    return () => window.removeEventListener('focus', handleFocus);
+    return () => {
+      window.removeEventListener('focus', handleFocus);
+      if (memoryInterval) {
+        clearInterval(memoryInterval);
+      }
+    };
   }, [showWindow]);
 
   useEffect(() => {
     const handleKeyDown = async (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        await hideWindow();
+        if (import.meta.env.DEV) {
+          const hideStart = performance.now();
+          await hideWindow();
+          const hideTime = performance.now() - hideStart;
+          console.log(`Window hide time: ${hideTime.toFixed(2)}ms`);
+        } else {
+          await hideWindow();
+        }
       }
     };
 
@@ -62,6 +103,8 @@ function App() {
           <div>Cmd+Shift+Space (macOS) / Ctrl+Shift+Space to toggle</div>
         </div>
       </div>
+
+      <PerformanceDashboard />
     </div>
   );
 }

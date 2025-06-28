@@ -1,10 +1,23 @@
+use std::time::Instant;
 use tauri::{AppHandle, Manager, Runtime, WebviewWindow};
 use tauri_plugin_global_shortcut::{GlobalShortcutExt, Shortcut};
 
 pub fn handle_global_shortcut<R: Runtime>(app: &AppHandle<R>) {
+    #[cfg(debug_assertions)]
+    let start_time = Instant::now();
+
     if let Some(window) = app.get_webview_window("main") {
         if let Err(e) = show_window_centered(&window) {
             eprintln!("Failed to show window on shortcut: {e}");
+        } else {
+            #[cfg(debug_assertions)]
+            {
+                let duration = start_time.elapsed();
+                println!(
+                    "Global shortcut activation time: {:.2}ms",
+                    duration.as_millis()
+                );
+            }
         }
     }
 }
@@ -16,7 +29,9 @@ pub fn setup_global_shortcuts(app: &tauri::App) -> Result<(), Box<dyn std::error
     Ok(())
 }
 
-pub fn toggle_window_visibility<R: Runtime>(window: &WebviewWindow<R>) -> Result<(), Box<dyn std::error::Error>> {
+pub fn toggle_window_visibility<R: Runtime>(
+    window: &WebviewWindow<R>,
+) -> Result<(), Box<dyn std::error::Error>> {
     if window.is_visible()? {
         window.hide()?;
     } else {
@@ -25,7 +40,12 @@ pub fn toggle_window_visibility<R: Runtime>(window: &WebviewWindow<R>) -> Result
     Ok(())
 }
 
-pub fn show_window_centered<R: Runtime>(window: &WebviewWindow<R>) -> Result<(), Box<dyn std::error::Error>> {
+pub fn show_window_centered<R: Runtime>(
+    window: &WebviewWindow<R>,
+) -> Result<(), Box<dyn std::error::Error>> {
+    #[cfg(debug_assertions)]
+    let start_time = Instant::now();
+
     if let Some(monitor) = window.current_monitor()? {
         let monitor_size = monitor.size();
         let window_size = window.outer_size()?;
@@ -38,6 +58,12 @@ pub fn show_window_centered<R: Runtime>(window: &WebviewWindow<R>) -> Result<(),
 
     window.show()?;
     window.set_focus()?;
+
+    #[cfg(debug_assertions)]
+    {
+        let duration = start_time.elapsed();
+        println!("Window show operation time: {:.2}ms", duration.as_millis());
+    }
 
     Ok(())
 }
