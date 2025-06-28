@@ -1,15 +1,45 @@
-import { create } from 'zustand'
+import { create } from 'zustand';
 
 interface LauncherState {
-  isVisible: boolean;
   searchQuery: string;
-  setVisible: (visible: boolean) => void;
-  setSearchQuery: (query: string ) => void;
+  isVisible: boolean;
+  isAnimating: boolean;
+  setSearchQuery: (query: string) => void;
+  setIsVisible: (visible: boolean) => void;
+  setIsAnimating: (animating: boolean) => void;
+  showWindow: () => void;
+  hideWindow: () => Promise<void>;
 }
 
-export const useLauncherStore = create<LauncherState>(set => ({
-  isVisible: false,
+export const useLauncherStore = create<LauncherState>((set, get) => ({
   searchQuery: '',
-  setVisible: (visible) => set({ isVisible: visible }),
+  isVisible: false,
+  isAnimating: false,
   setSearchQuery: (query) => set({ searchQuery: query }),
-}))
+  setIsVisible: (visible) => set({ isVisible: visible }),
+  setIsAnimating: (animating) => set({ isAnimating: animating }),
+
+  showWindow: () => {
+    set({ isVisible: true, isAnimating: false });
+  },
+
+  hideWindow: async () => {
+    const { isAnimating } = get();
+    if (isAnimating) return;
+
+    set({ isAnimating: true, isVisible: false });
+
+    return new Promise((resolve) => {
+      setTimeout(async () => {
+        try {
+          const { invoke } = await import('@tauri-apps/api/core');
+          await invoke('hide_window');
+        } catch (error) {
+          console.error('Failed to hide window:', error);
+        }
+        set({ isAnimating: false });
+        resolve();
+      }, 200);
+    });
+  },
+}));
