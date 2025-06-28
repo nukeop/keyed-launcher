@@ -35,10 +35,30 @@ export function PerformanceDashboard() {
   }, []);
 
   return (
-    <div className="fixed bottom-2 right-2 bg-black/80 text-white text-xs p-2 rounded border border-white/20 space-y-1">
-      <div>FPS: {stats.fps}</div>
-      <div>
-        Memory: {stats.memoryUsed} / {stats.memoryTotal}
+    <div className="fixed top-4 left-4 pointer-events-none select-none z-50">
+      <div className="bg-black/75 backdrop-blur-sm text-white font-mono text-sm p-3 rounded border border-white/20 shadow-2xl">
+        <div className="space-y-1">
+          <div className="flex items-center gap-2">
+            <span className="text-yellow-400 font-bold">FPS</span>
+            <span
+              className={`font-bold ${
+                stats.fps >= 55
+                  ? 'text-green-400'
+                  : stats.fps >= 30
+                    ? 'text-yellow-400'
+                    : 'text-red-400'
+              }`}
+            >
+              {stats.fps}
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="text-blue-400 font-bold">RAM</span>
+            <span className="text-white">{stats.memoryUsed}</span>
+            <span className="text-gray-400">/ {stats.memoryTotal}</span>
+          </div>
+        </div>
       </div>
     </div>
   );

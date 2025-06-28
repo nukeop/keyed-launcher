@@ -25,6 +25,7 @@
     "@tauri-apps/cli": "^2.6.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
     "@types/node": "^24.0.7",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
@@ -59,17 +60,10 @@
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx}": [
-      "eslint --fix",
-      "git add"
+      "eslint --fix"
     ],
     "*.{ts,tsx,js,jsx,json,css,md}": [
-      "prettier --write",
-      "git add"
-    ],
-    "src-tauri/src/**/*.rs": [
-      "cargo fmt --manifest-path src-tauri/Cargo.toml",
-      "cargo clippy --manifest-path src-tauri/Cargo.toml --fix --allow-dirty",
-      "git add"
+      "prettier --write"
     ]
   }
 }

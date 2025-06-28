@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { useLauncherStore } from './stores/launcher';
 import { usePerformanceTracking } from './utils/usePerformanceTracking';
+import { useCommandPaletteResults } from './hooks/useCommandPaletteResults';
+import { CommandPalette } from './components/CommandPalette';
 import { PerformanceDashboard } from './components/PerformanceDashboard';
 
 function App() {
@@ -8,6 +10,7 @@ function App() {
     useLauncherStore();
   const { trackStartup, trackWindowShow, trackWindowHide, startMonitoring } =
     usePerformanceTracking();
+  const { results, executeResult } = useCommandPaletteResults(searchQuery);
 
   useEffect(() => {
     const startup = trackStartup();
@@ -42,39 +45,19 @@ function App() {
 
   return (
     <div
-      className={`w-full h-full flex justify-center items-center rounded-lg border border-white/20 transition-all duration-200 ease-out ${
+      className={`w-full h-full flex justify-center items-center transition-all duration-200 ease-out ${
         isVisible
           ? 'opacity-100 scale-100 translate-y-0'
           : 'opacity-0 scale-95 translate-y-2'
       }`}
     >
-      <div className="h-6 w-6 min-h-6 min-w-6 border-2 border-white flex relative rounded bg-blue-500 top-4 left-4 p-4">
-        test
-      </div>
-      <div className="p-6 space-y-6">
-        <div className="text-center space-y-2">
-          <h1 className="text-2xl font-bold text-white">Launcher</h1>
-          <p className="text-gray-400 text-sm">
-            High-performance multiplatform launcher
-          </p>
-        </div>
-
-        <div className="w-full max-w-md">
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Type to search..."
-            className="w-full px-4 py-3 text-white placeholder-gray-400 focus:outline-none"
-            autoFocus
-          />
-        </div>
-
-        <div className="text-xs text-gray-500 space-y-1 text-center">
-          <div>Press Escape to hide</div>
-          <div>Cmd+Shift+Space (macOS) / Ctrl+Shift+Space to toggle</div>
-        </div>
-      </div>
+      <CommandPalette
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+        results={results}
+        onResultExecute={executeResult}
+        emptyMessage="Start typing to search applications..."
+      />
 
       <PerformanceDashboard />
     </div>

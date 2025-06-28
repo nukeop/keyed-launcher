@@ -1,5 +1,6 @@
 mod shortcuts;
 mod tray;
+mod vibrancy;
 mod window;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -19,6 +20,10 @@ pub fn run() {
 
             if let Err(e) = tray::setup_system_tray(app) {
                 eprintln!("Failed to setup system tray: {e}");
+            }
+
+            if let Err(e) = vibrancy::setup_window_vibrancy(app) {
+                eprintln!("Failed to setup window vibrancy: {e}");
             }
 
             Ok(())

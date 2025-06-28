@@ -19,11 +19,11 @@ Transform the dancing skeleton into a functional command palette launcher with p
 
 - **Goal**: Simple, focused command palette interface
 - **Tasks**:
-  - [ ] Design command palette layout (search bar + results list)
-  - [ ] Implement result item components (icon, title, subtitle, keyboard shortcuts)
+  - [x] Design command palette layout (search bar + results list)
+  - [x] Implement result item components (icon, title, subtitle, keyboard shortcuts)
   - [ ] Create category/section headers for result grouping
-  - [ ] Add loading states and empty states
-  - [ ] Implement keyboard navigation (arrow keys, enter, tab)
+  - [x] Add loading states and empty states
+  - [x] Implement keyboard navigation (arrow keys, enter, tab)
 
 #### 1.2 Keyboard Navigation
 
