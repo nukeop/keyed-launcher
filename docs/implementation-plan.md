@@ -39,7 +39,7 @@ A high-performance, multiplatform launcher built with Tauri (Rust + TypeScript) 
   - ✅ Set up global shortcut registration (Ctrl+Space or Cmd+Space)
   - ✅ Create window show/hide functionality
   - ~~Implement startup behavior (launch on system boot)~~ (Skipped - let users handle manually)
-  - ⏳ Handle platform-specific permissions (accessibility on macOS, etc.)
+  - ~~Handle platform-specific permissions (accessibility on macOS, etc.)~~ (Skipped for now)
 
 #### 2.2 Window Management ✅
 
@@ -49,7 +49,7 @@ A high-performance, multiplatform launcher built with Tauri (Rust + TypeScript) 
   - ✅ Implement proper window positioning (center of active screen)
   - ✅ Handle multi-monitor scenarios
   - ✅ Set up escape key and click-outside to hide functionality
-  - ⏳ Implement smooth show/hide animations
+  - ✅ Implement smooth show/hide animations
 
 ### 3. CI/CD Pipeline Setup ✅
 

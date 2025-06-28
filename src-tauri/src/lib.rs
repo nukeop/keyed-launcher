@@ -1,4 +1,5 @@
 mod shortcuts;
+mod tray;
 mod window;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -14,6 +15,10 @@ pub fn run() {
         .setup(|app| {
             if let Err(e) = shortcuts::setup_global_shortcuts(app) {
                 eprintln!("Failed to setup global shortcuts: {e}");
+            }
+
+            if let Err(e) = tray::setup_system_tray(app) {
+                eprintln!("Failed to setup system tray: {e}");
             }
 
             Ok(())
