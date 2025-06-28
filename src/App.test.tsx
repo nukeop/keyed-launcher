@@ -6,7 +6,7 @@ describe('App', () => {
   it('renders the main heading', () => {
     render(<App />);
     expect(
-      screen.getByRole('heading', { name: /keyed launcher/i }),
+      screen.getByRole('heading', { name: /launcher/i }),
     ).toBeInTheDocument();
   });
 
