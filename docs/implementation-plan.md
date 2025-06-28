@@ -1,4 +1,4 @@
-# Based Launcher v3 - Implementation Plan
+# Keyed Launcher - Implementation Plan
 
 ## 📋 Project Overview
 
@@ -140,7 +140,7 @@ A high-performance, multiplatform launcher built with Tauri (Rust + TypeScript) 
 ## 📁 Project Structure
 
 ```
-based-launcher-v3/
+keyed-launcher/
 ├── src/                          # Frontend TypeScript code
 │   ├── components/              # UI components
 │   ├── stores/                  # State management

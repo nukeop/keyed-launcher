@@ -1,4 +1,4 @@
-# Based Launcher v3 - Project Overview
+# Keyed Launcher - Project Overview
 
 ## 🎯 Vision
 

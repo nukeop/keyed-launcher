@@ -69,7 +69,7 @@ jobs:
         with:
           args: ${{ matrix.args }}
           tagName: ${{ github.ref_name }}
-          releaseName: 'Based Launcher ${{ github.ref_name }}'
+          releaseName: 'Keyed Launcher ${{ github.ref_name }}'
           releaseBody: 'See the assets to download this version and install.'
           releaseDraft: false
           prerelease: false

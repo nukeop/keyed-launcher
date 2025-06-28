@@ -1,5 +1,5 @@
 {
-  "name": "based-launcher-v3",
+  "name": "keyed-launcher",
   "version": "1.0.0",
   "type": "module",
   "scripts": {
@@ -15,8 +15,10 @@
     "lint": "eslint",
     "lint:fix": "eslint --fix"
   },
-  "author": "",
-  "license": "ISC",
+  "author": {
+    "name": "nukeop <12746779+nukeop@users.noreply.github.com>"
+  },
+  "license": "AGPL-3.0",
   "description": "High-performance multiplatform launcher built with Tauri",
   "devDependencies": {
     "@tauri-apps/cli": "^2.6.0",

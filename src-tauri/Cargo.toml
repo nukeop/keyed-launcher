@@ -2,8 +2,8 @@
 name = "app"
 version = "0.1.0"
 description = "High-performance multiplatform launcher built with Tauri"
-authors = ["Based Launcher Team"]
-license = "MIT"
+authors = ["nukeop <12746779+nukeop@users.noreply.github.com>"]
+license = "AGPL-3.0"
 repository = "https://github.com/nukeop/keyed-launcher"
 edition = "2021"
 rust-version = "1.77.2"

@@ -1,6 +1,6 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
-  "productName": "based-launcher-v3",
+  "productName": "keyed-launcher",
   "version": "0.1.0",
   "identifier": "com.keyedlauncher.app",
   "build": {
@@ -13,7 +13,7 @@
     "windows": [
       {
         "label": "main",
-        "title": "Based Launcher",
+        "title": "Keyed Launcher",
         "width": 600,
         "height": 400,
         "minWidth": 400,
@@ -54,7 +54,7 @@
     "copyright": "",
     "category": "Utility",
     "shortDescription": "High-performance multiplatform launcher",
-    "longDescription": "Based Launcher v3 - A high-performance, multiplatform application launcher built with Tauri.",
+    "longDescription": "Keyed Launcher - A high-performance, multiplatform application launcher built with Tauri.",
     "createUpdaterArtifacts": false
   },
   "plugins": {

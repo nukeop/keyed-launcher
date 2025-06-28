@@ -80,9 +80,9 @@ jobs:
           
           # Copy debug binary
           if [ "${{ runner.os }}" = "Windows" ]; then
-            cp src-tauri/target/debug/based-launcher-v3.exe debug-artifacts/
+            cp src-tauri/target/debug/keyed-launcher.exe debug-artifacts/
           else
-            cp src-tauri/target/debug/based-launcher-v3 debug-artifacts/
+            cp src-tauri/target/debug/keyed-launcher debug-artifacts/
           fi
           
           # Copy logs and config files
