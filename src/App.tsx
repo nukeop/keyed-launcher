@@ -29,15 +29,18 @@ function App() {
 
   return (
     <div
-      className={`app transition-all duration-200 ease-out ${
+      className={`w-full h-full flex justify-center items-center rounded-lg border border-white/20 transition-all duration-200 ease-out ${
         isVisible
           ? 'opacity-100 scale-100 translate-y-0'
           : 'opacity-0 scale-95 translate-y-2'
       }`}
     >
+      <div className="h-6 w-6 min-h-6 min-w-6 border-2 border-white flex relative rounded bg-blue-500 top-4 left-4 p-4">
+        test
+      </div>
       <div className="p-6 space-y-6">
         <div className="text-center space-y-2">
-          <h1 className="text-2xl font-bold text-white">Keyed Launcher</h1>
+          <h1 className="text-2xl font-bold text-white">Launcher</h1>
           <p className="text-gray-400 text-sm">
             High-performance multiplatform launcher
           </p>
@@ -49,7 +52,7 @@ function App() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Type to search..."
-            className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-4 py-3 text-white placeholder-gray-400 focus:outline-none"
             autoFocus
           />
         </div>
