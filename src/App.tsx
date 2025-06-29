@@ -6,33 +6,14 @@ import { CommandPalette } from './components/CommandPalette';
 import { PerformanceDashboard } from './components/PerformanceDashboard';
 import { AppContainer } from './components/AppContainer';
 import { LauncherTransition } from './components/LauncherTransition';
+import { userPerformanceMonitoringStartup } from './hooks/usePerformanceMonitoringStartup';
 
 function App() {
-  const { searchQuery, setSearchQuery, isVisible, showWindow, hideWindow } =
+  const { searchQuery, setSearchQuery, isVisible, hideWindow } =
     useLauncherStore();
-  const { trackStartup, trackWindowShow, trackWindowHide, startMonitoring } =
-    usePerformanceTracking();
+  const { trackWindowHide } = usePerformanceTracking();
   const { results, executeResult } = useCommandPaletteResults(searchQuery);
-
-  useEffect(() => {
-    const startup = trackStartup();
-    showWindow();
-    startup.end();
-
-    const memoryInterval = startMonitoring();
-
-    const handleFocus = () => {
-      trackWindowShow(showWindow);
-    };
-
-    window.addEventListener('focus', handleFocus);
-    return () => {
-      window.removeEventListener('focus', handleFocus);
-      if (memoryInterval) {
-        clearInterval(memoryInterval);
-      }
-    };
-  }, [showWindow]);
+  userPerformanceMonitoringStartup();
 
   useEffect(() => {
     const handleKeyDown = async (event: KeyboardEvent) => {

@@ -1,1 +1,12 @@
 @import 'tailwindcss';
+
+html,
+body {
+  background: transparent;
+}
+
+html,
+body,
+#root {
+  @apply relative h-full w-full;
+}
