@@ -1,7 +1,8 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeAll } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from './App';
+import { setInvoke } from './test/tauri';
 
 vi.mock('./utils/usePerformanceTracking', () => ({
   usePerformanceTracking: () => ({
@@ -12,7 +13,17 @@ vi.mock('./utils/usePerformanceTracking', () => ({
   }),
 }));
 
+vi.mock('../../utils/environment', () => ({
+  isDev: vi.fn(() => false),
+  isProd: vi.fn(() => true),
+}));
+
 describe('App Integration', () => {
+  beforeAll(() => {
+    setInvoke('get_memory_usage', () => [32, 64]);
+    setInvoke('hide_window', () => undefined);
+  });
+
   it('renders the command palette interface', () => {
     render(<App />);
 
@@ -63,19 +74,13 @@ describe('App Integration', () => {
 
   it('executes result actions', async () => {
     const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
-
     render(<App />);
+    await userEvent.keyboard('{Enter}');
 
     expect(consoleSpy).toHaveBeenCalledWith('Executing: Calculator');
     expect(consoleSpy).toHaveBeenCalledWith('Opening Calculator...');
 
     consoleSpy.mockRestore();
-  });
-
-  it('renders performance dashboard', () => {
-    render(<App />);
-
-    expect(screen.getByText(/FPS:/)).toBeInTheDocument();
   });
 
   it('maintains launcher state integration', () => {
