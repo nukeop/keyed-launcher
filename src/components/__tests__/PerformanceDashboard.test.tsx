@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { render, screen, within } from '@testing-library/react';
 import { PerformanceDashboard } from '../PerformanceDashboard';
+import { isProd } from '../../utils/environment';
 
 vi.mock('../../utils/performance', () => ({
   PerformanceMonitor: {
@@ -15,67 +15,36 @@ vi.mock('../../utils/performance', () => ({
   },
 }));
 
-Object.defineProperty(import.meta, 'env', {
-  value: { DEV: true },
-  writable: true,
-});
+vi.mock('../../utils/environment', () => ({
+  isDev: vi.fn(() => true),
+  isProd: vi.fn(() => false),
+}));
 
 describe('PerformanceDashboard', () => {
-  it('renders minimized by default showing FPS', () => {
+  it('renders FPS', async () => {
     render(<PerformanceDashboard />);
-    expect(screen.getByText('60 FPS')).toBeInTheDocument();
+    const dashboard = await screen.findByTestId('performance-dashboard');
+    const fps = within(dashboard).getByTestId('fps');
+    await expect(fps).toHaveTextContent('FPS60');
   });
 
-  it('expands when clicked to show detailed stats', async () => {
-    const user = userEvent.setup();
+  it('renders RAM usage', async () => {
     render(<PerformanceDashboard />);
 
-    const minimizedView = screen.getByText('60 FPS');
-    await user.click(minimizedView);
+    const dashboard = await screen.findByTestId('performance-dashboard');
+    const ram = within(dashboard).getByTestId('ram');
 
-    expect(screen.getByText('Performance')).toBeInTheDocument();
-    expect(screen.getByText('FPS:')).toBeInTheDocument();
-    expect(screen.getByText('Memory:')).toBeInTheDocument();
-    expect(screen.getByText('Total:')).toBeInTheDocument();
-  });
-
-  it('can be minimized after expanding', async () => {
-    const user = userEvent.setup();
-    render(<PerformanceDashboard />);
-
-    const minimizedView = screen.getByText('60 FPS');
-    await user.click(minimizedView);
-
-    const closeButton = screen.getByTitle('Minimize');
-    await user.click(closeButton);
-
-    expect(screen.getByText('60 FPS')).toBeInTheDocument();
-    expect(screen.queryByText('Performance')).not.toBeInTheDocument();
-  });
-
-  it('shows color-coded FPS when expanded', async () => {
-    const user = userEvent.setup();
-    render(<PerformanceDashboard />);
-
-    const minimizedView = screen.getByText('60 FPS');
-    await user.click(minimizedView);
-
-    const fpsValue = screen.getByText('60');
-    expect(fpsValue).toHaveClass('text-green-400');
+    expect(ram).toHaveTextContent('RAM32 MB/ 64 MB');
   });
 
   it('does not render in production', () => {
-    Object.defineProperty(import.meta, 'env', {
-      value: { DEV: false },
-      writable: true,
-    });
+    vi.mocked(isProd).mockReturnValue(true);
 
-    const { container } = render(<PerformanceDashboard />);
-    expect(container.firstChild).toBeNull();
+    render(<PerformanceDashboard />);
+    const dashboardResult = screen.queryByTestId('performance-dashboard');
 
-    Object.defineProperty(import.meta, 'env', {
-      value: { DEV: true },
-      writable: true,
-    });
+    expect(dashboardResult).not.toBeInTheDocument();
+
+    vi.mocked(isProd).mockReturnValue(false);
   });
 });
