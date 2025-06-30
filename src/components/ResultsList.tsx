@@ -1,3 +1,4 @@
+import { FC } from 'react';
 import { ResultItem } from './ResultItem';
 
 export interface Result {
@@ -16,17 +17,17 @@ interface ResultsListProps {
   emptyMessage?: string;
 }
 
-export function ResultsList({
+export const ResultsList: FC<ResultsListProps> = ({
   results,
   selectedIndex,
   onItemClick,
   emptyMessage = 'No results found',
-}: ResultsListProps) {
+}) => {
   if (results.length === 0) {
     return (
-      <div className="flex-1 flex items-center justify-center py-12">
+      <div className="flex flex-1 items-center justify-center py-12">
         <div className="text-center">
-          <div className="text-gray-400 text-lg mb-2">🔍</div>
+          <div className="mb-2 text-lg text-gray-400">🔍</div>
           <div className="text-gray-400">{emptyMessage}</div>
         </div>
       </div>
@@ -34,7 +35,7 @@ export function ResultsList({
   }
 
   return (
-    <div className="flex-1 overflow-y-auto">
+    <div className="flex-1 overflow-y-auto px-1">
       {results.map((result, index) => (
         <ResultItem
           key={result.id}
@@ -48,4 +49,4 @@ export function ResultsList({
       ))}
     </div>
   );
-}
+};

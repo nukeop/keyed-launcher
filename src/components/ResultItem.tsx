@@ -17,28 +17,26 @@ export function ResultItem({
 }: ResultItemProps) {
   return (
     <div
-      className={`flex items-center px-4 py-3 cursor-pointer transition-colors duration-150 ${
-        isSelected
-          ? 'bg-blue-600/30 border-l-2 border-blue-400'
-          : 'hover:bg-white/5'
+      className={`flex cursor-pointer items-center rounded-lg px-2 py-2 text-sm ${
+        isSelected ? 'bg-white/20' : 'hover:bg-white/5'
       }`}
       onClick={onClick}
     >
       {icon && (
-        <div className="w-8 h-8 mr-3 flex-shrink-0 flex items-center justify-center">
-          <span className="text-xl">{icon}</span>
+        <div className="mr-3 flex h-4 w-4 flex-shrink-0 items-center justify-center">
+          <span className="text-md">{icon}</span>
         </div>
       )}
 
-      <div className="flex-1 min-w-0">
-        <div className="text-white font-medium truncate">{title}</div>
+      <div className="flex min-w-0 flex-1 flex-row items-center justify-start">
+        <div className="truncate text-white">{title}</div>
         {subtitle && (
-          <div className="text-gray-400 text-sm truncate">{subtitle}</div>
+          <div className="ml-2 truncate text-zinc-400">{subtitle}</div>
         )}
       </div>
 
       {shortcut && (
-        <div className="ml-3 text-xs text-gray-500 font-mono">{shortcut}</div>
+        <div className="ml-3 font-mono text-xs text-gray-500">{shortcut}</div>
       )}
     </div>
   );

@@ -9,5 +9,8 @@
         "<THIRD_PARTY_MODULES>",
         "^[./]",
         "^[../]"
+    ],
+    "plugins": [
+        "prettier-plugin-tailwindcss"
     ]
 }

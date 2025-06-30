@@ -8,7 +8,7 @@ interface PerformanceStats {
   memoryTotal: string;
 }
 
-export function PerformanceDashboard() {
+export const PerformanceDashboard = () => {
   if (isProd()) return null;
 
   const [stats, setStats] = useState<PerformanceStats>({
@@ -37,13 +37,13 @@ export function PerformanceDashboard() {
 
   return (
     <div
-      className="fixed bottom-0 pointer-events-none select-none z-50"
+      className="pointer-events-none fixed bottom-0 z-50 select-none"
       data-testid="performance-dashboard"
     >
-      <div className="bg-black/75 backdrop-blur-sm text-white font-mono text-sm p-3 rounded border border-white/20 shadow-2xl">
+      <div className="rounded border border-white/20 bg-black/75 p-3 font-mono text-sm text-white shadow-2xl backdrop-blur-sm">
         <div className="space-y-1">
           <div className="flex items-center gap-2" data-testid="fps">
-            <span className="text-yellow-400 font-bold">FPS</span>
+            <span className="font-bold text-yellow-400">FPS</span>
             <span
               className={`font-bold ${
                 stats.fps >= 55
@@ -58,7 +58,7 @@ export function PerformanceDashboard() {
           </div>
 
           <div className="flex items-center gap-2" data-testid="ram">
-            <span className="text-blue-400 font-bold">RAM</span>
+            <span className="font-bold text-blue-400">RAM</span>
             <span className="text-white">{stats.memoryUsed}</span>
             <span className="text-gray-400">/ {stats.memoryTotal}</span>
           </div>
@@ -66,4 +66,4 @@ export function PerformanceDashboard() {
       </div>
     </div>
   );
-}
+};

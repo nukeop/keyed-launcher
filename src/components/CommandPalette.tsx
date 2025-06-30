@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { SearchBar } from './SearchBar';
 import { ResultsList, Result } from './ResultsList';
+import { ActionBar } from './ActionBar';
 
 interface CommandPaletteProps {
   searchQuery: string;
@@ -69,6 +70,7 @@ export function CommandPalette({
           searchQuery.length === 0 ? emptyMessage : 'No results found'
         }
       />
+      <ActionBar icon="⚙️" />
     </>
   );
 }

@@ -18,7 +18,7 @@ export function SearchBar({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full bg-transparent text-white placeholder-gray-400 focus:outline-none text-lg"
+        className="w-full bg-transparent px-4 py-4 text-white placeholder-gray-400 focus:outline-none"
         autoFocus={autoFocus}
       />
     </div>
