@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import { SearchBar } from './SearchBar';
-import { ResultsList, Result } from './ResultsList';
+import { ResultsList, LauncherEntry } from './ResultsList';
 import { ActionBar } from './ActionBar';
 
 interface CommandPaletteProps {
   searchQuery: string;
   onSearchChange: (query: string) => void;
-  results: Result[];
-  onResultExecute: (result: Result) => void;
+  results: LauncherEntry[];
+  onResultExecute: (result: LauncherEntry) => void;
   onClose: () => Promise<void>;
   emptyMessage?: string;
 }
@@ -78,7 +78,7 @@ export function CommandPalette({
     onClose,
   ]);
 
-  const handleItemClick = (result: Result) => {
+  const handleItemClick = (result: LauncherEntry) => {
     onResultExecute(result);
   };
 

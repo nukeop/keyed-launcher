@@ -2,30 +2,45 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { CommandPalette } from '../CommandPalette';
-import { Result } from '../ResultsList';
+import { LauncherEntry } from '../ResultsList';
 
-const mockResults: Result[] = [
+const mockResults: LauncherEntry[] = [
   {
     id: '1',
+    name: 'calculator',
     title: 'Calculator',
     subtitle: 'System calculator',
+    description: 'Built-in calculator app',
     icon: '🧮',
+    mode: 'no-view',
+    category: 'Applications',
+    pluginId: 'test-plugin',
     action: vi.fn(),
     shortcut: '⌘+C',
   },
   {
     id: '2',
+    name: 'terminal',
     title: 'Terminal',
     subtitle: 'Command line interface',
+    description: 'Terminal application',
     icon: '💻',
+    mode: 'no-view',
+    category: 'Applications',
+    pluginId: 'test-plugin',
     action: vi.fn(),
     shortcut: '⌘+T',
   },
   {
     id: '3',
+    name: 'finder',
     title: 'Finder',
     subtitle: 'File manager',
+    description: 'File browser',
     icon: '📁',
+    mode: 'no-view',
+    category: 'Applications',
+    pluginId: 'test-plugin',
     action: vi.fn(),
   },
 ];

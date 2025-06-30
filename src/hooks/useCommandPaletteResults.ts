@@ -1,46 +1,76 @@
 import { useState, useMemo } from 'react';
-import { Result } from '../components/ResultsList';
+import { LauncherEntry } from '../components/ResultsList';
 
-const mockResults: Result[] = [
+const mockResults: LauncherEntry[] = [
   {
     id: 'calculator',
+    name: 'calculator',
     title: 'Calculator',
     subtitle: 'System calculator application',
+    description: 'Built-in system calculator for basic math operations',
     icon: '🧮',
+    mode: 'no-view',
+    category: 'Applications',
+    pluginId: 'core-applications',
     action: () => console.log('Opening Calculator...'),
     shortcut: '⌘+C',
+    keywords: ['calc', 'math', 'numbers'],
   },
   {
     id: 'terminal',
+    name: 'terminal',
     title: 'Terminal',
     subtitle: 'Command line interface',
+    description: 'Access the command line terminal',
     icon: '💻',
+    mode: 'no-view',
+    category: 'Applications',
+    pluginId: 'core-applications',
     action: () => console.log('Opening Terminal...'),
     shortcut: '⌘+T',
+    keywords: ['terminal', 'shell', 'command'],
   },
   {
     id: 'finder',
+    name: 'finder',
     title: 'Finder',
     subtitle: 'File manager',
+    description: 'Browse and manage files and folders',
     icon: '📁',
+    mode: 'no-view',
+    category: 'Applications',
+    pluginId: 'core-applications',
     action: () => console.log('Opening Finder...'),
     shortcut: '⌘+F',
+    keywords: ['files', 'folders', 'browse'],
   },
   {
     id: 'settings',
+    name: 'system-preferences',
     title: 'System Preferences',
     subtitle: 'System settings and configuration',
+    description: 'Configure system settings and preferences',
     icon: '⚙️',
+    mode: 'no-view',
+    category: 'System',
+    pluginId: 'core-system',
     action: () => console.log('Opening Settings...'),
     shortcut: '⌘+,',
+    keywords: ['settings', 'preferences', 'config'],
   },
   {
     id: 'safari',
+    name: 'safari',
     title: 'Safari',
     subtitle: 'Web browser',
+    description: 'Browse the web with Safari',
     icon: '🌐',
+    mode: 'no-view',
+    category: 'Applications',
+    pluginId: 'core-applications',
     action: () => console.log('Opening Safari...'),
     shortcut: '⌘+S',
+    keywords: ['browser', 'web', 'internet'],
   },
 ];
 
@@ -56,11 +86,15 @@ export function useCommandPaletteResults(searchQuery: string) {
     return mockResults.filter(
       (result) =>
         result.title.toLowerCase().includes(query) ||
-        (result.subtitle && result.subtitle.toLowerCase().includes(query)),
+        (result.subtitle && result.subtitle.toLowerCase().includes(query)) ||
+        (result.keywords &&
+          result.keywords.some((keyword) =>
+            keyword.toLowerCase().includes(query),
+          )),
     );
   }, [searchQuery]);
 
-  const executeResult = (result: Result) => {
+  const executeResult = (result: LauncherEntry) => {
     console.log(`Executing: ${result.title}`);
     result.action();
   };

@@ -21,6 +21,7 @@ Transform the dancing skeleton into a functional command palette launcher with p
 - **Tasks**:
   - [x] Design command palette layout (search bar + results list)
   - [x] Implement result item components (icon, title, subtitle, keyboard shortcuts)
+  - [x] Refactor Result interface to LauncherEntry with plugin architecture support
   - [ ] Create category/section headers for result grouping
   - [x] Add loading states and empty states
   - [x] Implement keyboard navigation (arrow keys, enter, tab)
@@ -38,10 +39,10 @@ Transform the dancing skeleton into a functional command palette launcher with p
 
 - **Goal**: Clear visual feedback for keyboard interactions
 - **Tasks**:
-  - [ ] Implement search result fade-in animations
-  - [ ] Add keyboard navigation highlight transitions
-  - [ ] Create smooth scrolling for long result lists
-  - [ ] Add micro-interactions for selection changes
+  - [~] Implement search result fade-in animations (postponed)
+  - [~] Add keyboard navigation highlight transitions (postponed)
+  - [~] Create smooth scrolling for long result lists (postponed)
+  - [~] Add micro-interactions for selection changes (postponed)
 
 ### 2. Theme System Architecture
 

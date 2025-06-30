@@ -1,19 +1,28 @@
 import { FC } from 'react';
 import { ResultItem } from './ResultItem';
 
-export interface Result {
+export interface LauncherEntry {
   id: string;
+  name: string;
   title: string;
   subtitle?: string;
+  description: string;
   icon?: string;
-  action: () => void;
+  keywords?: string[];
+  mode: 'view' | 'no-view' | 'background';
+  category?: string;
+  pluginId: string;
+  action: () => void | Promise<void>;
   shortcut?: string;
 }
 
+// Keep Result as alias for backwards compatibility during transition
+export type Result = LauncherEntry;
+
 interface ResultsListProps {
-  results: Result[];
+  results: LauncherEntry[];
   selectedIndex: number;
-  onItemClick: (result: Result) => void;
+  onItemClick: (result: LauncherEntry) => void;
   emptyMessage?: string;
 }
 
