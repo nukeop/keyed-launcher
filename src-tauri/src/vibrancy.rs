@@ -1,4 +1,7 @@
-use log::{error, info};
+use log::info;
+
+#[cfg(any(target_os = "macos", target_os = "windows"))]
+use log::error;
 use tauri::{App, Manager, WebviewWindow};
 
 #[cfg(target_os = "macos")]
@@ -17,7 +20,9 @@ pub fn setup_window_vibrancy(app: &mut App) -> tauri::Result<()> {
     Ok(())
 }
 
-fn apply_vibrancy_effect(window: &WebviewWindow) -> tauri::Result<()> {
+fn apply_vibrancy_effect(
+    #[cfg_attr(target_os = "linux", allow(unused_variables))] window: &WebviewWindow,
+) -> tauri::Result<()> {
     #[cfg(target_os = "macos")]
     {
         info!("Applying vibrancy effect for macOS");
@@ -47,7 +52,9 @@ fn apply_vibrancy_effect(window: &WebviewWindow) -> tauri::Result<()> {
 }
 
 #[allow(dead_code)]
-pub fn clear_vibrancy_effect(window: &WebviewWindow) -> tauri::Result<()> {
+pub fn clear_vibrancy_effect(
+    #[cfg_attr(target_os = "linux", allow(unused_variables))] window: &WebviewWindow,
+) -> tauri::Result<()> {
     #[cfg(target_os = "macos")]
     {
         use window_vibrancy::clear_vibrancy;
