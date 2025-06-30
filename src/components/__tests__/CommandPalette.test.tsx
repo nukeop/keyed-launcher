@@ -80,6 +80,70 @@ describe('CommandPalette Integration', () => {
     expect(screen.getByText('Finder')).toBeInTheDocument();
   });
 
+  it('renders category headers', () => {
+    renderCommandPalette();
+
+    expect(screen.getByText('APPLICATIONS')).toBeInTheDocument();
+  });
+
+  it('groups results by category', () => {
+    const mixedResults: LauncherEntry[] = [
+      {
+        id: '1',
+        name: 'calculator',
+        title: 'Calculator',
+        description: 'Calculator app',
+        mode: 'no-view',
+        category: 'Applications',
+        pluginId: 'test-plugin',
+        action: vi.fn(),
+      },
+      {
+        id: '2',
+        name: 'settings',
+        title: 'Settings',
+        description: 'System settings',
+        mode: 'no-view',
+        category: 'System',
+        pluginId: 'test-plugin',
+        action: vi.fn(),
+      },
+      {
+        id: '3',
+        name: 'terminal',
+        title: 'Terminal',
+        description: 'Terminal app',
+        mode: 'no-view',
+        category: 'Applications',
+        pluginId: 'test-plugin',
+        action: vi.fn(),
+      },
+    ];
+
+    renderCommandPalette({ results: mixedResults });
+
+    expect(screen.getByText('APPLICATIONS')).toBeInTheDocument();
+    expect(screen.getByText('SYSTEM')).toBeInTheDocument();
+  });
+
+  it('handles entries without category', () => {
+    const resultsWithoutCategory: LauncherEntry[] = [
+      {
+        id: '1',
+        name: 'uncategorized',
+        title: 'Uncategorized Item',
+        description: 'Item without category',
+        mode: 'no-view',
+        pluginId: 'test-plugin',
+        action: vi.fn(),
+      },
+    ];
+
+    renderCommandPalette({ results: resultsWithoutCategory });
+
+    expect(screen.getByText('OTHER')).toBeInTheDocument();
+  });
+
   it('calls onSearchChange when typing in search bar', async () => {
     const user = userEvent.setup();
     renderCommandPalette();
@@ -124,7 +188,7 @@ describe('CommandPalette Integration', () => {
     const user = userEvent.setup();
     renderCommandPalette();
 
-    const terminalItem = screen.getByTestId('result-item-2');
+    const terminalItem = screen.getByText('Terminal');
     await user.click(terminalItem);
 
     expect(mockOnResultExecute).toHaveBeenCalledWith(mockResults[1]);

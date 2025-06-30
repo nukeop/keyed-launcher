@@ -22,7 +22,7 @@ Transform the dancing skeleton into a functional command palette launcher with p
   - [x] Design command palette layout (search bar + results list)
   - [x] Implement result item components (icon, title, subtitle, keyboard shortcuts)
   - [x] Refactor Result interface to LauncherEntry with plugin architecture support
-  - [ ] Create category/section headers for result grouping
+  - [x] Create category/section headers for result grouping
   - [x] Add loading states and empty states
   - [x] Implement keyboard navigation (arrow keys, enter, tab)
 
