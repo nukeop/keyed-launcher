@@ -29,8 +29,8 @@ Transform the dancing skeleton into a functional command palette launcher with p
 
 - **Goal**: Fluid, intuitive keyboard-only navigation
 - **Tasks**:
-  - [ ] Arrow key navigation through results
-  - [ ] Enter to execute selected item
+  - [x] Arrow key navigation through results
+  - [x] Enter to execute selected item
   - [ ] Tab for alternative actions (if any)
   - [ ] Escape to clear search or close
   - [ ] Number keys for quick selection (1-9)
