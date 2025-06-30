@@ -8,7 +8,7 @@ export interface LauncherEntry {
   name: string;
   title: string;
   subtitle?: string;
-  description: string;
+  description?: string;
   icon?: string;
   keywords?: string[];
   mode: 'view' | 'no-view' | 'background';

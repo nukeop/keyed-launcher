@@ -282,8 +282,11 @@ describe('CommandPalette Integration', () => {
   it('handles Page Down navigation', async () => {
     const largeResults = Array.from({ length: 15 }, (_, i) => ({
       id: String(i + 1),
+      name: `Item ${i + 1}`,
       title: `Item ${i + 1}`,
       action: vi.fn(),
+      mode: 'no-view' as const,
+      pluginId: `plugin-${i + 1}`,
     }));
 
     const user = userEvent.setup();
@@ -317,8 +320,11 @@ describe('CommandPalette Integration', () => {
   it('handles Page Up navigation', async () => {
     const largeResults = Array.from({ length: 15 }, (_, i) => ({
       id: String(i + 1),
+      name: `Item ${i + 1}`,
       title: `Item ${i + 1}`,
       action: vi.fn(),
+      mode: 'no-view' as const,
+      pluginId: `plugin-${i + 1}`,
     }));
 
     const user = userEvent.setup();

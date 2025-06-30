@@ -102,6 +102,7 @@ export function useCommandPaletteResults(searchQuery: string) {
   return {
     results: filteredResults,
     isLoading,
+    setIsLoading,
     executeResult,
   };
 }
