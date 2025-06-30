@@ -36,12 +36,9 @@ export const PerformanceDashboard = () => {
   }, []);
 
   return (
-    <div
-      className="pointer-events-none fixed bottom-0 z-50 select-none"
-      data-testid="performance-dashboard"
-    >
-      <div className="rounded border border-white/20 bg-black/75 p-3 font-mono text-sm text-white shadow-2xl backdrop-blur-sm">
-        <div className="space-y-1">
+    <div className="select-none" data-testid="performance-dashboard">
+      <div className="font-mono text-xs text-white">
+        <div className="flex items-center gap-4">
           <div className="flex items-center gap-2" data-testid="fps">
             <span className="font-bold text-yellow-400">FPS</span>
             <span

@@ -25,7 +25,10 @@ export const ResultsList: FC<ResultsListProps> = ({
 }) => {
   if (results.length === 0) {
     return (
-      <div className="flex flex-1 items-center justify-center py-12">
+      <div
+        className="flex flex-1 items-center justify-center py-12"
+        data-testid="empty-results"
+      >
         <div className="text-center">
           <div className="mb-2 text-lg text-gray-400">🔍</div>
           <div className="text-gray-400">{emptyMessage}</div>
@@ -35,9 +38,10 @@ export const ResultsList: FC<ResultsListProps> = ({
   }
 
   return (
-    <div className="flex-1 overflow-y-auto px-1">
+    <div className="flex-1 overflow-y-auto px-1" data-testid="results-list">
       {results.map((result, index) => (
         <ResultItem
+          data-testid={`result-item-${result.id}`}
           key={result.id}
           title={result.title}
           subtitle={result.subtitle}

@@ -5,6 +5,7 @@ interface ResultItemProps {
   isSelected?: boolean;
   onClick?: () => void;
   shortcut?: string;
+  'data-testid'?: string;
 }
 
 export function ResultItem({
@@ -14,6 +15,7 @@ export function ResultItem({
   isSelected = false,
   onClick,
   shortcut,
+  'data-testid': testId,
 }: ResultItemProps) {
   return (
     <div
@@ -21,6 +23,8 @@ export function ResultItem({
         isSelected ? 'bg-white/20' : 'hover:bg-white/5'
       }`}
       onClick={onClick}
+      data-testid={testId}
+      data-selected={isSelected}
     >
       {icon && (
         <div className="mr-3 flex h-4 w-4 flex-shrink-0 items-center justify-center">

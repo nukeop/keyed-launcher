@@ -55,7 +55,7 @@ export function CommandPalette({
   };
 
   return (
-    <>
+    <div data-testid="command-palette">
       <SearchBar
         value={searchQuery}
         onChange={onSearchChange}
@@ -71,6 +71,6 @@ export function CommandPalette({
         }
       />
       <ActionBar icon="⚙️" />
-    </>
+    </div>
   );
 }

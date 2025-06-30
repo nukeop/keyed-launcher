@@ -12,7 +12,7 @@ export function SearchBar({
   autoFocus = true,
 }: SearchBarProps) {
   return (
-    <div className="w-full border-b border-white/10">
+    <div className="w-full border-b border-white/10" data-testid="search-bar">
       <input
         type="text"
         value={value}
@@ -20,6 +20,7 @@ export function SearchBar({
         placeholder={placeholder}
         className="w-full bg-transparent px-4 py-4 text-white placeholder-gray-400 focus:outline-none"
         autoFocus={autoFocus}
+        data-testid="search-input"
       />
     </div>
   );

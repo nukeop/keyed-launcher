@@ -49,9 +49,8 @@ describe('CommandPalette Integration', () => {
       />,
     );
 
-    expect(
-      screen.getByPlaceholderText('Type to search...'),
-    ).toBeInTheDocument();
+    expect(screen.getByTestId('search-input')).toBeInTheDocument();
+    expect(screen.getByTestId('results-list')).toBeInTheDocument();
     expect(screen.getByText('Calculator')).toBeInTheDocument();
     expect(screen.getByText('Terminal')).toBeInTheDocument();
     expect(screen.getByText('Finder')).toBeInTheDocument();
@@ -68,7 +67,7 @@ describe('CommandPalette Integration', () => {
       />,
     );
 
-    const searchInput = screen.getByPlaceholderText('Type to search...');
+    const searchInput = screen.getByTestId('search-input');
     await user.type(searchInput, 'calc');
 
     expect(mockOnSearchChange).toHaveBeenCalledTimes(4);
@@ -77,7 +76,7 @@ describe('CommandPalette Integration', () => {
 
   it('navigates through results with arrow keys', async () => {
     const user = userEvent.setup();
-    const { container } = render(
+    render(
       <CommandPalette
         searchQuery=""
         onSearchChange={mockOnSearchChange}
@@ -86,20 +85,20 @@ describe('CommandPalette Integration', () => {
       />,
     );
 
-    let selectedItems = container.querySelectorAll('.bg-blue-600\\/30');
-    expect(selectedItems).toHaveLength(1);
+    let selectedItem = screen.getByTestId('result-item-1');
+    expect(selectedItem).toHaveAttribute('data-selected', 'true');
 
     await user.keyboard('{ArrowDown}');
-    selectedItems = container.querySelectorAll('.bg-blue-600\\/30');
-    expect(selectedItems).toHaveLength(1);
+    selectedItem = screen.getByTestId('result-item-2');
+    expect(selectedItem).toHaveAttribute('data-selected', 'true');
 
     await user.keyboard('{ArrowDown}');
-    selectedItems = container.querySelectorAll('.bg-blue-600\\/30');
-    expect(selectedItems).toHaveLength(1);
+    selectedItem = screen.getByTestId('result-item-3');
+    expect(selectedItem).toHaveAttribute('data-selected', 'true');
 
     await user.keyboard('{ArrowUp}');
-    selectedItems = container.querySelectorAll('.bg-blue-600\\/30');
-    expect(selectedItems).toHaveLength(1);
+    selectedItem = screen.getByTestId('result-item-2');
+    expect(selectedItem).toHaveAttribute('data-selected', 'true');
   });
 
   it('executes result with Enter key', async () => {
@@ -129,8 +128,8 @@ describe('CommandPalette Integration', () => {
       />,
     );
 
-    const terminalItem = screen.getByText('Terminal').closest('div');
-    await user.click(terminalItem!);
+    const terminalItem = screen.getByTestId('result-item-2');
+    await user.click(terminalItem);
 
     expect(mockOnResultExecute).toHaveBeenCalledWith(mockResults[1]);
   });
@@ -146,6 +145,7 @@ describe('CommandPalette Integration', () => {
       />,
     );
 
+    expect(screen.getByTestId('empty-results')).toBeInTheDocument();
     expect(screen.getByText('Start typing to search...')).toBeInTheDocument();
   });
 
@@ -159,12 +159,13 @@ describe('CommandPalette Integration', () => {
       />,
     );
 
+    expect(screen.getByTestId('empty-results')).toBeInTheDocument();
     expect(screen.getByText('No results found')).toBeInTheDocument();
   });
 
   it('resets selected index when results change', async () => {
     const user = userEvent.setup();
-    const { rerender, container } = render(
+    const { rerender } = render(
       <CommandPalette
         searchQuery=""
         onSearchChange={mockOnSearchChange}
@@ -174,6 +175,10 @@ describe('CommandPalette Integration', () => {
     );
 
     await user.keyboard('{ArrowDown}');
+    expect(screen.getByTestId('result-item-2')).toHaveAttribute(
+      'data-selected',
+      'true',
+    );
 
     const newResults = [mockResults[0]];
     rerender(
@@ -185,8 +190,10 @@ describe('CommandPalette Integration', () => {
       />,
     );
 
-    const selectedItems = container.querySelectorAll('.bg-blue-600\\/30');
-    expect(selectedItems).toHaveLength(1);
+    expect(screen.getByTestId('result-item-1')).toHaveAttribute(
+      'data-selected',
+      'true',
+    );
   });
 
   it('handles keyboard navigation at boundaries', async () => {

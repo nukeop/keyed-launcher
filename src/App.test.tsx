@@ -27,10 +27,8 @@ describe('App Integration', () => {
   it('renders the command palette interface', () => {
     render(<App />);
 
-    expect(
-      screen.getByPlaceholderText('Type to search...'),
-    ).toBeInTheDocument();
-
+    expect(screen.getByTestId('command-palette')).toBeInTheDocument();
+    expect(screen.getByTestId('search-input')).toBeInTheDocument();
     expect(screen.getByText('Calculator')).toBeInTheDocument();
     expect(screen.getByText('Terminal')).toBeInTheDocument();
   });
@@ -39,7 +37,7 @@ describe('App Integration', () => {
     const user = userEvent.setup();
     render(<App />);
 
-    const searchInput = screen.getByPlaceholderText('Type to search...');
+    const searchInput = screen.getByTestId('search-input');
     await user.type(searchInput, 'calc');
 
     expect(screen.getByText('Calculator')).toBeInTheDocument();
@@ -50,7 +48,7 @@ describe('App Integration', () => {
     const user = userEvent.setup();
     render(<App />);
 
-    const searchInput = screen.getByPlaceholderText('Type to search...');
+    const searchInput = screen.getByTestId('search-input');
 
     await user.type(searchInput, 'calc');
     await user.clear(searchInput);
@@ -62,14 +60,14 @@ describe('App Integration', () => {
 
   it('handles keyboard navigation', async () => {
     const user = userEvent.setup();
-    const { container } = render(<App />);
+    render(<App />);
 
-    let selectedItems = container.querySelectorAll('.bg-blue-600\\/30');
-    expect(selectedItems).toHaveLength(1);
+    let selectedItem = screen.getByTestId('result-item-calculator');
+    expect(selectedItem).toHaveAttribute('data-selected', 'true');
 
     await user.keyboard('{ArrowDown}');
-    selectedItems = container.querySelectorAll('.bg-blue-600\\/30');
-    expect(selectedItems).toHaveLength(1);
+    selectedItem = screen.getByTestId('result-item-terminal');
+    expect(selectedItem).toHaveAttribute('data-selected', 'true');
   });
 
   it('executes result actions', async () => {
@@ -86,7 +84,8 @@ describe('App Integration', () => {
   it('maintains launcher state integration', () => {
     render(<App />);
 
-    const searchInput = screen.getByPlaceholderText('Type to search...');
+    const searchInput = screen.getByTestId('search-input');
     expect(searchInput).toBeInTheDocument();
+    expect(screen.getByTestId('command-palette')).toBeInTheDocument();
   });
 });

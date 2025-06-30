@@ -3,7 +3,6 @@ import { useLauncherStore } from './stores/launcher';
 import { usePerformanceTracking } from './utils/usePerformanceTracking';
 import { useCommandPaletteResults } from './hooks/useCommandPaletteResults';
 import { CommandPalette } from './components/CommandPalette';
-import { PerformanceDashboard } from './components/PerformanceDashboard';
 import { AppContainer } from './components/AppContainer';
 import { LauncherTransition } from './components/LauncherTransition';
 import { userPerformanceMonitoringStartup } from './hooks/usePerformanceMonitoringStartup';
@@ -36,8 +35,6 @@ function App() {
           onResultExecute={executeResult}
           emptyMessage="Start typing to search applications..."
         />
-
-        <PerformanceDashboard />
       </AppContainer>
     </LauncherTransition>
   );

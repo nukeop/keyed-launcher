@@ -1,0 +1,119 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ActionBar > matches snapshot 1`] = `
+<div
+  class="flex w-full items-center justify-between border-t border-white/20 bg-black/20 p-2 text-white"
+  data-testid="action-bar"
+>
+  <div>
+    ⚙️
+  </div>
+  <div
+    class="select-none"
+    data-testid="performance-dashboard"
+  >
+    <div
+      class="font-mono text-xs text-white"
+    >
+      <div
+        class="flex items-center gap-4"
+      >
+        <div
+          class="flex items-center gap-2"
+          data-testid="fps"
+        >
+          <span
+            class="font-bold text-yellow-400"
+          >
+            FPS
+          </span>
+          <span
+            class="font-bold text-green-400"
+          >
+            60
+          </span>
+        </div>
+        <div
+          class="flex items-center gap-2"
+          data-testid="ram"
+        >
+          <span
+            class="font-bold text-blue-400"
+          >
+            RAM
+          </span>
+          <span
+            class="text-white"
+          >
+            128 MB
+          </span>
+          <span
+            class="text-gray-400"
+          >
+            / 
+            8 GB
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ActionBar > matches snapshot without icon 1`] = `
+<div
+  class="flex w-full items-center justify-between border-t border-white/20 bg-black/20 p-2 text-white"
+  data-testid="action-bar"
+>
+  <div />
+  <div
+    class="select-none"
+    data-testid="performance-dashboard"
+  >
+    <div
+      class="font-mono text-xs text-white"
+    >
+      <div
+        class="flex items-center gap-4"
+      >
+        <div
+          class="flex items-center gap-2"
+          data-testid="fps"
+        >
+          <span
+            class="font-bold text-yellow-400"
+          >
+            FPS
+          </span>
+          <span
+            class="font-bold text-green-400"
+          >
+            60
+          </span>
+        </div>
+        <div
+          class="flex items-center gap-2"
+          data-testid="ram"
+        >
+          <span
+            class="font-bold text-blue-400"
+          >
+            RAM
+          </span>
+          <span
+            class="text-white"
+          >
+            128 MB
+          </span>
+          <span
+            class="text-gray-400"
+          >
+            / 
+            8 GB
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
