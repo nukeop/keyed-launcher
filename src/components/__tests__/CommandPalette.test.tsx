@@ -33,21 +33,30 @@ const mockResults: Result[] = [
 describe('CommandPalette Integration', () => {
   let mockOnSearchChange: ReturnType<typeof vi.fn>;
   let mockOnResultExecute: ReturnType<typeof vi.fn>;
+  let mockOnClose: ReturnType<typeof vi.fn>;
+
+  const renderCommandPalette = (
+    props: Partial<Parameters<typeof CommandPalette>[0]> = {},
+  ) => {
+    const defaultProps = {
+      searchQuery: '',
+      onSearchChange: mockOnSearchChange,
+      results: mockResults,
+      onResultExecute: mockOnResultExecute,
+      onClose: mockOnClose,
+    };
+
+    return render(<CommandPalette {...defaultProps} {...props} />);
+  };
 
   beforeEach(() => {
     mockOnSearchChange = vi.fn();
     mockOnResultExecute = vi.fn();
+    mockOnClose = vi.fn();
   });
 
   it('renders search bar and results list', () => {
-    render(
-      <CommandPalette
-        searchQuery=""
-        onSearchChange={mockOnSearchChange}
-        results={mockResults}
-        onResultExecute={mockOnResultExecute}
-      />,
-    );
+    renderCommandPalette();
 
     expect(screen.getByTestId('search-input')).toBeInTheDocument();
     expect(screen.getByTestId('results-list')).toBeInTheDocument();
@@ -58,14 +67,7 @@ describe('CommandPalette Integration', () => {
 
   it('calls onSearchChange when typing in search bar', async () => {
     const user = userEvent.setup();
-    render(
-      <CommandPalette
-        searchQuery=""
-        onSearchChange={mockOnSearchChange}
-        results={mockResults}
-        onResultExecute={mockOnResultExecute}
-      />,
-    );
+    renderCommandPalette();
 
     const searchInput = screen.getByTestId('search-input');
     await user.type(searchInput, 'calc');
@@ -76,14 +78,7 @@ describe('CommandPalette Integration', () => {
 
   it('navigates through results with arrow keys', async () => {
     const user = userEvent.setup();
-    render(
-      <CommandPalette
-        searchQuery=""
-        onSearchChange={mockOnSearchChange}
-        results={mockResults}
-        onResultExecute={mockOnResultExecute}
-      />,
-    );
+    renderCommandPalette();
 
     let selectedItem = screen.getByTestId('result-item-1');
     expect(selectedItem).toHaveAttribute('data-selected', 'true');
@@ -103,14 +98,7 @@ describe('CommandPalette Integration', () => {
 
   it('executes result with Enter key', async () => {
     const user = userEvent.setup();
-    render(
-      <CommandPalette
-        searchQuery=""
-        onSearchChange={mockOnSearchChange}
-        results={mockResults}
-        onResultExecute={mockOnResultExecute}
-      />,
-    );
+    renderCommandPalette();
 
     await user.keyboard('{Enter}');
 
@@ -119,14 +107,7 @@ describe('CommandPalette Integration', () => {
 
   it('executes result when clicked', async () => {
     const user = userEvent.setup();
-    render(
-      <CommandPalette
-        searchQuery=""
-        onSearchChange={mockOnSearchChange}
-        results={mockResults}
-        onResultExecute={mockOnResultExecute}
-      />,
-    );
+    renderCommandPalette();
 
     const terminalItem = screen.getByTestId('result-item-2');
     await user.click(terminalItem);
@@ -135,29 +116,20 @@ describe('CommandPalette Integration', () => {
   });
 
   it('shows empty state when no results and no search query', () => {
-    render(
-      <CommandPalette
-        searchQuery=""
-        onSearchChange={mockOnSearchChange}
-        results={[]}
-        onResultExecute={mockOnResultExecute}
-        emptyMessage="Start typing to search..."
-      />,
-    );
+    renderCommandPalette({
+      results: [],
+      emptyMessage: 'Start typing to search...',
+    });
 
     expect(screen.getByTestId('empty-results')).toBeInTheDocument();
     expect(screen.getByText('Start typing to search...')).toBeInTheDocument();
   });
 
   it('shows "no results found" when searching with no results', () => {
-    render(
-      <CommandPalette
-        searchQuery="nonexistent"
-        onSearchChange={mockOnSearchChange}
-        results={[]}
-        onResultExecute={mockOnResultExecute}
-      />,
-    );
+    renderCommandPalette({
+      searchQuery: 'nonexistent',
+      results: [],
+    });
 
     expect(screen.getByTestId('empty-results')).toBeInTheDocument();
     expect(screen.getByText('No results found')).toBeInTheDocument();
@@ -165,14 +137,7 @@ describe('CommandPalette Integration', () => {
 
   it('resets selected index when results change', async () => {
     const user = userEvent.setup();
-    const { rerender } = render(
-      <CommandPalette
-        searchQuery=""
-        onSearchChange={mockOnSearchChange}
-        results={mockResults}
-        onResultExecute={mockOnResultExecute}
-      />,
-    );
+    const { rerender } = renderCommandPalette();
 
     await user.keyboard('{ArrowDown}');
     expect(screen.getByTestId('result-item-2')).toHaveAttribute(
@@ -187,6 +152,7 @@ describe('CommandPalette Integration', () => {
         onSearchChange={mockOnSearchChange}
         results={newResults}
         onResultExecute={mockOnResultExecute}
+        onClose={mockOnClose}
       />,
     );
 
@@ -198,14 +164,7 @@ describe('CommandPalette Integration', () => {
 
   it('handles keyboard navigation at boundaries', async () => {
     const user = userEvent.setup();
-    render(
-      <CommandPalette
-        searchQuery=""
-        onSearchChange={mockOnSearchChange}
-        results={mockResults}
-        onResultExecute={mockOnResultExecute}
-      />,
-    );
+    renderCommandPalette();
 
     await user.keyboard('{ArrowUp}');
 
@@ -216,5 +175,113 @@ describe('CommandPalette Integration', () => {
 
     await user.keyboard('{Enter}');
     expect(mockOnResultExecute).toHaveBeenCalled();
+  });
+
+  it('clears search on Escape when query is not empty', async () => {
+    const user = userEvent.setup();
+    renderCommandPalette({
+      searchQuery: 'test query',
+    });
+
+    await user.keyboard('{Escape}');
+
+    expect(mockOnSearchChange).toHaveBeenCalledWith('');
+    expect(mockOnClose).not.toHaveBeenCalled();
+  });
+
+  it('calls onClose on Escape when query is empty', async () => {
+    const user = userEvent.setup();
+
+    renderCommandPalette();
+
+    await user.keyboard('{Escape}');
+
+    expect(mockOnSearchChange).not.toHaveBeenCalled();
+    expect(mockOnClose).toHaveBeenCalledTimes(1);
+  });
+
+  it('handles Page Down navigation', async () => {
+    const largeResults = Array.from({ length: 15 }, (_, i) => ({
+      id: String(i + 1),
+      title: `Item ${i + 1}`,
+      action: vi.fn(),
+    }));
+
+    const user = userEvent.setup();
+    renderCommandPalette({
+      results: largeResults,
+    });
+
+    // First item should be selected initially
+    expect(screen.getByTestId('result-item-1')).toHaveAttribute(
+      'data-selected',
+      'true',
+    );
+
+    // Page Down should move 10 positions down
+    await user.keyboard('{PageDown}');
+
+    expect(screen.getByTestId('result-item-11')).toHaveAttribute(
+      'data-selected',
+      'true',
+    );
+
+    // Page Down again should go to the last item (15)
+    await user.keyboard('{PageDown}');
+
+    expect(screen.getByTestId('result-item-15')).toHaveAttribute(
+      'data-selected',
+      'true',
+    );
+  });
+
+  it('handles Page Up navigation', async () => {
+    const largeResults = Array.from({ length: 15 }, (_, i) => ({
+      id: String(i + 1),
+      title: `Item ${i + 1}`,
+      action: vi.fn(),
+    }));
+
+    const user = userEvent.setup();
+    renderCommandPalette({
+      results: largeResults,
+    });
+
+    // Move to the end first
+    await user.keyboard('{PageDown}');
+    await user.keyboard('{PageDown}');
+
+    expect(screen.getByTestId('result-item-15')).toHaveAttribute(
+      'data-selected',
+      'true',
+    );
+
+    // Page Up should move 10 positions up
+    await user.keyboard('{PageUp}');
+
+    expect(screen.getByTestId('result-item-5')).toHaveAttribute(
+      'data-selected',
+      'true',
+    );
+
+    // Page Up again should go to the first item
+    await user.keyboard('{PageUp}');
+
+    expect(screen.getByTestId('result-item-1')).toHaveAttribute(
+      'data-selected',
+      'true',
+    );
+  });
+
+  it('handles Page Up/Down with no results', async () => {
+    const user = userEvent.setup();
+    renderCommandPalette({
+      results: [],
+    });
+
+    await user.keyboard('{PageDown}');
+    await user.keyboard('{PageUp}');
+
+    expect(screen.getByTestId('empty-results')).toBeInTheDocument();
   });
 });

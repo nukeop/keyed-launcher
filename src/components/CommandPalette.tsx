@@ -8,6 +8,7 @@ interface CommandPaletteProps {
   onSearchChange: (query: string) => void;
   results: Result[];
   onResultExecute: (result: Result) => void;
+  onClose: () => Promise<void>;
   emptyMessage?: string;
 }
 
@@ -16,6 +17,7 @@ export function CommandPalette({
   onSearchChange,
   results,
   onResultExecute,
+  onClose,
   emptyMessage = 'Start typing to search...',
 }: CommandPaletteProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -26,18 +28,37 @@ export function CommandPalette({
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (results.length === 0) return;
-
       switch (event.key) {
+        case 'Escape':
+          event.preventDefault();
+          if (searchQuery.length > 0) {
+            onSearchChange('');
+          } else {
+            onClose();
+          }
+          break;
         case 'ArrowDown':
+          if (results.length === 0) return;
           event.preventDefault();
           setSelectedIndex((prev) => Math.min(prev + 1, results.length - 1));
           break;
         case 'ArrowUp':
+          if (results.length === 0) return;
           event.preventDefault();
           setSelectedIndex((prev) => Math.max(prev - 1, 0));
           break;
+        case 'PageDown':
+          if (results.length === 0) return;
+          event.preventDefault();
+          setSelectedIndex((prev) => Math.min(prev + 10, results.length - 1));
+          break;
+        case 'PageUp':
+          if (results.length === 0) return;
+          event.preventDefault();
+          setSelectedIndex((prev) => Math.max(prev - 10, 0));
+          break;
         case 'Enter':
+          if (results.length === 0) return;
           event.preventDefault();
           if (results[selectedIndex]) {
             onResultExecute(results[selectedIndex]);
@@ -48,14 +69,21 @@ export function CommandPalette({
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [results, selectedIndex, onResultExecute]);
+  }, [
+    results,
+    selectedIndex,
+    onResultExecute,
+    searchQuery,
+    onSearchChange,
+    onClose,
+  ]);
 
   const handleItemClick = (result: Result) => {
     onResultExecute(result);
   };
 
   return (
-    <div data-testid="command-palette">
+    <div data-testid="command-palette" className="flex flex-1 flex-col">
       <SearchBar
         value={searchQuery}
         onChange={onSearchChange}

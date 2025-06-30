@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useLauncherStore } from './stores/launcher';
 import { usePerformanceTracking } from './utils/usePerformanceTracking';
 import { useCommandPaletteResults } from './hooks/useCommandPaletteResults';
@@ -14,16 +13,9 @@ function App() {
   const { results, executeResult } = useCommandPaletteResults(searchQuery);
   userPerformanceMonitoringStartup();
 
-  useEffect(() => {
-    const handleKeyDown = async (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        await trackWindowHide(hideWindow);
-      }
-    };
-
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [hideWindow, trackWindowHide]);
+  const handleClose = async () => {
+    await trackWindowHide(hideWindow);
+  };
 
   return (
     <LauncherTransition isVisible={isVisible}>
@@ -33,6 +25,7 @@ function App() {
           onSearchChange={setSearchQuery}
           results={results}
           onResultExecute={executeResult}
+          onClose={handleClose}
           emptyMessage="Start typing to search applications..."
         />
       </AppContainer>

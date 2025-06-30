@@ -31,10 +31,8 @@ Transform the dancing skeleton into a functional command palette launcher with p
 - **Tasks**:
   - [x] Arrow key navigation through results
   - [x] Enter to execute selected item
-  - [ ] Tab for alternative actions (if any)
-  - [ ] Escape to clear search or close
-  - [ ] Number keys for quick selection (1-9)
-  - [ ] Page up/down for long lists
+  - [x] Escape to clear search or close
+  - [x] Page up/down for long lists
 
 #### 1.3 Visual Feedback
 
