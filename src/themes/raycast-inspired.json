@@ -8,27 +8,11 @@
         "id": "raycast-inspired"
     },
     "colors": {
-        "primary": "#007AFF",
-        "primaryHover": "#0056CC",
-        "background": "#1C1C1E",
-        "backgroundElevated": "#2C2C2E",
-        "surface": "#38383A",
-        "surfaceHover": "#48484A",
-        "text": "#FFFFFF",
-        "textSecondary": "#8E8E93",
-        "textTertiary": "#636366",
-        "textInverse": "#000000",
-        "border": "#48484A",
-        "borderFocus": "#007AFF",
-        "accent": "#30D158",
-        "accentHover": "#28CD4F",
-        "warning": "#FF9F0A",
-        "warningHover": "#FF8C00",
-        "error": "#FF453A",
-        "errorHover": "#FF2D1A",
-        "success": "#30D158",
-        "successHover": "#28CD4F",
-        "overlay": "rgba(0, 0, 0, 0.5)"
+        "slate": "#1e293b",
+        "blue": "#3b82f6",
+        "green": "#10b981",
+        "amber": "#f59e0b",
+        "red": "#ef4444"
     },
     "spacing": {
         "xs": "0.25rem",

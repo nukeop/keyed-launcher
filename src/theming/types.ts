@@ -7,28 +7,29 @@ export interface ThemeMeta {
   id: string;
 }
 
-export interface ThemeColors {
-  primary: string;
-  primaryHover: string;
-  background: string;
-  backgroundElevated: string;
-  surface: string;
-  surfaceHover: string;
-  text: string;
-  textSecondary: string;
-  textTertiary: string;
-  textInverse: string;
-  border: string;
-  borderFocus: string;
-  accent: string;
-  accentHover: string;
-  warning: string;
-  warningHover: string;
-  error: string;
-  errorHover: string;
-  success: string;
-  successHover: string;
-  overlay: string;
+export interface ThemeBaseColors {
+  slate: string;
+  gray: string;
+  zinc: string;
+  neutral: string;
+  stone: string;
+  red: string;
+  orange: string;
+  amber: string;
+  yellow: string;
+  lime: string;
+  green: string;
+  emerald: string;
+  teal: string;
+  cyan: string;
+  sky: string;
+  blue: string;
+  indigo: string;
+  violet: string;
+  purple: string;
+  fuchsia: string;
+  pink: string;
+  rose: string;
 }
 
 export interface ThemeSpacing {
@@ -56,7 +57,7 @@ export interface ThemeShadows {
 
 export interface Theme {
   meta: ThemeMeta;
-  colors: ThemeColors;
+  colors: Partial<ThemeBaseColors>;
   spacing: ThemeSpacing;
   borderRadius: ThemeBorderRadius;
   shadows: ThemeShadows;
