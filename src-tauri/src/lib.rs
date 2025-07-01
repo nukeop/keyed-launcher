@@ -1,4 +1,5 @@
 mod shortcuts;
+mod theme_watcher;
 mod tray;
 mod vibrancy;
 mod window;
@@ -29,6 +30,8 @@ pub fn run() {
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
+            theme_watcher::load_user_themes,
+            theme_watcher::start_theme_watcher,
             window::hide_window,
             window::show_window,
             window::toggle_window,

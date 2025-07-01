@@ -2,7 +2,7 @@
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "keyed-launcher",
   "version": "0.1.0",
-  "identifier": "com.keyedlauncher.app",
+  "identifier": "com.nukeop.keyedlauncher",
   "build": {
     "frontendDist": "../src",
     "devUrl": "http://localhost:3000",

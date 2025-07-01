@@ -5,6 +5,8 @@ import {
   useEffect,
   ReactNode,
 } from 'react';
+import { invoke } from '@tauri-apps/api/core';
+import { listen } from '@tauri-apps/api/event';
 import { Theme, ThemeContextType } from './types';
 import { generateTailwindColorProperties } from './colorUtils';
 import raycastTheme from '../themes/raycast-inspired.json';
@@ -20,10 +22,46 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   const [currentTheme, setCurrentTheme] = useState<Theme>(
     raycastTheme as Theme,
   );
-  const [availableThemes] = useState<Theme[]>([
+  const [availableThemes, setAvailableThemes] = useState<Theme[]>([
     raycastTheme as Theme,
     draculaTheme as Theme,
   ]);
+
+  const loadThemesFromDisk = async () => {
+    try {
+      const bundledThemes = [raycastTheme as Theme, draculaTheme as Theme];
+
+      const userThemesData = await invoke<unknown[]>('load_user_themes');
+
+      const userThemes = userThemesData.filter(
+        (themeData): themeData is Theme => {
+          return (
+            typeof themeData === 'object' &&
+            themeData !== null &&
+            'meta' in themeData &&
+            'colors' in themeData
+          );
+        },
+      );
+
+      const allThemes = [...bundledThemes, ...userThemes];
+      setAvailableThemes(allThemes);
+    } catch (error) {
+      console.error('Failed to load themes:', error);
+      const bundledThemes = [raycastTheme as Theme, draculaTheme as Theme];
+      setAvailableThemes(bundledThemes);
+    }
+  };
+
+  const reloadCurrentTheme = () => {
+    const updatedTheme = availableThemes.find(
+      (t) => t.meta.id === currentTheme.meta.id,
+    );
+    if (updatedTheme) {
+      setCurrentTheme(updatedTheme);
+      applyTheme(updatedTheme);
+    }
+  };
 
   const switchTheme = (themeId: string) => {
     const theme = availableThemes.find((t) => t.meta.id === themeId);
@@ -65,12 +103,36 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   };
 
   useEffect(() => {
-    const savedThemeId = localStorage.getItem('keyed-launcher-theme');
-    if (savedThemeId) {
-      switchTheme(savedThemeId);
-    } else {
-      applyTheme(currentTheme);
-    }
+    const initializeThemes = async () => {
+      await loadThemesFromDisk();
+
+      const savedThemeId = localStorage.getItem('keyed-launcher-theme');
+      if (savedThemeId) {
+        switchTheme(savedThemeId);
+      } else {
+        applyTheme(currentTheme);
+      }
+
+      try {
+        await invoke('start_theme_watcher');
+
+        const unlisten = await listen('theme-file-changed', () => {
+          console.log('Received theme-file-changed event, reloading themes...');
+          loadThemesFromDisk().then(() => {
+            console.log('Themes reloaded, applying current theme...');
+            reloadCurrentTheme();
+          });
+        });
+
+        return () => {
+          unlisten();
+        };
+      } catch (error) {
+        console.error('Failed to setup theme watcher:', error);
+      }
+    };
+
+    initializeThemes();
   }, []);
 
   const value: ThemeContextType = {
