@@ -69,7 +69,8 @@ Transform the dancing skeleton into a functional command palette launcher with p
 
 - **Goal**: Ship with beautiful, diverse themes out of the box
 - **Tasks**:
-  - [ ] **Raycast Theme**: Match Raycast's design language
+  - [x] **Raycast Theme**: Match Raycast's design language
+  - [x] **Dracula Theme**: Popular dark theme with vibrant colors
   - [ ] **Spotlight Theme**: macOS Spotlight-inspired appearance
   - [ ] **Terminal Theme**: High contrast for developers
   - [ ] **Minimal Theme**: Clean, distraction-free design

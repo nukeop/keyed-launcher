@@ -6,7 +6,9 @@ import {
   ReactNode,
 } from 'react';
 import { Theme, ThemeContextType } from './types';
+import { generateTailwindColorProperties } from './colorUtils';
 import raycastTheme from '../themes/raycast-inspired.json';
+import draculaTheme from '../themes/dracula.json';
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
@@ -18,7 +20,10 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   const [currentTheme, setCurrentTheme] = useState<Theme>(
     raycastTheme as Theme,
   );
-  const [availableThemes] = useState<Theme[]>([raycastTheme as Theme]);
+  const [availableThemes] = useState<Theme[]>([
+    raycastTheme as Theme,
+    draculaTheme as Theme,
+  ]);
 
   const switchTheme = (themeId: string) => {
     const theme = availableThemes.find((t) => t.meta.id === themeId);
@@ -36,8 +41,14 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   const applyTheme = (theme: Theme) => {
     const root = document.documentElement;
 
-    Object.entries(theme.colors).forEach(([key, value]) => {
-      root.style.setProperty(`--color-${key}`, value);
+    const colorProperties = generateTailwindColorProperties(theme.colors);
+
+    Object.entries(colorProperties).forEach(([property, value]) => {
+      root.style.setProperty(property, value);
+    });
+
+    Object.entries(theme.colors).forEach(([colorName, baseColor]) => {
+      root.style.setProperty(`--color-${colorName}`, baseColor);
     });
 
     Object.entries(theme.spacing).forEach(([key, value]) => {

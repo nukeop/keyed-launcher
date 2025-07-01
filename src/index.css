@@ -3,28 +3,8 @@
 @theme {
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
 
-  /* Theme Colors */
-  --color-primary: var(--color-primary, #007aff);
-  --color-primary-hover: var(--color-primaryHover, #0056cc);
-  --color-background: var(--color-background, #1c1c1e);
-  --color-background-elevated: var(--color-backgroundElevated, #2c2c2e);
-  --color-surface: var(--color-surface, #38383a);
-  --color-surface-hover: var(--color-surfaceHover, #48484a);
-  --color-text: var(--color-text, #ffffff);
-  --color-text-secondary: var(--color-textSecondary, #8e8e93);
-  --color-text-tertiary: var(--color-textTertiary, #636366);
-  --color-text-inverse: var(--color-textInverse, #000000);
-  --color-border: var(--color-border, #48484a);
-  --color-border-focus: var(--color-borderFocus, #007aff);
-  --color-accent: var(--color-accent, #30d158);
-  --color-accent-hover: var(--color-accentHover, #28cd4f);
-  --color-warning: var(--color-warning, #ff9f0a);
-  --color-warning-hover: var(--color-warningHover, #ff8c00);
-  --color-error: var(--color-error, #ff453a);
-  --color-error-hover: var(--color-errorHover, #ff2d1a);
-  --color-success: var(--color-success, #30d158);
-  --color-success-hover: var(--color-successHover, #28cd4f);
-  --color-overlay: var(--color-overlay, rgba(0, 0, 0, 0.5));
+  --color-black: var(--color-black-500, #000);
+  --color-white: var(--color-white-500, #fff);
 
   /* Theme Spacing */
   --spacing-xs: var(--spacing-xs, 0.25rem);

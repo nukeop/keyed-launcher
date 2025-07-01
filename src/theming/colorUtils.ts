@@ -1,8 +1,6 @@
-import { colord, extend } from 'colord';
-import lchPlugin from 'colord/plugins/lch';
+import { colord } from 'colord';
 
 const SHADES = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950] as const;
-extend([lchPlugin]);
 
 /**
  * Generate a complete Tailwind color palette (50-950) from a base color
@@ -20,25 +18,16 @@ export function generateColorPalette(
       palette[shade.toString()] = base.toHex();
     } else if (shade < 500) {
       // Lighter shades - increase lightness
-      const lightnessAdjustment = ((500 - shade) / 500) * 0.9; // Max 90% lighter
+      const lightnessAdjustment = ((500 - shade) / 500) * 0.7;
       palette[shade.toString()] = base.lighten(lightnessAdjustment).toHex();
     } else {
       // Darker shades - decrease lightness
-      const darknessAdjustment = ((shade - 500) / 450) * 0.7; // Max 70% darker
+      const darknessAdjustment = ((shade - 500) / 450) * 0.5;
       palette[shade.toString()] = base.darken(darknessAdjustment).toHex();
     }
   });
 
   return palette;
-}
-
-/**
- * Convert hex color to OKLCH for better Tailwind v4 compatibility
- */
-export function hexToOklch(hex: string): string {
-  const color = colord(hex);
-  const oklch = color.toLch();
-  return `oklch(${oklch.l.toFixed(3)} ${oklch.c.toFixed(3)} ${oklch.h?.toFixed(3) || 0})`;
 }
 
 /**
@@ -52,8 +41,10 @@ export function generateTailwindColorProperties(
   Object.entries(colors).forEach(([colorName, baseColor]) => {
     const palette = generateColorPalette(baseColor);
 
+    console.log(`🎨 Generated palette for ${colorName} (base: ${baseColor}):`);
     Object.entries(palette).forEach(([shade, hexColor]) => {
-      properties[`--color-${colorName}-${shade}`] = hexToOklch(hexColor);
+      console.log(`  ${colorName}-${shade}: ${hexColor}`);
+      properties[`--color-${colorName}-${shade}`] = hexColor;
     });
   });
 

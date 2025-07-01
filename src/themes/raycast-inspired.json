@@ -8,11 +8,16 @@
         "id": "raycast-inspired"
     },
     "colors": {
-        "slate": "#1e293b",
-        "blue": "#3b82f6",
-        "green": "#10b981",
-        "amber": "#f59e0b",
-        "red": "#ef4444"
+        "black": "#1C1C1E",
+        "white": "#FFFFFF",
+        "gray": "#8E8E93",
+        "zinc": "#71717A",
+        "slate": "#64748B",
+        "blue": "#007AFF",
+        "green": "#30D158",
+        "amber": "#FF9F0A",
+        "red": "#FF453A",
+        "yellow": "#FFD60A"
     },
     "spacing": {
         "xs": "0.25rem",

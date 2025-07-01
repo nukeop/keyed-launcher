@@ -1,6 +1,23 @@
 import { useState, useMemo } from 'react';
 import { LauncherEntry } from '../components/ResultsList';
 
+let showThemeDebugger = false;
+let forceUpdate: (() => void) | null = null;
+
+export const toggleThemeDebugger = () => {
+  showThemeDebugger = !showThemeDebugger;
+  if (forceUpdate) forceUpdate();
+};
+
+export const hideThemeDebugger = () => {
+  if (showThemeDebugger) {
+    showThemeDebugger = false;
+    if (forceUpdate) forceUpdate();
+  }
+};
+
+export const isThemeDebuggerVisible = () => showThemeDebugger;
+
 const mockResults: LauncherEntry[] = [
   {
     id: 'calculator',
@@ -45,6 +62,23 @@ const mockResults: LauncherEntry[] = [
     keywords: ['files', 'folders', 'browse'],
   },
   {
+    id: 'theme-debugger',
+    name: 'theme-debugger',
+    title: 'Theme Debugger',
+    subtitle: 'Toggle theme development tools',
+    description: 'Show/hide theme switcher and color palette debugger',
+    icon: '🎨',
+    mode: 'no-view',
+    category: 'Developer',
+    pluginId: 'core-dev',
+    action: () => {
+      console.log('Toggling theme debugger...');
+      toggleThemeDebugger();
+    },
+    shortcut: '⌘+⇧+T',
+    keywords: ['theme', 'debug', 'colors', 'palette', 'developer'],
+  },
+  {
     id: 'settings',
     name: 'system-preferences',
     title: 'System Preferences',
@@ -76,6 +110,9 @@ const mockResults: LauncherEntry[] = [
 
 export function useCommandPaletteResults(searchQuery: string) {
   const [isLoading, setIsLoading] = useState(false);
+  const [updateTrigger, setUpdateTrigger] = useState(0);
+
+  forceUpdate = () => setUpdateTrigger((prev) => prev + 1);
 
   const filteredResults = useMemo(() => {
     if (!searchQuery.trim()) {

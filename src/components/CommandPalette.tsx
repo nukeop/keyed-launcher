@@ -2,6 +2,10 @@ import { useState, useEffect } from 'react';
 import { SearchBar } from './SearchBar';
 import { ResultsList, LauncherEntry } from './ResultsList';
 import { ActionBar } from './ActionBar';
+import {
+  isThemeDebuggerVisible,
+  hideThemeDebugger,
+} from '../hooks/useCommandPaletteResults';
 
 interface CommandPaletteProps {
   searchQuery: string;
@@ -31,7 +35,9 @@ export function CommandPalette({
       switch (event.key) {
         case 'Escape':
           event.preventDefault();
-          if (searchQuery.length > 0) {
+          if (isThemeDebuggerVisible()) {
+            hideThemeDebugger();
+          } else if (searchQuery.length > 0) {
             onSearchChange('');
           } else {
             onClose();
