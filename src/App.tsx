@@ -5,6 +5,7 @@ import { CommandPalette } from './components/CommandPalette';
 import { AppContainer } from './components/AppContainer';
 import { LauncherTransition } from './components/LauncherTransition';
 import { userPerformanceMonitoringStartup } from './hooks/usePerformanceMonitoringStartup';
+import { ThemeProvider } from './theming';
 
 function App() {
   const { searchQuery, setSearchQuery, isVisible, hideWindow } =
@@ -18,18 +19,20 @@ function App() {
   };
 
   return (
-    <LauncherTransition isVisible={isVisible}>
-      <AppContainer>
-        <CommandPalette
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
-          results={results}
-          onResultExecute={executeResult}
-          onClose={handleClose}
-          emptyMessage="Start typing to search applications..."
-        />
-      </AppContainer>
-    </LauncherTransition>
+    <ThemeProvider>
+      <LauncherTransition isVisible={isVisible}>
+        <AppContainer>
+          <CommandPalette
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+            results={results}
+            onResultExecute={executeResult}
+            onClose={handleClose}
+            emptyMessage="Start typing to search applications..."
+          />
+        </AppContainer>
+      </LauncherTransition>
+    </ThemeProvider>
   );
 }
 
