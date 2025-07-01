@@ -14,12 +14,9 @@ pub async fn start_theme_watcher(app: AppHandle) -> Result<(), String> {
         .map_err(|e| format!("Failed to get app data dir: {}", e))?
         .join("themes");
 
-    println!("Theme watcher: Watching directory: {:?}", themes_dir);
-
     if !themes_dir.exists() {
         std::fs::create_dir_all(&themes_dir)
             .map_err(|e| format!("Failed to create themes directory: {}", e))?;
-        println!("Theme watcher: Created themes directory");
     }
 
     tokio::spawn(async move {
@@ -52,15 +49,10 @@ async fn watch_theme_files(app: AppHandle, themes_dir: &std::path::Path) -> Resu
         watcher
             .watch(themes_dir, RecursiveMode::NonRecursive)
             .map_err(|e| format!("Failed to watch directory {:?}: {}", themes_dir, e))?;
-        println!(
-            "Theme watcher: Successfully set up file watcher for: {:?}",
-            themes_dir
-        );
-    } else {
-        println!("Theme watcher: Directory does not exist: {:?}", themes_dir);
     }
 
     thread::spawn(move || {
+        let _watcher = watcher;
         while let Ok(event) = rx.recv() {
             println!("Theme watcher: Received file event: {:?}", event);
             if should_reload_theme(&event) {
@@ -117,17 +109,10 @@ pub async fn load_user_themes(app: AppHandle) -> Result<Vec<serde_json::Value>, 
         let entry = entry.map_err(|e| format!("Failed to read directory entry: {}", e))?;
         let path = entry.path();
 
-        println!("Found file: {:?}", path);
-
         if path.extension().and_then(|ext| ext.to_str()) == Some("json") {
-            println!("Processing theme file: {:?}", path);
             match fs::read_to_string(&path) {
                 Ok(content) => match serde_json::from_str::<serde_json::Value>(&content) {
                     Ok(theme) => {
-                        println!(
-                            "Successfully loaded theme: {:?}",
-                            theme.get("meta").and_then(|m| m.get("name"))
-                        );
                         themes.push(theme);
                     }
                     Err(e) => eprintln!("Failed to parse theme file {:?}: {}", path, e),
@@ -137,6 +122,5 @@ pub async fn load_user_themes(app: AppHandle) -> Result<Vec<serde_json::Value>, 
         }
     }
 
-    println!("Loaded {} user themes total", themes.len());
     Ok(themes)
 }
