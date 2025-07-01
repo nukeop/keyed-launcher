@@ -110,7 +110,7 @@ const mockResults: LauncherEntry[] = [
 
 export function useCommandPaletteResults(searchQuery: string) {
   const [isLoading, setIsLoading] = useState(false);
-  const [updateTrigger, setUpdateTrigger] = useState(0);
+  const [_updateTrigger, setUpdateTrigger] = useState(0);
 
   forceUpdate = () => setUpdateTrigger((prev) => prev + 1);
 

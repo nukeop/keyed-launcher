@@ -35,15 +35,6 @@ Transform the dancing skeleton into a functional command palette launcher with p
   - [x] Escape to clear search or close
   - [x] Page up/down for long lists
 
-#### 1.3 Visual Feedback
-
-- **Goal**: Clear visual feedback for keyboard interactions
-- **Tasks**:
-  - [~] Implement search result fade-in animations (postponed)
-  - [~] Add keyboard navigation highlight transitions (postponed)
-  - [~] Create smooth scrolling for long result lists (postponed)
-  - [~] Add micro-interactions for selection changes (postponed)
-
 ### 2. Theme System Architecture
 
 #### 2.1 Theme Infrastructure
