@@ -1,3 +1,4 @@
+mod plugins;
 mod shortcuts;
 mod theme_watcher;
 mod tray;
@@ -30,6 +31,8 @@ pub fn run() {
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
+            plugins::ensure_plugin_directories,
+            plugins::get_plugin_directories,
             theme_watcher::load_user_themes,
             theme_watcher::start_theme_watcher,
             window::hide_window,
