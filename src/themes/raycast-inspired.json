@@ -1,0 +1,42 @@
+{
+    "meta": {
+        "name": "Raycast Inspired",
+        "author": "keyed-launcher",
+        "version": "1.0.0",
+        "description": "Clean, modern theme inspired by Raycast",
+        "type": "dark",
+        "id": "raycast-inspired"
+    },
+    "colors": {
+        "black": "#1C1C1E",
+        "white": "#FFFFFF",
+        "gray": "#8E8E93",
+        "zinc": "#71717A",
+        "slate": "#64748B",
+        "blue": "#007AFF",
+        "green": "#30D158",
+        "amber": "#FF9F0A",
+        "red": "#FF453A",
+        "yellow": "#FFD60A"
+    },
+    "spacing": {
+        "xs": "0.25rem",
+        "sm": "0.5rem",
+        "md": "1rem",
+        "lg": "1.5rem",
+        "xl": "2rem",
+        "2xl": "3rem"
+    },
+    "borderRadius": {
+        "sm": "0.25rem",
+        "md": "0.5rem",
+        "lg": "0.75rem",
+        "xl": "1rem"
+    },
+    "shadows": {
+        "sm": "0 1px 2px rgba(0, 0, 0, 0.1)",
+        "md": "0 4px 8px rgba(0, 0, 0, 0.15)",
+        "lg": "0 8px 16px rgba(0, 0, 0, 0.2)",
+        "xl": "0 16px 32px rgba(0, 0, 0, 0.25)"
+    }
+}

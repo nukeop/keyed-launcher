@@ -1,0 +1,42 @@
+{
+    "meta": {
+        "name": "Nord",
+        "author": "keyed-launcher",
+        "version": "1.0.0",
+        "description": "Arctic-inspired clean and elegant theme",
+        "type": "dark",
+        "id": "nord"
+    },
+    "colors": {
+        "black": "#2E3440",
+        "white": "#ECEFF4",
+        "gray": "#4C566A",
+        "zinc": "#5E81AC",
+        "slate": "#434C5E",
+        "blue": "#5E81AC",
+        "green": "#A3BE8C",
+        "amber": "#EBCB8B",
+        "red": "#BF616A",
+        "yellow": "#EBCB8B"
+    },
+    "spacing": {
+        "xs": "0.25rem",
+        "sm": "0.5rem",
+        "md": "1rem",
+        "lg": "1.5rem",
+        "xl": "2rem",
+        "2xl": "3rem"
+    },
+    "borderRadius": {
+        "sm": "0.25rem",
+        "md": "0.5rem",
+        "lg": "0.75rem",
+        "xl": "1rem"
+    },
+    "shadows": {
+        "sm": "0 1px 2px rgba(46, 52, 64, 0.1)",
+        "md": "0 4px 8px rgba(46, 52, 64, 0.15)",
+        "lg": "0 8px 16px rgba(46, 52, 64, 0.2)",
+        "xl": "0 16px 32px rgba(46, 52, 64, 0.25)"
+    }
+}

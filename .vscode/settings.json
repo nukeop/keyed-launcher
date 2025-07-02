@@ -1,0 +1,8 @@
+{
+    "rust-analyzer.linkedProjects": ["./src-tauri/Cargo.toml"],
+    "rust-analyzer.check.command": "clippy",
+    "rust-analyzer.check.allTargets": true,
+    "rust-analyzer.check.extraArgs": ["--", "-W", "clippy::all"],
+    "rust-analyzer.cargo.buildScripts.enable": true,
+    "rust-analyzer.procMacro.enable": true
+}

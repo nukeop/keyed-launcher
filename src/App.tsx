@@ -5,12 +5,18 @@ import { CommandPalette } from './components/CommandPalette';
 import { AppContainer } from './components/AppContainer';
 import { LauncherTransition } from './components/LauncherTransition';
 import { userPerformanceMonitoringStartup } from './hooks/usePerformanceMonitoringStartup';
+import { ThemeProvider } from './theming';
+import { ThemeDebugger } from './components/ThemeDebugger';
+import { ColorPaletteDebugger } from './components/ColorPaletteDebugger';
+import { isThemeDebuggerVisible } from './hooks/useCommandPaletteResults';
 
 function App() {
   const { searchQuery, setSearchQuery, isVisible, hideWindow } =
     useLauncherStore();
   const { trackWindowHide } = usePerformanceTracking();
   const { results, executeResult } = useCommandPaletteResults(searchQuery);
+  const showDebugger = isThemeDebuggerVisible();
+
   userPerformanceMonitoringStartup();
 
   const handleClose = async () => {
@@ -18,18 +24,26 @@ function App() {
   };
 
   return (
-    <LauncherTransition isVisible={isVisible}>
-      <AppContainer>
-        <CommandPalette
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
-          results={results}
-          onResultExecute={executeResult}
-          onClose={handleClose}
-          emptyMessage="Start typing to search applications..."
-        />
-      </AppContainer>
-    </LauncherTransition>
+    <ThemeProvider>
+      {showDebugger && (
+        <div className="fixed top-4 right-4 z-50 space-y-4">
+          <ThemeDebugger />
+          <ColorPaletteDebugger />
+        </div>
+      )}
+      <LauncherTransition isVisible={isVisible}>
+        <AppContainer>
+          <CommandPalette
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+            results={results}
+            onResultExecute={executeResult}
+            onClose={handleClose}
+            emptyMessage="Start typing to search applications..."
+          />
+        </AppContainer>
+      </LauncherTransition>
+    </ThemeProvider>
   );
 }
 

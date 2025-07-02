@@ -35,33 +35,24 @@ Transform the dancing skeleton into a functional command palette launcher with p
   - [x] Escape to clear search or close
   - [x] Page up/down for long lists
 
-#### 1.3 Visual Feedback
-
-- **Goal**: Clear visual feedback for keyboard interactions
-- **Tasks**:
-  - [~] Implement search result fade-in animations (postponed)
-  - [~] Add keyboard navigation highlight transitions (postponed)
-  - [~] Create smooth scrolling for long result lists (postponed)
-  - [~] Add micro-interactions for selection changes (postponed)
-
 ### 2. Theme System Architecture
 
 #### 2.1 Theme Infrastructure
 
 - **Goal**: Flexible theming system with real-time editing capabilities. Integrate with Tailwind.
 - **Tasks**:
-  - [ ] Design comprehensive theme configuration schema
-  - [ ] Create theme provider context for React components
-  - [ ] Build theme hot-reloading system
-  - [ ] Add theme persistence (localStorage/settings file)
-  - [ ] Support for light/dark mode variants
+  - [x] Design comprehensive theme configuration schema
+  - [x] Create theme provider context for React components
+  - [x] Build theme hot-reloading system
+  - [x] Add theme persistence (localStorage/settings file)
 
 #### 2.2 Real-time Theme Development
 
 - **Goal**: Live theme editing experience for developers and users
 - **Tasks**:
-  - [ ] Theme file watcher for automatic reloading
-  - [ ] Live preview as theme files change
+  - [x] Theme file watcher for automatic reloading
+  - [x] Live preview as theme files change
+  - [x] Theme selection persistence during hot-reload
   - [ ] Theme validation with helpful error messages
   - [ ] Theme editor interface with instant feedback
   - [ ] Export/import theme functionality
@@ -70,12 +61,13 @@ Transform the dancing skeleton into a functional command palette launcher with p
 
 - **Goal**: Ship with beautiful, diverse themes out of the box
 - **Tasks**:
-  - [ ] **Raycast Theme**: Match Raycast's design language
-  - [ ] **Spotlight Theme**: macOS Spotlight-inspired appearance
-  - [ ] **Terminal Theme**: High contrast for developers
-  - [ ] **Minimal Theme**: Clean, distraction-free design
-  - [ ] **Catppuccin Theme**: Popular color scheme
-  - [ ] **Nord Theme**: Arctic-inspired theme
+  - [x] **Raycast Theme**: Match Raycast's design language
+  - [x] **Dracula Theme**: Popular dark theme with vibrant colors
+  - [x] **Spotlight Theme**: macOS Spotlight-inspired appearance
+  - [x] **Terminal Theme**: High contrast for developers
+  - [x] **Minimal Theme**: Clean, distraction-free design
+  - [x] **Catppuccin Theme**: Popular color scheme (Mocha variant)
+  - [x] **Nord Theme**: Arctic-inspired theme
 
 *Note: Detailed theme system design will be covered in a separate document*
 
