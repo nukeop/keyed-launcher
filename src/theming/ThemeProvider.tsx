@@ -27,7 +27,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
     draculaTheme as Theme,
   ]);
 
-  const loadThemesFromDisk = async () => {
+  const loadThemesFromDisk = async (): Promise<Theme[]> => {
     try {
       const bundledThemes = [raycastTheme as Theme, draculaTheme as Theme];
 
@@ -45,17 +45,21 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
       );
 
       const allThemes = [...bundledThemes, ...userThemes];
-      setAvailableThemes(allThemes);
+      return allThemes;
     } catch (error) {
       console.error('Failed to load themes:', error);
       const bundledThemes = [raycastTheme as Theme, draculaTheme as Theme];
-      setAvailableThemes(bundledThemes);
+      return bundledThemes;
     }
   };
 
-  const reloadCurrentTheme = () => {
-    const updatedTheme = availableThemes.find(
-      (t) => t.meta.id === currentTheme.meta.id,
+  const reloadCurrentTheme = (freshThemes?: Theme[]) => {
+    const themesToSearch = freshThemes || availableThemes;
+    const savedThemeId = localStorage.getItem('keyed-launcher-theme');
+    const themeIdToFind = savedThemeId || currentTheme.meta.id;
+
+    const updatedTheme = themesToSearch.find(
+      (t) => t.meta.id === themeIdToFind,
     );
     if (updatedTheme) {
       setCurrentTheme(updatedTheme);
@@ -69,6 +73,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
       setCurrentTheme(theme);
       applyTheme(theme);
       localStorage.setItem('keyed-launcher-theme', themeId);
+    } else {
     }
   };
 
@@ -104,11 +109,18 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
 
   useEffect(() => {
     const initializeThemes = async () => {
-      await loadThemesFromDisk();
+      const themes = await loadThemesFromDisk();
+      setAvailableThemes(themes);
 
       const savedThemeId = localStorage.getItem('keyed-launcher-theme');
       if (savedThemeId) {
-        switchTheme(savedThemeId);
+        const savedTheme = themes.find((t) => t.meta.id === savedThemeId);
+        if (savedTheme) {
+          setCurrentTheme(savedTheme);
+          applyTheme(savedTheme);
+        } else {
+          applyTheme(currentTheme);
+        }
       } else {
         applyTheme(currentTheme);
       }
@@ -117,10 +129,9 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
         await invoke('start_theme_watcher');
 
         const unlisten = await listen('theme-file-changed', () => {
-          console.log('Received theme-file-changed event, reloading themes...');
-          loadThemesFromDisk().then(() => {
-            console.log('Themes reloaded, applying current theme...');
-            reloadCurrentTheme();
+          loadThemesFromDisk().then((freshThemes) => {
+            setAvailableThemes(freshThemes);
+            reloadCurrentTheme(freshThemes);
           });
         });
 

@@ -34,7 +34,6 @@ async fn watch_theme_files(app: AppHandle, themes_dir: &std::path::Path) -> Resu
     let mut watcher = RecommendedWatcher::new(
         move |res: Result<Event, notify::Error>| match res {
             Ok(event) => {
-                println!("File watcher: Raw event received: {:?}", event);
                 let _ = tx.send(event);
             }
             Err(e) => {
@@ -54,15 +53,11 @@ async fn watch_theme_files(app: AppHandle, themes_dir: &std::path::Path) -> Resu
     thread::spawn(move || {
         let _watcher = watcher;
         while let Ok(event) = rx.recv() {
-            println!("Theme watcher: Received file event: {:?}", event);
             if should_reload_theme(&event) {
-                println!("Theme watcher: Theme file changed, emitting reload event");
                 thread::sleep(Duration::from_millis(100));
 
                 if let Err(e) = app.emit("theme-file-changed", ()) {
                     eprintln!("Failed to emit theme-file-changed event: {}", e);
-                } else {
-                    println!("Theme watcher: Successfully emitted theme-file-changed event");
                 }
             }
         }
@@ -91,10 +86,7 @@ pub async fn load_user_themes(app: AppHandle) -> Result<Vec<serde_json::Value>, 
         .map_err(|e| format!("Failed to get app data dir: {}", e))?
         .join("themes");
 
-    println!("Loading user themes from: {:?}", themes_dir);
-
     if !themes_dir.exists() {
-        println!("Themes directory doesn't exist, creating it");
         std::fs::create_dir_all(&themes_dir)
             .map_err(|e| format!("Failed to create themes directory: {}", e))?;
         return Ok(vec![]);

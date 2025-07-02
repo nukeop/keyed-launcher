@@ -41,9 +41,7 @@ export function generateTailwindColorProperties(
   Object.entries(colors).forEach(([colorName, baseColor]) => {
     const palette = generateColorPalette(baseColor);
 
-    console.log(`🎨 Generated palette for ${colorName} (base: ${baseColor}):`);
     Object.entries(palette).forEach(([shade, hexColor]) => {
-      console.log(`  ${colorName}-${shade}: ${hexColor}`);
       properties[`--color-${colorName}-${shade}`] = hexColor;
     });
   });
