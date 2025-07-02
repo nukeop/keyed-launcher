@@ -1,6 +1,20 @@
-# Plugin System Design
+# Plugin System ### Command Types
 
-## Core Architecture (Minimal Viable Plugin System)
+Commands are categorized by their execution behavior:
+
+### `no-view`
+Direct actions, no additional UI. Examples: launch app, open URL, copy to clipboard.
+- Execute immediately when selected
+- Optional HUD notification for feedback
+- Return to command palette after execution
+- Returns `Promise<void>`
+
+### `view`  
+Simple commands with basic React UI. Examples: file browser, simple forms.
+- Render basic React components using minimal component set
+- Single-view only
+- Uses built-in layout components
+- Returns `Promise<React.ReactElement>` Architecture (Minimal Viable Plugin System)
 
 Plugins provide commands that contribute to the launcher experience:
 ```
@@ -93,7 +107,7 @@ interface PluginInstallMeta {
 }
 
 interface CommandManifest {
-  name: string;            // Unique command identifier
+  name: string;            // Unique command identifier within plugin
   title: string;           // Display name
   subtitle?: string;       // Brief description
   description: string;     // Detailed description
@@ -118,20 +132,30 @@ interface PluginPermissions {
 ### Runtime Interfaces
 ```typescript
 interface LauncherEntry {
-  id: string;              // Unique ID (plugin.command)
+  id: string;              // Unique ID (pluginId.commandName)
   commandName: string;     // Command identifier
   title: string;           // Display name
   subtitle?: string;       // Brief description
   description: string;     // Detailed description
   mode: 'view' | 'no-view';
   category?: string;       // Domain category
-  pluginId: string;        // Plugin UUID
+  pluginId: string;        // Plugin ID
   keywords?: string[];     // Search terms
   icon?: string;           // Icon identifier
   shortcut?: string;       // Display shortcut hint
   
   // Execution context
-  execute: (context: CommandContext) => Promise<void | React.ReactElement>;
+  execute: NoViewCommand | ViewCommand;
+}
+
+interface NoViewCommand {
+  mode: 'no-view';
+  execute: (context: CommandContext) => Promise<void>;
+}
+
+interface ViewCommand {
+  mode: 'view';
+  execute: (context: CommandContext) => Promise<React.ReactElement>;
 }
 
 interface CommandContext {
@@ -159,6 +183,21 @@ interface Plugin {
 ```
 
 ## Plugin Loading & Management
+
+### JavaScript Execution Environment
+Plugins run in the same WebView context as the main application (similar to Raycast):
+- Plugins are ES modules loaded into the main JavaScript context
+- Direct React component integration for `view` commands  
+- Shared access to launcher APIs and utilities
+- Plugin crashes are contained by disabling the failing plugin
+- Plugins can only render their own views - built-in UI and other plugins are unreachable
+
+### Command Namespacing
+Commands are automatically namespaced to prevent conflicts:
+- Full command ID format: `pluginId.commandName`
+- Example: `com.keyed.app-launcher.search-apps`
+- UI displays plugin context: "Search Apps (App Launcher)"
+- Last loaded plugin wins in case of identical full IDs
 
 ### Asynchronous Plugin Loading
 Plugins are loaded dynamically and asynchronously as they are discovered:
@@ -214,9 +253,7 @@ interface PluginDiscovery {
 ```
 ~/.config/keyed-launcher/plugins/
 ├── bundled/                    # Built-in plugins
-│   ├── app-launcher/
-│   ├── calculator/
-│   └── system-commands/
+│   └── app-launcher/          # Application Launcher (MVP)
 ├── store/                      # Store-installed plugins
 │   ├── com.keyed.github/     # Namespaced plugin IDs
 │   └── com.community.weather/
@@ -228,8 +265,18 @@ interface PluginDiscovery {
 ```
 
 ### Plugin Package Format
-For store distribution, plugins use a standardized package format:
+Supports both directory-based and packaged plugins:
 
+**Directory Format** (Development):
+```
+my-plugin/
+├── manifest.json              # Plugin manifest
+├── index.js                   # Main entry point
+├── commands/                  # Command implementations
+└── assets/                    # Icons, images, etc.
+```
+
+**Package Format** (Distribution):
 ```
 plugin-package.tar.gz           # Standard compressed archive
 ├── manifest.json              # Plugin manifest
@@ -240,13 +287,11 @@ plugin-package.tar.gz           # Standard compressed archive
 └── SIGNATURE                  # Digital signature (store only)
 ```
 
-**Format Choice**: Using standard `.tar.gz` format for simplicity and universal tool support. Alternative: `.zip` for easier Windows compatibility.
-
 ### Real-time Plugin Management
-- **File Watching**: Monitor plugin directories for changes
-- **Hot Reloading**: Automatically reload plugins when files change
+- **File Watching**: Monitor plugin directories for new tarballs (extends existing theme watcher)
+- **Hot Reloading**: Automatically reload plugins when files change (development)
 - **Lazy Loading**: Load plugins only when first accessed
-- **Error Recovery**: Handle plugin loading failures gracefully
+- **Error Recovery**: Handle plugin loading failures gracefully, disable failing plugins
 - **Live Updates**: Update search index immediately when plugins change
 
 ## UI Component System
@@ -267,9 +312,7 @@ Action.Close              // Close/return to palette
 ## Plugin Examples
 
 ### Bundled Core Plugins
-- **Application Launcher**: System app discovery and launching
-- **Calculator**: Basic mathematical expressions
-- **System Commands**: Sleep, restart, logout
+- **Application Launcher**: System app discovery and launching (MVP focus)
 
 ### Plugin Architecture Validation
 Build core launcher features as plugins to ensure the plugin system is:
