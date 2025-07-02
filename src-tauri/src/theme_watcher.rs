@@ -11,17 +11,17 @@ pub async fn start_theme_watcher(app: AppHandle) -> Result<(), String> {
     let themes_dir = app
         .path()
         .app_data_dir()
-        .map_err(|e| format!("Failed to get app data dir: {}", e))?
+        .map_err(|e| format!("Failed to get app data dir: {e}"))?
         .join("themes");
 
     if !themes_dir.exists() {
         std::fs::create_dir_all(&themes_dir)
-            .map_err(|e| format!("Failed to create themes directory: {}", e))?;
+            .map_err(|e| format!("Failed to create themes directory: {e}"))?;
     }
 
     tokio::spawn(async move {
         if let Err(e) = watch_theme_files(app, &themes_dir).await {
-            eprintln!("Theme watcher error: {}", e);
+            eprintln!("Theme watcher error: {e}");
         }
     });
 
@@ -37,17 +37,17 @@ async fn watch_theme_files(app: AppHandle, themes_dir: &std::path::Path) -> Resu
                 let _ = tx.send(event);
             }
             Err(e) => {
-                eprintln!("File watcher: Error received: {:?}", e);
+                eprintln!("File watcher: Error received: {e:?}");
             }
         },
         Config::default(),
     )
-    .map_err(|e| format!("Failed to create watcher: {}", e))?;
+    .map_err(|e| format!("Failed to create watcher: {e}"))?;
 
     if themes_dir.exists() {
         watcher
             .watch(themes_dir, RecursiveMode::NonRecursive)
-            .map_err(|e| format!("Failed to watch directory {:?}: {}", themes_dir, e))?;
+            .map_err(|e| format!("Failed to watch directory {themes_dir:?}: {e}"))?;
     }
 
     thread::spawn(move || {
@@ -57,7 +57,7 @@ async fn watch_theme_files(app: AppHandle, themes_dir: &std::path::Path) -> Resu
                 thread::sleep(Duration::from_millis(100));
 
                 if let Err(e) = app.emit("theme-file-changed", ()) {
-                    eprintln!("Failed to emit theme-file-changed event: {}", e);
+                    eprintln!("Failed to emit theme-file-changed event: {e}");
                 }
             }
         }
@@ -83,22 +83,22 @@ pub async fn load_user_themes(app: AppHandle) -> Result<Vec<serde_json::Value>, 
     let themes_dir = app
         .path()
         .app_data_dir()
-        .map_err(|e| format!("Failed to get app data dir: {}", e))?
+        .map_err(|e| format!("Failed to get app data dir: {e}"))?
         .join("themes");
 
     if !themes_dir.exists() {
         std::fs::create_dir_all(&themes_dir)
-            .map_err(|e| format!("Failed to create themes directory: {}", e))?;
+            .map_err(|e| format!("Failed to create themes directory: {e}"))?;
         return Ok(vec![]);
     }
 
     let mut themes = Vec::new();
 
     let entries =
-        fs::read_dir(&themes_dir).map_err(|e| format!("Failed to read themes directory: {}", e))?;
+        fs::read_dir(&themes_dir).map_err(|e| format!("Failed to read themes directory: {e}"))?;
 
     for entry in entries {
-        let entry = entry.map_err(|e| format!("Failed to read directory entry: {}", e))?;
+        let entry = entry.map_err(|e| format!("Failed to read directory entry: {e}"))?;
         let path = entry.path();
 
         if path.extension().and_then(|ext| ext.to_str()) == Some("json") {
@@ -107,9 +107,9 @@ pub async fn load_user_themes(app: AppHandle) -> Result<Vec<serde_json::Value>, 
                     Ok(theme) => {
                         themes.push(theme);
                     }
-                    Err(e) => eprintln!("Failed to parse theme file {:?}: {}", path, e),
+                    Err(e) => eprintln!("Failed to parse theme file {path:?}: {e}"),
                 },
-                Err(e) => eprintln!("Failed to read theme file {:?}: {}", path, e),
+                Err(e) => eprintln!("Failed to read theme file {path:?}: {e}"),
             }
         }
     }
