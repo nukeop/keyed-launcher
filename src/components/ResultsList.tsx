@@ -2,20 +2,25 @@ import { FC } from 'react';
 import { ResultItem } from './ResultItem';
 import { CategoryHeader } from './CategoryHeader';
 import { groupEntriesByCategory } from '../utils/categoryUtils';
+import { NoViewCommand, ViewCommand } from '../plugins/api/types';
 
 export interface LauncherEntry {
-  id: string;
-  name: string;
-  title: string;
-  subtitle?: string;
-  description?: string;
-  icon?: string;
-  keywords?: string[];
-  mode: 'view' | 'no-view' | 'background';
-  category?: string;
-  pluginId: string;
-  action: () => void | Promise<void>;
-  shortcut?: string;
+  id: string; // Unique ID (pluginId.commandName)
+  commandName: string; // Command identifier
+  title: string; // Display name
+  subtitle?: string; // Brief description
+  description: string; // Detailed description
+  mode: 'view' | 'no-view';
+  category?: string; // Domain category
+  pluginId: string; // Plugin ID
+  execute: NoViewCommand | ViewCommand;
+
+  // Legacy compatibility fields (will be removed in future phases)
+  name?: string; // Deprecated: use title
+  icon?: string; // TODO: Move to plugin manifest
+  keywords?: string[]; // TODO: Move to plugin manifest
+  action?: () => void | Promise<void>; // Deprecated: use execute
+  shortcut?: string; // TODO: Move to plugin manifest
 }
 
 // Keep Result as alias for backwards compatibility during transition
