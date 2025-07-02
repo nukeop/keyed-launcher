@@ -1,0 +1,42 @@
+{
+    "meta": {
+        "name": "Terminal",
+        "author": "keyed-launcher",
+        "version": "1.0.0",
+        "description": "High contrast terminal-inspired theme for developers",
+        "type": "dark",
+        "id": "terminal"
+    },
+    "colors": {
+        "black": "#000000",
+        "white": "#FFFFFF",
+        "gray": "#808080",
+        "zinc": "#A1A1AA",
+        "slate": "#94A3B8",
+        "blue": "#00FFFF",
+        "green": "#00FF00",
+        "amber": "#FFFF00",
+        "red": "#FF0000",
+        "yellow": "#FFFF00"
+    },
+    "spacing": {
+        "xs": "0.25rem",
+        "sm": "0.5rem",
+        "md": "1rem",
+        "lg": "1.5rem",
+        "xl": "2rem",
+        "2xl": "3rem"
+    },
+    "borderRadius": {
+        "sm": "0rem",
+        "md": "0rem",
+        "lg": "0rem",
+        "xl": "0rem"
+    },
+    "shadows": {
+        "sm": "0 0 0 rgba(0, 0, 0, 0)",
+        "md": "0 0 0 rgba(0, 0, 0, 0)",
+        "lg": "0 0 0 rgba(0, 0, 0, 0)",
+        "xl": "0 0 0 rgba(0, 0, 0, 0)"
+    }
+}

@@ -11,6 +11,11 @@ import { Theme, ThemeContextType } from './types';
 import { generateTailwindColorProperties } from './colorUtils';
 import raycastTheme from '../themes/raycast-inspired.json';
 import draculaTheme from '../themes/dracula.json';
+import spotlightTheme from '../themes/spotlight.json';
+import terminalTheme from '../themes/terminal.json';
+import minimalTheme from '../themes/minimal.json';
+import catppuccinTheme from '../themes/catppuccin-mocha.json';
+import nordTheme from '../themes/nord.json';
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
@@ -25,11 +30,24 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   const [availableThemes, setAvailableThemes] = useState<Theme[]>([
     raycastTheme as Theme,
     draculaTheme as Theme,
+    spotlightTheme as Theme,
+    terminalTheme as Theme,
+    minimalTheme as Theme,
+    catppuccinTheme as Theme,
+    nordTheme as Theme,
   ]);
 
   const loadThemesFromDisk = async (): Promise<Theme[]> => {
     try {
-      const bundledThemes = [raycastTheme as Theme, draculaTheme as Theme];
+      const bundledThemes = [
+        raycastTheme as Theme,
+        draculaTheme as Theme,
+        spotlightTheme as Theme,
+        terminalTheme as Theme,
+        minimalTheme as Theme,
+        catppuccinTheme as Theme,
+        nordTheme as Theme,
+      ];
 
       const userThemesData = await invoke<unknown[]>('load_user_themes');
 

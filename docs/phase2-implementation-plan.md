@@ -52,6 +52,7 @@ Transform the dancing skeleton into a functional command palette launcher with p
 - **Tasks**:
   - [x] Theme file watcher for automatic reloading
   - [x] Live preview as theme files change
+  - [x] Theme selection persistence during hot-reload
   - [ ] Theme validation with helpful error messages
   - [ ] Theme editor interface with instant feedback
   - [ ] Export/import theme functionality
@@ -62,11 +63,11 @@ Transform the dancing skeleton into a functional command palette launcher with p
 - **Tasks**:
   - [x] **Raycast Theme**: Match Raycast's design language
   - [x] **Dracula Theme**: Popular dark theme with vibrant colors
-  - [ ] **Spotlight Theme**: macOS Spotlight-inspired appearance
-  - [ ] **Terminal Theme**: High contrast for developers
-  - [ ] **Minimal Theme**: Clean, distraction-free design
-  - [ ] **Catppuccin Theme**: Popular color scheme
-  - [ ] **Nord Theme**: Arctic-inspired theme
+  - [x] **Spotlight Theme**: macOS Spotlight-inspired appearance
+  - [x] **Terminal Theme**: High contrast for developers
+  - [x] **Minimal Theme**: Clean, distraction-free design
+  - [x] **Catppuccin Theme**: Popular color scheme (Mocha variant)
+  - [x] **Nord Theme**: Arctic-inspired theme
 
 *Note: Detailed theme system design will be covered in a separate document*
 

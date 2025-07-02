@@ -1,0 +1,42 @@
+{
+    "meta": {
+        "name": "Spotlight",
+        "author": "keyed-launcher",
+        "version": "1.0.0",
+        "description": "Clean, minimal theme inspired by macOS Spotlight",
+        "type": "light",
+        "id": "spotlight"
+    },
+    "colors": {
+        "black": "#1D1D1F",
+        "white": "#FFFFFF",
+        "gray": "#86868B",
+        "zinc": "#6E6E73",
+        "slate": "#8E8E93",
+        "blue": "#007AFF",
+        "green": "#30D158",
+        "amber": "#FF9F0A",
+        "red": "#FF453F",
+        "yellow": "#FFD60A"
+    },
+    "spacing": {
+        "xs": "0.25rem",
+        "sm": "0.5rem",
+        "md": "1rem",
+        "lg": "1.5rem",
+        "xl": "2rem",
+        "2xl": "3rem"
+    },
+    "borderRadius": {
+        "sm": "0.25rem",
+        "md": "0.5rem",
+        "lg": "0.75rem",
+        "xl": "1rem"
+    },
+    "shadows": {
+        "sm": "0 1px 2px rgba(0, 0, 0, 0.06)",
+        "md": "0 4px 6px rgba(0, 0, 0, 0.1)",
+        "lg": "0 10px 15px rgba(0, 0, 0, 0.1)",
+        "xl": "0 20px 25px rgba(0, 0, 0, 0.1)"
+    }
+}
