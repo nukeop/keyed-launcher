@@ -7,7 +7,7 @@ import { LauncherEntry } from '../ResultsList';
 const mockResults: LauncherEntry[] = [
   {
     id: '1',
-    name: 'calculator',
+    commandName: 'com.keyed.calculator',
     title: 'Calculator',
     subtitle: 'System calculator',
     description: 'Built-in calculator app',
@@ -15,12 +15,15 @@ const mockResults: LauncherEntry[] = [
     mode: 'no-view',
     category: 'Applications',
     pluginId: 'test-plugin',
-    action: vi.fn(),
     shortcut: '⌘+C',
+    execute: {
+      mode: 'no-view',
+      execute: vi.fn(),
+    },
   },
   {
     id: '2',
-    name: 'terminal',
+    commandName: 'com.keyed.terminal',
     title: 'Terminal',
     subtitle: 'Command line interface',
     description: 'Terminal application',
@@ -28,12 +31,15 @@ const mockResults: LauncherEntry[] = [
     mode: 'no-view',
     category: 'Applications',
     pluginId: 'test-plugin',
-    action: vi.fn(),
+    execute: {
+      mode: 'no-view',
+      execute: vi.fn(),
+    },
     shortcut: '⌘+T',
   },
   {
     id: '3',
-    name: 'finder',
+    commandName: 'com.keyed.finder',
     title: 'Finder',
     subtitle: 'File manager',
     description: 'File browser',
@@ -41,7 +47,10 @@ const mockResults: LauncherEntry[] = [
     mode: 'no-view',
     category: 'Applications',
     pluginId: 'test-plugin',
-    action: vi.fn(),
+    execute: {
+      mode: 'no-view',
+      execute: vi.fn(),
+    },
   },
 ];
 
@@ -90,33 +99,42 @@ describe('CommandPalette Integration', () => {
     const mixedResults: LauncherEntry[] = [
       {
         id: '1',
-        name: 'calculator',
         title: 'Calculator',
         description: 'Calculator app',
         mode: 'no-view',
         category: 'Applications',
         pluginId: 'test-plugin',
-        action: vi.fn(),
+        commandName: 'com.keyed.calculator',
+        execute: {
+          mode: 'no-view',
+          execute: vi.fn(),
+        },
       },
       {
         id: '2',
-        name: 'settings',
         title: 'Settings',
         description: 'System settings',
         mode: 'no-view',
         category: 'System',
         pluginId: 'test-plugin',
-        action: vi.fn(),
+        commandName: 'com.keyed.settings',
+        execute: {
+          mode: 'no-view',
+          execute: vi.fn(),
+        },
       },
       {
         id: '3',
-        name: 'terminal',
         title: 'Terminal',
         description: 'Terminal app',
         mode: 'no-view',
         category: 'Applications',
         pluginId: 'test-plugin',
-        action: vi.fn(),
+        commandName: 'com.keyed.terminal',
+        execute: {
+          mode: 'no-view',
+          execute: vi.fn(),
+        },
       },
     ];
 
@@ -130,12 +148,15 @@ describe('CommandPalette Integration', () => {
     const resultsWithoutCategory: LauncherEntry[] = [
       {
         id: '1',
-        name: 'uncategorized',
         title: 'Uncategorized Item',
         description: 'Item without category',
         mode: 'no-view',
         pluginId: 'test-plugin',
-        action: vi.fn(),
+        commandName: 'com.keyed.uncategorized',
+        execute: {
+          mode: 'no-view',
+          execute: vi.fn(),
+        },
       },
     ];
 
@@ -280,14 +301,21 @@ describe('CommandPalette Integration', () => {
   });
 
   it('handles Page Down navigation', async () => {
-    const largeResults = Array.from({ length: 15 }, (_, i) => ({
-      id: String(i + 1),
-      name: `Item ${i + 1}`,
-      title: `Item ${i + 1}`,
-      action: vi.fn(),
-      mode: 'no-view' as const,
-      pluginId: `plugin-${i + 1}`,
-    }));
+    const largeResults: LauncherEntry[] = Array.from(
+      { length: 15 },
+      (_, i) => ({
+        id: String(i + 1),
+        commandName: `com.keyed.item${i + 1}`,
+        title: `Item ${i + 1}`,
+        description: `Description for item ${i + 1}`,
+        execute: {
+          mode: 'no-view',
+          execute: vi.fn(),
+        },
+        mode: 'no-view' as const,
+        pluginId: `plugin-${i + 1}`,
+      }),
+    );
 
     const user = userEvent.setup();
     renderCommandPalette({
@@ -318,14 +346,21 @@ describe('CommandPalette Integration', () => {
   });
 
   it('handles Page Up navigation', async () => {
-    const largeResults = Array.from({ length: 15 }, (_, i) => ({
-      id: String(i + 1),
-      name: `Item ${i + 1}`,
-      title: `Item ${i + 1}`,
-      action: vi.fn(),
-      mode: 'no-view' as const,
-      pluginId: `plugin-${i + 1}`,
-    }));
+    const largeResults: LauncherEntry[] = Array.from(
+      { length: 15 },
+      (_, i) => ({
+        id: String(i + 1),
+        commandName: `com.keyed.item${i + 1}`,
+        title: `Item ${i + 1}`,
+        description: `Description for item ${i + 1}`,
+        execute: {
+          mode: 'no-view',
+          execute: vi.fn(),
+        },
+        mode: 'no-view' as const,
+        pluginId: `plugin-${i + 1}`,
+      }),
+    );
 
     const user = userEvent.setup();
     renderCommandPalette({

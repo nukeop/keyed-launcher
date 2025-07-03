@@ -34,11 +34,9 @@ const mockResults: LauncherEntry[] = [
       mode: 'no-view',
       execute: async () => console.log('Opening Calculator...'),
     },
-    name: 'calculator',
     icon: '🧮',
     shortcut: '⌘+C',
     keywords: ['calc', 'math', 'numbers'],
-    action: () => console.log('Opening Calculator...'),
   },
   {
     id: 'core-applications.terminal',
@@ -53,11 +51,9 @@ const mockResults: LauncherEntry[] = [
       mode: 'no-view',
       execute: async () => console.log('Opening Terminal...'),
     },
-    name: 'terminal',
     icon: '💻',
     shortcut: '⌘+T',
     keywords: ['terminal', 'shell', 'command'],
-    action: () => console.log('Opening Terminal...'),
   },
   {
     id: 'core-applications.finder',
@@ -72,11 +68,9 @@ const mockResults: LauncherEntry[] = [
       mode: 'no-view',
       execute: async () => console.log('Opening Finder...'),
     },
-    name: 'finder',
     icon: '📁',
     shortcut: '⌘+F',
     keywords: ['files', 'folders', 'browse'],
-    action: () => console.log('Opening Finder...'),
   },
   {
     id: 'core-dev.theme-debugger',
@@ -94,14 +88,9 @@ const mockResults: LauncherEntry[] = [
         toggleThemeDebugger();
       },
     },
-    name: 'theme-debugger',
     icon: '🎨',
     shortcut: '⌘+⇧+T',
     keywords: ['theme', 'debug', 'colors', 'palette', 'developer'],
-    action: () => {
-      console.log('Toggling theme debugger...');
-      toggleThemeDebugger();
-    },
   },
   {
     id: 'core-system.settings',
@@ -116,11 +105,9 @@ const mockResults: LauncherEntry[] = [
       mode: 'no-view',
       execute: async () => console.log('Opening Settings...'),
     },
-    name: 'system-preferences',
     icon: '⚙️',
     shortcut: '⌘+,',
     keywords: ['settings', 'preferences', 'config'],
-    action: () => console.log('Opening Settings...'),
   },
   {
     id: 'core-applications.safari',
@@ -135,11 +122,9 @@ const mockResults: LauncherEntry[] = [
       mode: 'no-view',
       execute: async () => console.log('Opening Safari...'),
     },
-    name: 'safari',
     icon: '🌐',
     shortcut: '⌘+S',
     keywords: ['browser', 'web', 'internet'],
-    action: () => console.log('Opening Safari...'),
   },
 ];
 
@@ -173,8 +158,6 @@ export function useCommandPaletteResults(searchQuery: string) {
   }, [searchQuery, allResults]);
 
   const executeResult = (result: LauncherEntry) => {
-    console.log(`Executing: ${result.title}`);
-
     if (result.execute) {
       const context = {
         environment: {
@@ -193,8 +176,6 @@ export function useCommandPaletteResults(searchQuery: string) {
           console.error(`Error executing view command ${result.id}:`, error);
         });
       }
-    } else if (result.action) {
-      result.action();
     }
   };
 

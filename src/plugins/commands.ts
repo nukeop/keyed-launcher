@@ -129,7 +129,7 @@ function createCommandExecutor(
       execute: async (context: CommandContext): Promise<void> => {
         await safePluginExecution(plugin.manifest.id, async () => {
           const commandModule = await import(
-            `${plugin.manifest.id}/${command.handler}`
+            /* @vite-ignore */ `${plugin.manifest.id}/${command.handler}`
           );
           await commandModule.default(context);
         });
@@ -143,7 +143,7 @@ function createCommandExecutor(
           plugin.manifest.id,
           async () => {
             const commandModule = await import(
-              `${plugin.manifest.id}/${command.handler}`
+              /* @vite-ignore */ `${plugin.manifest.id}/${command.handler}`
             );
             return await commandModule.default(context);
           },

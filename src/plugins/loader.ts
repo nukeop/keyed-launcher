@@ -102,7 +102,7 @@ async function loadPluginModules(
   for (const command of manifest.commands) {
     try {
       const commandPath = getPluginCommandPath(pluginPath, command.handler);
-      const commandModule = await import(commandPath);
+      const commandModule = await import(/* @vite-ignore */ commandPath);
 
       if (!commandModule.default) {
         throw new Error(

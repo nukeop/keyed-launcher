@@ -16,10 +16,8 @@ export interface LauncherEntry {
   execute: NoViewCommand | ViewCommand;
 
   // Legacy compatibility fields (will be removed in future phases)
-  name?: string; // Deprecated: use title
   icon?: string; // TODO: Move to plugin manifest
   keywords?: string[]; // TODO: Move to plugin manifest
-  action?: () => void | Promise<void>; // Deprecated: use execute
   shortcut?: string; // TODO: Move to plugin manifest
 }
 
