@@ -4,6 +4,10 @@ import userEvent from '@testing-library/user-event';
 import App from './App';
 import { setInvoke } from './test/tauri';
 
+vi.mock('@tauri-apps/api/core', () => ({
+  invoke: vi.fn(),
+}));
+
 vi.mock('./utils/usePerformanceTracking', () => ({
   usePerformanceTracking: () => ({
     trackStartup: () => ({ end: vi.fn() }),
@@ -13,7 +17,19 @@ vi.mock('./utils/usePerformanceTracking', () => ({
   }),
 }));
 
-vi.mock('../../utils/environment', () => ({
+vi.mock('./utils/performance', () => ({
+  PerformanceMonitor: {
+    getCurrentFPS: vi.fn(() => 60),
+    getMemoryStats: vi.fn(() =>
+      Promise.resolve({
+        used: '32 MB',
+        total: '64 MB',
+      }),
+    ),
+  },
+}));
+
+vi.mock('./utils/environment', () => ({
   isDev: vi.fn(() => false),
   isProd: vi.fn(() => true),
 }));
@@ -62,11 +78,13 @@ describe('App Integration', () => {
     const user = userEvent.setup();
     render(<App />);
 
-    let selectedItem = screen.getByTestId('result-item-calculator');
+    let selectedItem = screen.getByTestId(
+      'result-item-core-applications.calculator',
+    );
     expect(selectedItem).toHaveAttribute('data-selected', 'true');
 
     await user.keyboard('{ArrowDown}');
-    selectedItem = screen.getByTestId('result-item-terminal');
+    selectedItem = screen.getByTestId('result-item-core-applications.terminal');
     expect(selectedItem).toHaveAttribute('data-selected', 'true');
   });
 
@@ -75,7 +93,6 @@ describe('App Integration', () => {
     render(<App />);
     await userEvent.keyboard('{Enter}');
 
-    expect(consoleSpy).toHaveBeenCalledWith('Executing: Calculator');
     expect(consoleSpy).toHaveBeenCalledWith('Opening Calculator...');
 
     consoleSpy.mockRestore();

@@ -4,6 +4,22 @@ import userEvent from '@testing-library/user-event';
 import { CommandPalette } from '../CommandPalette';
 import { LauncherEntry } from '../ResultsList';
 
+vi.mock('@tauri-apps/api/core', () => ({
+  invoke: vi.fn(),
+}));
+
+vi.mock('../../utils/performance', () => ({
+  PerformanceMonitor: {
+    getCurrentFPS: vi.fn(() => 60),
+    getMemoryStats: vi.fn(() =>
+      Promise.resolve({
+        used: '32 MB',
+        total: '64 MB',
+      }),
+    ),
+  },
+}));
+
 const mockResults: LauncherEntry[] = [
   {
     id: '1',
