@@ -16,7 +16,7 @@ pub fn ensure_plugin_directories(app: AppHandle) -> Result<Vec<String>, String> 
 
     for dir in directories {
         if let Err(e) = fs::create_dir_all(&dir) {
-            return Err(format!("Failed to create directory {:?}: {}", dir, e));
+            return Err(format!("Failed to create directory {dir:?}: {e}"));
         }
         created_paths.push(dir.to_string_lossy().to_string());
     }
