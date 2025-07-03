@@ -77,6 +77,7 @@ export interface LauncherEntry {
   mode: 'view' | 'no-view';
   category?: string; // Domain category
   pluginId: string; // Plugin ID
+  keywords?: string[]; // Search terms
   execute: NoViewCommand | ViewCommand;
 }
 
