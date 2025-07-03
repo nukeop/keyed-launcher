@@ -52,6 +52,19 @@ export const usePluginRegistry = create<PluginRegistry>((set, get) => ({
         pluginStatus: newStatus,
       };
     });
+
+    if (plugin.onStartup) {
+      plugin.onStartup().catch((error) => {
+        console.error(
+          `Error in plugin ${plugin.manifest.id} startup hook:`,
+          error,
+        );
+        get().setPluginStatus(plugin.manifest.id, {
+          status: 'error',
+          error: error instanceof Error ? error.message : String(error),
+        });
+      });
+    }
   },
 
   unregisterPlugin: (pluginId: string) => {

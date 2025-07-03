@@ -99,6 +99,21 @@ async function loadPluginModules(
 ): Promise<void> {
   const manifest = plugin.manifest;
 
+  try {
+    const mainModulePath = `${pluginPath}/index.ts`;
+    const mainModule = await import(/* @vite-ignore */ mainModulePath);
+
+    if (mainModule.onStartup && typeof mainModule.onStartup === 'function') {
+      plugin.onStartup = mainModule.onStartup;
+    }
+
+    if (mainModule.onUnload && typeof mainModule.onUnload === 'function') {
+      plugin.onUnload = mainModule.onUnload;
+    }
+  } catch (error) {
+    console.log(`No main module found for plugin ${manifest.id}: ${error}`);
+  }
+
   for (const command of manifest.commands) {
     try {
       const commandPath = getPluginCommandPath(pluginPath, command.handler);

@@ -1,0 +1,24 @@
+{
+    "id": "com.keyed-launcher.app-launcher-macos",
+    "name": "macOS Application Launcher",
+    "version": "1.0.0",
+    "apiVersion": "1.0.0",
+    "description": "Discover and launch macOS applications from /Applications and ~/Applications",
+    "author": "nukeop",
+    "namespace": "keyed-launcher",
+    "license": "MIT",
+    "category": "Applications",
+    "keywords": [
+        "applications",
+        "launcher",
+        "macos",
+        "apps"
+    ],
+    "permissions": {
+        "filesystem": "read",
+        "shell": "limited",
+        "network": "none",
+        "system": "read"
+    },
+    "commands": []
+}

@@ -158,3 +158,41 @@ function createCommandExecutor(
     };
   }
 }
+
+export function registerDynamicEntry(
+  pluginId: string,
+  entry: Omit<LauncherEntry, 'pluginId'>,
+): void {
+  const fullEntry: LauncherEntry = {
+    ...entry,
+    pluginId,
+  };
+
+  const registeredCommand: RegisteredCommand = {
+    pluginId,
+    commandName: entry.commandName,
+    entry: fullEntry,
+    execute: entry.execute,
+  };
+
+  const commandId = `${pluginId}.${entry.commandName}`;
+  registeredCommands.set(commandId, registeredCommand);
+  console.log(`Registered dynamic entry: ${commandId} - ${entry.title}`);
+}
+
+export function unregisterDynamicEntry(
+  pluginId: string,
+  commandName: string,
+): void {
+  const commandId = `${pluginId}.${commandName}`;
+  unregisterCommand(commandId);
+}
+
+export function registerMultipleDynamicEntries(
+  pluginId: string,
+  entries: Array<Omit<LauncherEntry, 'pluginId'>>,
+): void {
+  for (const entry of entries) {
+    registerDynamicEntry(pluginId, entry);
+  }
+}

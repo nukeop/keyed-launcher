@@ -93,5 +93,6 @@ export interface ViewCommand {
 
 export interface Plugin {
   manifest: PluginManifest;
+  onStartup?: () => Promise<void>;
   onUnload?: () => Promise<void>;
 }
