@@ -1,3 +1,4 @@
+mod macos_apps;
 mod plugins;
 mod shortcuts;
 mod theme_watcher;
@@ -34,6 +35,7 @@ pub fn run() {
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
+            macos_apps::get_macos_applications,
             plugins::ensure_plugin_directories,
             plugins::get_plugin_directories,
             theme_watcher::load_user_themes,

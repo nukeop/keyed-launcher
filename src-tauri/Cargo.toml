@@ -42,3 +42,8 @@ sysinfo = "0.30"
 tokio = { version = "1.0", features = ["full"] }
 notify = "6.1"
 tauri-plugin-fs = "2"
+plist = "1.6"
+icns = "0.3"
+image = { version = "0.25", default-features = false, features = ["png"] }
+base64 = "0.22"
+rayon = "1.10"
