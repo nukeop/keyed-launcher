@@ -9,6 +9,15 @@
     "core:default",
     "fs:default",
     "clipboard-manager:default",
-    "shell:default"
+    "shell:default",
+    "shell:allow-execute",
+    {
+      "identifier": "fs:scope",
+      "allow": [
+        {
+          "path": "**/*"
+        }
+      ]
+    }
   ]
 }
