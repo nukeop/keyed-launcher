@@ -32,14 +32,10 @@ export async function loadPluginManifest(
   manifestPath: string,
 ): Promise<PluginManifest> {
   try {
-    const response = await fetch(manifestPath);
-    if (!response.ok) {
-      throw new Error(
-        `Failed to load manifest from ${manifestPath}: ${response.statusText}`,
-      );
+    const manifestData = await import(/* @vite-ignore */ manifestPath);
+    if (!manifestData) {
+      throw new Error(`Failed to load manifest from ${manifestPath}`);
     }
-
-    const manifestData = await response.json();
     return validatePluginManifest(manifestData, manifestPath);
   } catch (error) {
     throw new Error(
@@ -124,6 +120,8 @@ export function validatePluginManifest(
       `Invalid plugin manifest in ${source}:\n${errors.map((e) => `  - ${e}`).join('\n')}`,
     );
   }
+
+  console.log(`Manifest is valid`, manifest);
 
   return manifest as PluginManifest;
 }

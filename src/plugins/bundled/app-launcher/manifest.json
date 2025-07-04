@@ -16,7 +16,7 @@
     ],
     "permissions": {
         "filesystem": "read",
-        "shell": "limited",
+        "shell": "none",
         "network": "none",
         "system": "read"
     },

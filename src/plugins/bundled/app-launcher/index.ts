@@ -77,7 +77,8 @@ async function scanApplicationsDirectory(
     for (const entry of entries) {
       if (entry.name && entry.name.endsWith('.app')) {
         try {
-          const app = await parseAppBundle(entry.path);
+          const fullAppPath = `${directoryPath}/${entry.name}`;
+          const app = await parseAppBundle(fullAppPath);
           if (app) {
             apps.push(app);
           }
