@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { Plugin } from '../plugins/types';
+import { useCommandRegistry } from './commands';
 
 export interface PluginLoadingStatus {
   status: 'loading' | 'loaded' | 'error' | 'disabled';
@@ -90,6 +91,9 @@ export const usePluginRegistry = create<PluginRegistry>((set, get) => ({
         pluginStatus: newStatus,
       };
     });
+
+    const commandRegistry = useCommandRegistry.getState();
+    commandRegistry.unregisterPluginCommands(pluginId);
   },
 
   getPlugin: (pluginId: string) => {

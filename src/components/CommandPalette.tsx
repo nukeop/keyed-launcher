@@ -89,7 +89,7 @@ export function CommandPalette({
   };
 
   return (
-    <div data-testid="command-palette" className="flex flex-1 flex-col">
+    <div data-testid="command-palette" className="flex h-full flex-1 flex-col">
       <SearchBar
         value={searchQuery}
         onChange={onSearchChange}

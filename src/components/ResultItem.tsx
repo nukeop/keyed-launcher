@@ -27,8 +27,8 @@ export function ResultItem({
       data-selected={isSelected}
     >
       {icon && (
-        <div className="mr-3 flex h-4 w-4 flex-shrink-0 items-center justify-center">
-          <span className="text-md">{icon}</span>
+        <div className="mr-3 flex h-8 w-8 flex-shrink-0 items-center justify-center">
+          <img className="h-8 w-8" src={icon} />
         </div>
       )}
 

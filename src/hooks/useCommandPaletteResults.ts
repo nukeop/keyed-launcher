@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { LauncherEntry } from '../components/ResultsList';
-import { getAllLauncherEntries } from '../plugins/commands';
 import { usePluginRegistry } from '../stores/plugins';
+import { useCommandRegistry } from '../stores/commands';
 
 let showThemeDebugger = false;
 let forceUpdate: (() => void) | null = null;
@@ -46,12 +46,21 @@ const mockResults: LauncherEntry[] = [
 export function useCommandPaletteResults(searchQuery: string) {
   const [isLoading, setIsLoading] = useState(false);
   const [_updateTrigger, setUpdateTrigger] = useState(0);
-  const plugins = usePluginRegistry((state) => state.plugins);
+  const registeredCommands = useCommandRegistry(
+    (state) => state.registeredCommands,
+  );
+  const commandsVersion = useCommandRegistry((state) => state._commandsVersion);
+  const isPluginEnabled = usePluginRegistry((state) => state.isPluginEnabled);
 
   forceUpdate = () => setUpdateTrigger((prev) => prev + 1);
 
   const allResults = useMemo(() => {
-    const pluginEntries = getAllLauncherEntries();
+    const pluginEntries = Array.from(registeredCommands.values())
+      .filter(
+        (command) => !command.pluginId || isPluginEnabled(command.pluginId),
+      )
+      .map((command) => command.entry);
+
     console.log(
       '🔍 Debug: getAllLauncherEntries returned:',
       pluginEntries.length,
@@ -62,7 +71,7 @@ export function useCommandPaletteResults(searchQuery: string) {
       pluginEntries.map((e) => e.title),
     );
     return [...mockResults, ...pluginEntries];
-  }, [plugins]);
+  }, [registeredCommands, commandsVersion, isPluginEnabled]);
 
   const filteredResults = useMemo(() => {
     if (!searchQuery.trim()) {

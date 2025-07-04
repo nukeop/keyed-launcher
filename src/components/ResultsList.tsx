@@ -55,7 +55,10 @@ export const ResultsList: FC<ResultsListProps> = ({
   let globalIndex = 0;
 
   return (
-    <div className="flex-1 overflow-y-auto px-1" data-testid="results-list">
+    <div
+      className="flex h-24 flex-1 flex-col overflow-y-auto px-1"
+      data-testid="results-list"
+    >
       {categoryGroups.map((group) => (
         <div key={group.category}>
           <CategoryHeader

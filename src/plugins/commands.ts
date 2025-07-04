@@ -6,16 +6,8 @@ import {
   ViewCommand,
 } from './types';
 import { usePluginRegistry } from '../stores/plugins';
+import { useCommandRegistry, RegisteredCommand } from '../stores/commands';
 import { safePluginExecution } from './loader';
-
-export interface RegisteredCommand {
-  pluginId: string;
-  commandName: string;
-  entry: LauncherEntry;
-  execute: NoViewCommand | ViewCommand;
-}
-
-const registeredCommands = new Map<string, RegisteredCommand>();
 
 export function registerCommand(plugin: Plugin, commandName: string): void {
   const command = plugin.manifest.commands.find((c) => c.name === commandName);
@@ -43,48 +35,38 @@ export function registerCommand(plugin: Plugin, commandName: string): void {
     pluginId: plugin.manifest.id,
     commandName: command.name,
     entry,
-    execute: entry.execute,
+    source: 'plugin',
   };
 
-  registeredCommands.set(commandId, registeredCommand);
-  console.log(`Registered command: ${commandId}`);
+  const registry = useCommandRegistry.getState();
+  registry.registerCommand(registeredCommand);
 }
 
 export function unregisterCommand(commandId: string): void {
-  if (registeredCommands.has(commandId)) {
-    registeredCommands.delete(commandId);
-    console.log(`Unregistered command: ${commandId}`);
-  }
+  const registry = useCommandRegistry.getState();
+  registry.unregisterCommand(commandId);
 }
 
 export function getRegisteredCommand(
   commandId: string,
 ): RegisteredCommand | undefined {
-  return registeredCommands.get(commandId);
+  const registry = useCommandRegistry.getState();
+  return registry.getRegisteredCommand(commandId);
 }
 
 export function getAllRegisteredCommands(): RegisteredCommand[] {
-  return Array.from(registeredCommands.values());
+  const registry = useCommandRegistry.getState();
+  return registry.getAllRegisteredCommands();
 }
 
 export function getCommandsByPlugin(pluginId: string): RegisteredCommand[] {
-  return Array.from(registeredCommands.values()).filter(
-    (cmd) => cmd.pluginId === pluginId,
-  );
+  const registry = useCommandRegistry.getState();
+  return registry.getCommandsByPlugin(pluginId);
 }
 
 export function unregisterPluginCommands(pluginId: string): void {
-  const commandsToRemove: string[] = [];
-
-  for (const [commandId, command] of registeredCommands.entries()) {
-    if (command.pluginId === pluginId) {
-      commandsToRemove.push(commandId);
-    }
-  }
-
-  for (const commandId of commandsToRemove) {
-    unregisterCommand(commandId);
-  }
+  const registry = useCommandRegistry.getState();
+  registry.unregisterPluginCommands(pluginId);
 }
 
 export function registerPluginCommands(plugin: Plugin): void {
@@ -107,10 +89,15 @@ export function commandToLauncherEntry(
 }
 
 export function getAllLauncherEntries(): LauncherEntry[] {
-  const registry = usePluginRegistry.getState();
+  const commandRegistry = useCommandRegistry.getState();
+  const pluginRegistry = usePluginRegistry.getState();
 
-  return Array.from(registeredCommands.values())
-    .filter((command) => registry.isPluginEnabled(command.pluginId))
+  return commandRegistry
+    .getAllRegisteredCommands()
+    .filter(
+      (command) =>
+        !command.pluginId || pluginRegistry.isPluginEnabled(command.pluginId),
+    )
     .map((command) => command.entry);
 }
 
@@ -172,12 +159,11 @@ export function registerDynamicEntry(
     pluginId,
     commandName: entry.commandName,
     entry: fullEntry,
-    execute: entry.execute,
+    source: 'plugin',
   };
 
-  const commandId = `${pluginId}.${entry.commandName}`;
-  registeredCommands.set(commandId, registeredCommand);
-  console.log(`Registered dynamic entry: ${commandId} - ${entry.title}`);
+  const registry = useCommandRegistry.getState();
+  registry.registerCommand(registeredCommand);
 }
 
 export function unregisterDynamicEntry(
