@@ -1,3 +1,4 @@
+#[cfg(target_os = "macos")]
 mod macos_apps;
 mod plugins;
 mod shortcuts;
@@ -35,6 +36,7 @@ pub fn run() {
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
+            #[cfg(target_os = "macos")]
             macos_apps::get_macos_applications,
             plugins::ensure_plugin_directories,
             plugins::get_plugin_directories,

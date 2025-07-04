@@ -140,13 +140,6 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_get_macos_applications_placeholder() {
-        // This is a placeholder test that ensures the function can be called without panicking.
-        let result = get_macos_applications();
-        assert!(result.is_ok());
-    }
-
-    #[test]
     #[ignore] // This is an integration test that hits the real filesystem.
     fn test_real_app_scan_and_print() {
         let result = get_macos_applications();
@@ -156,9 +149,7 @@ mod tests {
         println!("\n--- macOS App Scan Results ---");
         println!("Found {} applications.", apps.len());
 
-        // Print details for the first 5 apps as a sample
-        println!("\n--- Sample of found applications ---");
-        for app in apps.iter().take(5) {
+        for app in apps.iter() {
             println!(
                 "- {}\n  Bundle ID: {}\n  Path: {}\n  Icon size: {} bytes",
                 app.name,

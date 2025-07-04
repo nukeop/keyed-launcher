@@ -1,13 +1,13 @@
+import { useEffect, useState } from 'react';
 import { registerMultipleDynamicEntries } from '../../commands';
 import { LauncherEntry, CommandContext } from '../../types';
 import { invoke } from '@tauri-apps/api/core';
-import { readDir, exists } from '@tauri-apps/plugin-fs';
-import { homeDir } from '@tauri-apps/api/path';
 
 interface MacOSApp {
   name: string;
   path: string;
-  bundleId?: string;
+  bundle_id: string;
+  icon: string;
 }
 
 const PLUGIN_ID = 'com.keyed-launcher.app-launcher-macos';
@@ -29,106 +29,12 @@ export async function onStartup(): Promise<void> {
 }
 
 async function discoverApps(): Promise<MacOSApp[]> {
-  const apps: MacOSApp[] = [];
-
-  // Scan system Applications directory
   try {
-    const systemApps = await scanApplicationsDirectory('/Applications');
-    apps.push(...systemApps);
+    const apps = await invoke<MacOSApp[]>('get_macos_applications');
+    return apps;
   } catch (error) {
-    console.warn('Failed to scan /Applications:', error);
-  }
-
-  // Scan user Applications directory
-  try {
-    const homePath = await homeDir();
-    const userAppsPath = `${homePath}Applications`;
-
-    if (await exists(userAppsPath)) {
-      const userApps = await scanApplicationsDirectory(userAppsPath);
-      apps.push(...userApps);
-    }
-  } catch (error) {
-    console.warn('Failed to scan ~/Applications:', error);
-  }
-
-  // Remove duplicates based on bundle ID or name
-  const uniqueApps = apps.filter(
-    (app, index, self) =>
-      index ===
-      self.findIndex(
-        (a) =>
-          (a.bundleId && app.bundleId && a.bundleId === app.bundleId) ||
-          (!a.bundleId && !app.bundleId && a.name === app.name),
-      ),
-  );
-
-  return uniqueApps.sort((a, b) => a.name.localeCompare(b.name));
-}
-
-async function scanApplicationsDirectory(
-  directoryPath: string,
-): Promise<MacOSApp[]> {
-  const apps: MacOSApp[] = [];
-
-  try {
-    const entries = await readDir(directoryPath);
-
-    for (const entry of entries) {
-      if (entry.name && entry.name.endsWith('.app')) {
-        try {
-          const fullAppPath = `${directoryPath}/${entry.name}`;
-          const app = await parseAppBundle(fullAppPath);
-          if (app) {
-            apps.push(app);
-          }
-        } catch (error) {
-          console.warn(`Failed to parse app bundle ${entry.name}:`, error);
-        }
-      }
-    }
-  } catch (error) {
-    console.error(`Failed to read directory ${directoryPath}:`, error);
+    console.error('Failed to get macOS applications from Rust backend:', error);
     throw error;
-  }
-
-  return apps;
-}
-
-async function parseAppBundle(appPath: string): Promise<MacOSApp | null> {
-  try {
-    // Try to read Info.plist to get proper app name and bundle ID
-    const infoPlistPath = `${appPath}/Contents/Info.plist`;
-
-    let appName =
-      appPath.split('/').pop()?.replace('.app', '') || 'Unknown App';
-    let bundleId: string | undefined;
-
-    try {
-      if (await exists(infoPlistPath)) {
-        // For now, just use the folder name since parsing plist requires additional setup
-        // TODO: Implement proper plist parsing or use Tauri command for this
-        appName =
-          appPath.split('/').pop()?.replace('.app', '') || 'Unknown App';
-      }
-    } catch (error) {
-      // If we can't read Info.plist, just use the folder name
-      console.debug(`Could not read Info.plist for ${appPath}:`, error);
-    }
-
-    // Skip system files and hidden apps
-    if (appName.startsWith('.') || appName === 'Unknown App') {
-      return null;
-    }
-
-    return {
-      name: appName,
-      path: appPath,
-      bundleId,
-    };
-  } catch (error) {
-    console.warn(`Failed to parse app bundle ${appPath}:`, error);
-    return null;
   }
 }
 
@@ -136,13 +42,14 @@ function createLauncherEntries(
   apps: MacOSApp[],
 ): Array<Omit<LauncherEntry, 'pluginId'>> {
   return apps.map((app) => ({
-    id: `app.${app.bundleId || app.name.toLowerCase().replace(/\s+/g, '-')}`,
-    commandName: `launch-${app.bundleId || app.name.toLowerCase().replace(/\s+/g, '-')}`,
+    id: `app.${app.bundle_id || app.name.toLowerCase().replace(/\s+/g, '-')}`,
+    commandName: `launch-${app.bundle_id || app.name.toLowerCase().replace(/\s+/g, '-')}`,
     title: app.name,
     subtitle: 'Application',
     description: `Launch ${app.name}`,
     mode: 'no-view' as const,
     category: 'Applications',
+    icon: app.icon || undefined,
     keywords: [
       app.name.toLowerCase(),
       ...app.name.toLowerCase().split(' '),
