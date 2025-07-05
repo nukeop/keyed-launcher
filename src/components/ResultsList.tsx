@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect, useRef } from 'react';
 import { ResultItem } from './ResultItem';
 import { CategoryHeader } from './CategoryHeader';
 import { groupEntriesByCategory } from '../utils/categoryUtils';
@@ -14,9 +14,9 @@ export interface LauncherEntry {
   category?: string; // Domain category
   pluginId: string; // Plugin ID
   execute: NoViewCommand | ViewCommand;
+  icon?: string;
 
   // Legacy compatibility fields (will be removed in future phases)
-  icon?: string; // TODO: Move to plugin manifest
   keywords?: string[]; // TODO: Move to plugin manifest
   shortcut?: string; // TODO: Move to plugin manifest
 }
@@ -37,6 +37,18 @@ export const ResultsList: FC<ResultsListProps> = ({
   onItemClick,
   emptyMessage = 'No results found',
 }) => {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const selectedItemRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (selectedItemRef.current && scrollContainerRef.current) {
+      selectedItemRef.current.scrollIntoView({
+        behavior: 'instant',
+        block: 'nearest',
+      });
+    }
+  }, [selectedIndex]);
+
   if (results.length === 0) {
     return (
       <div
@@ -56,6 +68,7 @@ export const ResultsList: FC<ResultsListProps> = ({
 
   return (
     <div
+      ref={scrollContainerRef}
       className="flex h-24 flex-1 flex-col overflow-y-auto px-1"
       data-testid="results-list"
     >
@@ -71,6 +84,7 @@ export const ResultsList: FC<ResultsListProps> = ({
 
             return (
               <ResultItem
+                ref={isSelected ? selectedItemRef : undefined}
                 data-testid={`result-item-${result.id}`}
                 key={result.id}
                 title={result.title}
