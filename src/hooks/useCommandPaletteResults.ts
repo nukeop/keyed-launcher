@@ -1,5 +1,7 @@
 import { useState, useMemo } from 'react';
 import { LauncherEntry } from '../components/ResultsList';
+import { usePluginRegistry } from '../stores/plugins';
+import { useCommandRegistry } from '../stores/commands';
 
 let showThemeDebugger = false;
 let forceUpdate: (() => void) | null = null;
@@ -20,107 +22,64 @@ export const isThemeDebuggerVisible = () => showThemeDebugger;
 
 const mockResults: LauncherEntry[] = [
   {
-    id: 'calculator',
-    name: 'calculator',
-    title: 'Calculator',
-    subtitle: 'System calculator application',
-    description: 'Built-in system calculator for basic math operations',
-    icon: '🧮',
-    mode: 'no-view',
-    category: 'Applications',
-    pluginId: 'core-applications',
-    action: () => console.log('Opening Calculator...'),
-    shortcut: '⌘+C',
-    keywords: ['calc', 'math', 'numbers'],
-  },
-  {
-    id: 'terminal',
-    name: 'terminal',
-    title: 'Terminal',
-    subtitle: 'Command line interface',
-    description: 'Access the command line terminal',
-    icon: '💻',
-    mode: 'no-view',
-    category: 'Applications',
-    pluginId: 'core-applications',
-    action: () => console.log('Opening Terminal...'),
-    shortcut: '⌘+T',
-    keywords: ['terminal', 'shell', 'command'],
-  },
-  {
-    id: 'finder',
-    name: 'finder',
-    title: 'Finder',
-    subtitle: 'File manager',
-    description: 'Browse and manage files and folders',
-    icon: '📁',
-    mode: 'no-view',
-    category: 'Applications',
-    pluginId: 'core-applications',
-    action: () => console.log('Opening Finder...'),
-    shortcut: '⌘+F',
-    keywords: ['files', 'folders', 'browse'],
-  },
-  {
-    id: 'theme-debugger',
-    name: 'theme-debugger',
+    id: 'core-dev.theme-debugger',
+    commandName: 'theme-debugger',
     title: 'Theme Debugger',
     subtitle: 'Toggle theme development tools',
     description: 'Show/hide theme switcher and color palette debugger',
-    icon: '🎨',
     mode: 'no-view',
     category: 'Developer',
     pluginId: 'core-dev',
-    action: () => {
-      console.log('Toggling theme debugger...');
-      toggleThemeDebugger();
+    execute: {
+      mode: 'no-view',
+      execute: async () => {
+        console.log('Toggling theme debugger...');
+        toggleThemeDebugger();
+      },
     },
+    icon: '🎨',
     shortcut: '⌘+⇧+T',
     keywords: ['theme', 'debug', 'colors', 'palette', 'developer'],
-  },
-  {
-    id: 'settings',
-    name: 'system-preferences',
-    title: 'System Preferences',
-    subtitle: 'System settings and configuration',
-    description: 'Configure system settings and preferences',
-    icon: '⚙️',
-    mode: 'no-view',
-    category: 'System',
-    pluginId: 'core-system',
-    action: () => console.log('Opening Settings...'),
-    shortcut: '⌘+,',
-    keywords: ['settings', 'preferences', 'config'],
-  },
-  {
-    id: 'safari',
-    name: 'safari',
-    title: 'Safari',
-    subtitle: 'Web browser',
-    description: 'Browse the web with Safari',
-    icon: '🌐',
-    mode: 'no-view',
-    category: 'Applications',
-    pluginId: 'core-applications',
-    action: () => console.log('Opening Safari...'),
-    shortcut: '⌘+S',
-    keywords: ['browser', 'web', 'internet'],
   },
 ];
 
 export function useCommandPaletteResults(searchQuery: string) {
   const [isLoading, setIsLoading] = useState(false);
   const [_updateTrigger, setUpdateTrigger] = useState(0);
+  const registeredCommands = useCommandRegistry(
+    (state) => state.registeredCommands,
+  );
+  const commandsVersion = useCommandRegistry((state) => state._commandsVersion);
+  const isPluginEnabled = usePluginRegistry((state) => state.isPluginEnabled);
 
   forceUpdate = () => setUpdateTrigger((prev) => prev + 1);
 
+  const allResults = useMemo(() => {
+    const pluginEntries = Array.from(registeredCommands.values())
+      .filter(
+        (command) => !command.pluginId || isPluginEnabled(command.pluginId),
+      )
+      .map((command) => command.entry);
+
+    console.log(
+      '🔍 Debug: getAllLauncherEntries returned:',
+      pluginEntries.length,
+      'entries',
+    );
+    console.log(
+      '🔍 Debug: Plugin entries:',
+      pluginEntries.map((e) => e.title),
+    );
+    return [...mockResults, ...pluginEntries];
+  }, [registeredCommands, commandsVersion, isPluginEnabled]);
+
   const filteredResults = useMemo(() => {
     if (!searchQuery.trim()) {
-      return mockResults;
+      return allResults;
     }
 
     const query = searchQuery.toLowerCase();
-    return mockResults.filter(
+    return allResults.filter(
       (result) =>
         result.title.toLowerCase().includes(query) ||
         (result.subtitle && result.subtitle.toLowerCase().includes(query)) ||
@@ -129,11 +88,28 @@ export function useCommandPaletteResults(searchQuery: string) {
             keyword.toLowerCase().includes(query),
           )),
     );
-  }, [searchQuery]);
+  }, [searchQuery, allResults]);
 
   const executeResult = (result: LauncherEntry) => {
-    console.log(`Executing: ${result.title}`);
-    result.action();
+    if (result.execute) {
+      const context = {
+        environment: {
+          theme: 'default',
+          platform: 'web',
+          debug: true,
+        },
+      };
+
+      if (result.execute.mode === 'no-view') {
+        result.execute.execute(context).catch((error) => {
+          console.error(`Error executing command ${result.id}:`, error);
+        });
+      } else {
+        result.execute.execute(context).catch((error) => {
+          console.error(`Error executing view command ${result.id}:`, error);
+        });
+      }
+    }
   };
 
   return {

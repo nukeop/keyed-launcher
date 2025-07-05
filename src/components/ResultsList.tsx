@@ -1,21 +1,24 @@
-import { FC } from 'react';
+import { FC, useEffect, useRef } from 'react';
 import { ResultItem } from './ResultItem';
 import { CategoryHeader } from './CategoryHeader';
 import { groupEntriesByCategory } from '../utils/categoryUtils';
+import { NoViewCommand, ViewCommand } from '../plugins/api/types';
 
 export interface LauncherEntry {
-  id: string;
-  name: string;
-  title: string;
-  subtitle?: string;
-  description?: string;
+  id: string; // Unique ID (pluginId.commandName)
+  commandName: string; // Command identifier
+  title: string; // Display name
+  subtitle?: string; // Brief description
+  description: string; // Detailed description
+  mode: 'view' | 'no-view';
+  category?: string; // Domain category
+  pluginId: string; // Plugin ID
+  execute: NoViewCommand | ViewCommand;
   icon?: string;
-  keywords?: string[];
-  mode: 'view' | 'no-view' | 'background';
-  category?: string;
-  pluginId: string;
-  action: () => void | Promise<void>;
-  shortcut?: string;
+
+  // Legacy compatibility fields (will be removed in future phases)
+  keywords?: string[]; // TODO: Move to plugin manifest
+  shortcut?: string; // TODO: Move to plugin manifest
 }
 
 // Keep Result as alias for backwards compatibility during transition
@@ -34,6 +37,18 @@ export const ResultsList: FC<ResultsListProps> = ({
   onItemClick,
   emptyMessage = 'No results found',
 }) => {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const selectedItemRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (selectedItemRef.current && scrollContainerRef.current) {
+      selectedItemRef.current.scrollIntoView({
+        behavior: 'instant',
+        block: 'nearest',
+      });
+    }
+  }, [selectedIndex]);
+
   if (results.length === 0) {
     return (
       <div
@@ -52,7 +67,11 @@ export const ResultsList: FC<ResultsListProps> = ({
   let globalIndex = 0;
 
   return (
-    <div className="flex-1 overflow-y-auto px-1" data-testid="results-list">
+    <div
+      ref={scrollContainerRef}
+      className="flex h-24 flex-1 flex-col overflow-y-auto px-1"
+      data-testid="results-list"
+    >
       {categoryGroups.map((group) => (
         <div key={group.category}>
           <CategoryHeader
@@ -65,6 +84,7 @@ export const ResultsList: FC<ResultsListProps> = ({
 
             return (
               <ResultItem
+                ref={isSelected ? selectedItemRef : undefined}
                 data-testid={`result-item-${result.id}`}
                 key={result.id}
                 title={result.title}
