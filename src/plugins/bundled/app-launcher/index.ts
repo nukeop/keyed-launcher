@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { registerMultipleDynamicEntries } from '../../commands';
 import { LauncherEntry, CommandContext } from '../../types';
 import { invoke } from '@tauri-apps/api/core';

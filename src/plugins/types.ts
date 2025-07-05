@@ -15,13 +15,6 @@ export interface PluginManifest {
   keywords?: string[]; // Store search keywords
   category?: string; // Store category
 
-  // Dependencies (for future plugin ecosystem)
-  dependencies?: Record<string, string>; // Plugin dependencies
-  peerDependencies?: Record<string, string>; // Required peer plugins
-
-  // Runtime requirements
-  permissions: PluginPermissions;
-
   // Commands provided by this plugin
   commands: CommandManifest[];
 
@@ -51,13 +44,6 @@ export interface CommandManifest {
 
   // Command execution
   handler: string; // Path to command file (relative to plugin root)
-}
-
-export interface PluginPermissions {
-  filesystem?: 'read' | 'write' | 'none';
-  network?: 'local' | 'internet' | 'none';
-  shell?: 'restricted' | 'full' | 'none';
-  system?: 'read' | 'write' | 'none';
 }
 
 export interface CommandContext {
