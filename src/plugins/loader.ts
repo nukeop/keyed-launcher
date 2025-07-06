@@ -1,4 +1,4 @@
-import { Plugin, PluginManifest } from './types';
+import { Plugin } from './types';
 import { loadPluginManifest } from './manifest';
 import { usePluginRegistry } from '../stores/plugins';
 import { getPluginManifestPath, getPluginCommandPath } from './utils';
@@ -6,7 +6,7 @@ import { getPluginManifestPath, getPluginCommandPath } from './utils';
 export interface PluginLoadErrorInfo {
   pluginPath: string;
   error: string;
-  type: 'manifest' | 'module' | 'validation' | 'permission';
+  type: 'manifest' | 'module' | 'validation';
 }
 
 export async function loadPlugin(pluginPath: string): Promise<Plugin> {
@@ -19,7 +19,6 @@ export async function loadPlugin(pluginPath: string): Promise<Plugin> {
       onUnload: undefined,
     };
 
-    await validatePluginPermissions(manifest);
     await loadPluginModules(plugin, pluginPath);
 
     return plugin;
@@ -67,30 +66,6 @@ export async function loadPluginsFromDirectory(directoryPath: string): Promise<{
   }
 
   return results;
-}
-
-async function validatePluginPermissions(
-  manifest: PluginManifest,
-): Promise<void> {
-  const permissions = manifest.permissions;
-
-  if (permissions.filesystem === 'write' || permissions.system === 'write') {
-    console.warn(
-      `Plugin ${manifest.id} requests write permissions - this should be reviewed`,
-    );
-  }
-
-  if (permissions.shell === 'full') {
-    console.warn(
-      `Plugin ${manifest.id} requests full shell access - this should be reviewed`,
-    );
-  }
-
-  if (permissions.network === 'internet') {
-    console.warn(
-      `Plugin ${manifest.id} requests internet access - this should be reviewed`,
-    );
-  }
 }
 
 async function loadPluginModules(
@@ -176,9 +151,6 @@ function getErrorType(error: unknown): PluginLoadErrorInfo['type'] {
     ) {
       return 'manifest';
     }
-    if (error.message.includes('permission')) {
-      return 'permission';
-    }
     if (error.message.includes('import') || error.message.includes('module')) {
       return 'module';
     }
@@ -190,7 +162,7 @@ export class PluginLoadError extends Error {
   constructor(
     public readonly pluginPath: string,
     message: string,
-    public readonly type: 'manifest' | 'module' | 'validation' | 'permission',
+    public readonly type: 'manifest' | 'module' | 'validation',
   ) {
     super(message);
     this.name = 'PluginLoadError';

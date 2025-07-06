@@ -22,7 +22,7 @@ export function registerCommand(plugin: Plugin, commandName: string): void {
   const entry: LauncherEntry = {
     id: commandId,
     commandName: command.name,
-    title: command.title,
+    title: command.displayName,
     subtitle: command.subtitle,
     description: command.description,
     mode: command.mode,

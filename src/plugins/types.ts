@@ -33,8 +33,8 @@ export interface PluginInstallMeta {
 }
 
 export interface CommandManifest {
-  id: string; // Unique command identifier within plugin
-  name: string; // Display name
+  name: string; // Unique command identifier within plugin
+  displayName: string; // Display name
   subtitle?: string; // Brief description
   description: string; // Detailed description
   mode: 'view' | 'no-view';

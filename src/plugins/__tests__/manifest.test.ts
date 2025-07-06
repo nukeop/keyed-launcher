@@ -10,16 +10,10 @@ describe('manifest validation', () => {
     apiVersion: '1.0.0',
     description: 'A test plugin',
     author: 'Test Author',
-    permissions: {
-      filesystem: 'read',
-      network: 'local',
-      shell: 'restricted',
-      system: 'read',
-    },
     commands: [
       {
         name: 'test-command',
-        title: 'Test Command',
+        displayName: 'Test Command',
         description: 'A test command',
         mode: 'no-view',
         handler: 'commands/test.js',
@@ -132,56 +126,6 @@ describe('manifest validation', () => {
       });
     });
 
-    describe('permissions validation', () => {
-      it('should reject missing permissions', () => {
-        const manifest: Partial<PluginManifest> = { ...validManifest };
-        delete manifest.permissions;
-        expect(() => validatePluginManifest(manifest, 'test')).toThrow(
-          'Missing or invalid "permissions" field',
-        );
-      });
-
-      it('should reject invalid filesystem permissions', () => {
-        const manifest = {
-          ...validManifest,
-          permissions: { filesystem: 'invalid' },
-        };
-        expect(() => validatePluginManifest(manifest, 'test')).toThrow(
-          'Invalid filesystem permission',
-        );
-      });
-
-      it('should reject invalid network permissions', () => {
-        const manifest = {
-          ...validManifest,
-          permissions: { network: 'invalid' },
-        };
-        expect(() => validatePluginManifest(manifest, 'test')).toThrow(
-          'Invalid network permission',
-        );
-      });
-
-      it('should reject invalid shell permissions', () => {
-        const manifest = {
-          ...validManifest,
-          permissions: { shell: 'invalid' },
-        };
-        expect(() => validatePluginManifest(manifest, 'test')).toThrow(
-          'Invalid shell permission',
-        );
-      });
-
-      it('should reject invalid system permissions', () => {
-        const manifest = {
-          ...validManifest,
-          permissions: { system: 'invalid' },
-        };
-        expect(() => validatePluginManifest(manifest, 'test')).toThrow(
-          'Invalid system permission',
-        );
-      });
-    });
-
     describe('commands validation', () => {
       it('should reject missing commands', () => {
         const manifest: Partial<PluginManifest> = { ...validManifest };
@@ -254,14 +198,6 @@ describe('manifest validation', () => {
       const pluginId = 'com.example.my-plugin';
       const manifest = createDefaultManifest(pluginId);
       expect(manifest.id).toBe(pluginId);
-    });
-
-    it('should have safe default permissions', () => {
-      const manifest = createDefaultManifest('com.test.plugin');
-      expect(manifest.permissions.filesystem).toBe('none');
-      expect(manifest.permissions.network).toBe('none');
-      expect(manifest.permissions.shell).toBe('none');
-      expect(manifest.permissions.system).toBe('none');
     });
 
     it('should have empty commands array', () => {

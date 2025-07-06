@@ -9,7 +9,6 @@ interface UnvalidatedManifest extends UnknownRecord {
   apiVersion?: unknown;
   description?: unknown;
   author?: unknown;
-  permissions?: unknown;
   commands?: unknown;
 }
 
@@ -19,13 +18,6 @@ interface UnvalidatedCommand extends UnknownRecord {
   description?: unknown;
   mode?: unknown;
   handler?: unknown;
-}
-
-interface UnvalidatedPermissions extends UnknownRecord {
-  filesystem?: unknown;
-  network?: unknown;
-  shell?: unknown;
-  system?: unknown;
 }
 
 export async function loadPluginManifest(
@@ -94,15 +86,6 @@ export function validatePluginManifest(
     errors.push('Missing or invalid "author" field');
   }
 
-  if (!manifest.permissions || typeof manifest.permissions !== 'object') {
-    errors.push('Missing or invalid "permissions" field');
-  } else {
-    const permissionErrors = validatePermissions(
-      manifest.permissions as UnvalidatedPermissions,
-    );
-    errors.push(...permissionErrors);
-  }
-
   if (!manifest.commands || !Array.isArray(manifest.commands)) {
     errors.push('Missing or invalid "commands" field (must be an array)');
   } else {
@@ -136,47 +119,6 @@ function isValidVersion(version: string): boolean {
 
 function isCompatibleApiVersion(apiVersion: string): boolean {
   return apiVersion === '1.0.0';
-}
-
-function validatePermissions(permissions: UnvalidatedPermissions): string[] {
-  const errors: string[] = [];
-  const validPermissionValues = ['read', 'write', 'none'];
-  const validNetworkValues = ['local', 'internet', 'none'];
-  const validShellValues = ['restricted', 'full', 'none'];
-
-  if (
-    permissions.filesystem &&
-    typeof permissions.filesystem === 'string' &&
-    !validPermissionValues.includes(permissions.filesystem)
-  ) {
-    errors.push(`Invalid filesystem permission: "${permissions.filesystem}"`);
-  }
-
-  if (
-    permissions.network &&
-    typeof permissions.network === 'string' &&
-    !validNetworkValues.includes(permissions.network)
-  ) {
-    errors.push(`Invalid network permission: "${permissions.network}"`);
-  }
-
-  if (
-    permissions.shell &&
-    typeof permissions.shell === 'string' &&
-    !validShellValues.includes(permissions.shell)
-  ) {
-    errors.push(`Invalid shell permission: "${permissions.shell}"`);
-  }
-
-  if (
-    permissions.system &&
-    typeof permissions.system === 'string' &&
-    !validPermissionValues.includes(permissions.system)
-  ) {
-    errors.push(`Invalid system permission: "${permissions.system}"`);
-  }
-
-  return errors;
 }
 
 function validateCommand(command: UnvalidatedCommand, index: number): string[] {
@@ -228,12 +170,6 @@ export function createDefaultManifest(pluginId: string): PluginManifest {
     apiVersion: '1.0.0',
     description: 'A new plugin for Keyed Launcher',
     author: 'Plugin Author',
-    permissions: {
-      filesystem: 'none',
-      network: 'none',
-      shell: 'none',
-      system: 'none',
-    },
     commands: [],
   };
 }

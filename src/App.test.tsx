@@ -3,6 +3,10 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from './App';
 import { setInvoke } from './test/tauri';
+import { PluginRegistry, usePluginRegistry } from './stores/plugins';
+import { MockPluginBuilder } from './test/mockPluginBuilder';
+import { CommandRegistry, useCommandRegistry } from './stores/commands';
+import { registerCommand } from './plugins/commands';
 
 vi.mock('@tauri-apps/api/core', () => ({
   invoke: vi.fn(),
@@ -34,10 +38,28 @@ vi.mock('./utils/environment', () => ({
   isProd: vi.fn(() => true),
 }));
 
+window.HTMLElement.prototype.scrollIntoView = vi.fn();
+
 describe('App Integration', () => {
+  let pluginRegistry: PluginRegistry;
+  let commandRegistry: CommandRegistry;
+
   beforeAll(() => {
     setInvoke('get_memory_usage', () => [32, 64]);
     setInvoke('hide_window', () => undefined);
+  });
+
+  beforeEach(() => {
+    pluginRegistry = usePluginRegistry.getState();
+    pluginRegistry.clearPlugins();
+    commandRegistry = useCommandRegistry.getState();
+    commandRegistry.clearCommands();
+    const mockPlugin = new MockPluginBuilder()
+      .withId('test-plugin')
+      .withCommand({ name: 'command-test', displayName: 'Test Command' })
+      .build();
+    pluginRegistry.registerPlugin(mockPlugin);
+    registerCommand(mockPlugin, mockPlugin.manifest.commands[0].name);
   });
 
   it('renders the command palette interface', () => {
@@ -45,8 +67,8 @@ describe('App Integration', () => {
 
     expect(screen.getByTestId('command-palette')).toBeInTheDocument();
     expect(screen.getByTestId('search-input')).toBeInTheDocument();
-    expect(screen.getByText('Calculator')).toBeInTheDocument();
-    expect(screen.getByText('Terminal')).toBeInTheDocument();
+    expect(screen.getByText('Theme Debugger')).toBeInTheDocument();
+    expect(screen.getByText('Test Command')).toBeInTheDocument();
   });
 
   it('filters results when searching', async () => {
@@ -54,10 +76,10 @@ describe('App Integration', () => {
     render(<App />);
 
     const searchInput = screen.getByTestId('search-input');
-    await user.type(searchInput, 'calc');
+    await user.type(searchInput, 'test');
 
-    expect(screen.getByText('Calculator')).toBeInTheDocument();
-    expect(screen.queryByText('Terminal')).not.toBeInTheDocument();
+    expect(screen.queryByText('Theme Debugger')).not.toBeInTheDocument();
+    expect(screen.queryByText('Test Command')).toBeInTheDocument();
   });
 
   it('shows all results when search is cleared', async () => {
@@ -69,22 +91,23 @@ describe('App Integration', () => {
     await user.type(searchInput, 'calc');
     await user.clear(searchInput);
 
-    expect(screen.getByText('Calculator')).toBeInTheDocument();
-    expect(screen.getByText('Terminal')).toBeInTheDocument();
-    expect(screen.getByText('Finder')).toBeInTheDocument();
+    expect(screen.getByText('Theme Debugger')).toBeInTheDocument();
+    expect(screen.getByText('Test Command')).toBeInTheDocument();
   });
 
   it('handles keyboard navigation', async () => {
     const user = userEvent.setup();
     render(<App />);
 
-    let selectedItem = screen.getByTestId(
-      'result-item-core-applications.calculator',
+    let selectedItem = await screen.findByTestId(
+      'result-item-core-dev.theme-debugger',
     );
     expect(selectedItem).toHaveAttribute('data-selected', 'true');
 
     await user.keyboard('{ArrowDown}');
-    selectedItem = screen.getByTestId('result-item-core-applications.terminal');
+    selectedItem = await screen.findByTestId(
+      'result-item-test-plugin.command-test',
+    );
     expect(selectedItem).toHaveAttribute('data-selected', 'true');
   });
 
