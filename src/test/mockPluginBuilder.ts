@@ -36,8 +36,8 @@ export class MockPluginBuilder {
     }
 
     const fullCommand: CommandManifest = {
-      name: command.name || 'default-command',
-      title: command.title || 'Default Command',
+      id: command.id || 'default-command',
+      name: command.name || 'Default Command',
       description: command.description || 'Default description',
       mode: command.mode || 'no-view',
       handler: command.handler || 'commands/default.js',

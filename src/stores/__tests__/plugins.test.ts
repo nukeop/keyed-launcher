@@ -5,10 +5,11 @@ import {
   createMockPlugin,
 } from '../../test/mockPluginBuilder';
 
+const mockUnregisterCommands = vi.fn();
 vi.mock('../commands', () => ({
   useCommandRegistry: {
     getState: () => ({
-      unregisterPluginCommands: vi.fn(),
+      unregisterPluginCommands: mockUnregisterCommands,
     }),
   },
 }));
@@ -150,5 +151,51 @@ describe('Plugin Registry - Basic State Management', () => {
 
     expect(registry.getPlugin('get-test')).toBe(mockPlugin);
     expect(registry.getPlugin('non-existent')).toBeUndefined();
+  });
+
+  it('should unregister existing plugin', () => {
+    const mockPlugin = createMockPlugin('unregister-test');
+    registry.registerPlugin(mockPlugin);
+
+    registry.unregisterPlugin('unregister-test');
+
+    const state = usePluginRegistry.getState();
+    expect(state.plugins.size).toBe(0);
+    expect(state.enabledPlugins.size).toBe(0);
+    expect(state.pluginStatus.size).toBe(0);
+    expect(state.getPlugin('unregister-test')).toBeUndefined();
+  });
+
+  it('should call onUnload hook during unregistration', () => {
+    const unloadMock = vi.fn().mockResolvedValue(undefined);
+    const pluginWithUnload = new MockPluginBuilder()
+      .withId('unload-test')
+      .withUnloadHook(unloadMock)
+      .build();
+
+    registry.registerPlugin(pluginWithUnload);
+    registry.unregisterPlugin('unload-test');
+
+    expect(unloadMock).toHaveBeenCalledOnce();
+  });
+
+  it('should handle unregistering non-existent plugin', () => {
+    registry.unregisterPlugin('non-existent');
+
+    const state = usePluginRegistry.getState();
+    expect(state.plugins.size).toBe(0);
+    expect(state.enabledPlugins.size).toBe(0);
+    expect(state.pluginStatus.size).toBe(0);
+  });
+
+  it('should unregister plugin commands from command registry', async () => {
+    const mockPlugin = new MockPluginBuilder()
+      .withId('test-plugin')
+      .withCommand({ id: 'command-test' })
+      .build();
+    registry.registerPlugin(mockPlugin);
+    registry.unregisterPlugin('command-test');
+
+    expect(mockUnregisterCommands).toHaveBeenCalledWith('command-test');
   });
 });
