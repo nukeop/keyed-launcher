@@ -38,6 +38,14 @@ vi.mock('./utils/environment', () => ({
   isProd: vi.fn(() => true),
 }));
 
+const commandExecute = vi.fn();
+vi.mock('./plugins/commands/command-executor', () => ({
+  createCommandExecutor: vi.fn(() => ({
+    mode: 'no-view',
+    execute: commandExecute,
+  })),
+}));
+
 window.HTMLElement.prototype.scrollIntoView = vi.fn();
 
 describe('App Integration', () => {
@@ -112,13 +120,16 @@ describe('App Integration', () => {
   });
 
   it('executes result actions', async () => {
-    const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
     render(<App />);
+    await userEvent.keyboard('{ArrowDown}');
     await userEvent.keyboard('{Enter}');
-
-    expect(consoleSpy).toHaveBeenCalledWith('Opening Calculator...');
-
-    consoleSpy.mockRestore();
+    expect(commandExecute).toHaveBeenCalledWith({
+      environment: {
+        debug: true,
+        platform: 'web',
+        theme: 'default',
+      },
+    });
   });
 
   it('maintains launcher state integration', () => {

@@ -1,13 +1,7 @@
-import {
-  Plugin,
-  LauncherEntry,
-  CommandContext,
-  NoViewCommand,
-  ViewCommand,
-} from './types';
-import { usePluginRegistry } from '../stores/plugins';
-import { useCommandRegistry, RegisteredCommand } from '../stores/commands';
-import { safePluginExecution } from './loader';
+import { Plugin, LauncherEntry } from '../types';
+import { usePluginRegistry } from '../../stores/plugins';
+import { useCommandRegistry, RegisteredCommand } from '../../stores/commands';
+import { createCommandExecutor } from './command-executor';
 
 export function registerCommand(plugin: Plugin, commandName: string): void {
   const command = plugin.manifest.commands.find((c) => c.name === commandName);
@@ -99,51 +93,6 @@ export function getAllLauncherEntries(): LauncherEntry[] {
         !command.pluginId || pluginRegistry.isPluginEnabled(command.pluginId),
     )
     .map((command) => command.entry);
-}
-
-function createCommandExecutor(
-  plugin: Plugin,
-  commandName: string,
-): NoViewCommand | ViewCommand {
-  const command = plugin.manifest.commands.find((c) => c.name === commandName);
-  if (!command) {
-    throw new Error(`Command ${commandName} not found`);
-  }
-
-  if (command.mode === 'no-view') {
-    return {
-      mode: 'no-view',
-      execute: async (context: CommandContext): Promise<void> => {
-        await safePluginExecution(plugin.manifest.id, async () => {
-          const commandModule = await import(
-            /* @vite-ignore */ `${plugin.manifest.id}/${command.handler}`
-          );
-          await commandModule.default(context);
-        });
-      },
-    };
-  } else {
-    return {
-      mode: 'view',
-      execute: async (context: CommandContext): Promise<React.ReactElement> => {
-        const result = await safePluginExecution(
-          plugin.manifest.id,
-          async () => {
-            const commandModule = await import(
-              /* @vite-ignore */ `${plugin.manifest.id}/${command.handler}`
-            );
-            return await commandModule.default(context);
-          },
-        );
-
-        if (!result) {
-          throw new Error(`Command ${commandName} failed to execute`);
-        }
-
-        return result;
-      },
-    };
-  }
 }
 
 export function registerDynamicEntry(
