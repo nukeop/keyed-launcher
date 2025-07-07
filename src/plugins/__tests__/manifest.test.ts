@@ -158,7 +158,7 @@ describe('manifest validation', () => {
       it('should reject missing command fields', () => {
         const requiredFields = [
           'name',
-          'title',
+          'displayName',
           'description',
           'mode',
           'handler',

@@ -14,7 +14,7 @@ interface UnvalidatedManifest extends UnknownRecord {
 
 interface UnvalidatedCommand extends UnknownRecord {
   name?: unknown;
-  title?: unknown;
+  displayName?: unknown;
   description?: unknown;
   mode?: unknown;
   handler?: unknown;
@@ -137,8 +137,8 @@ function validateCommand(command: UnvalidatedCommand, index: number): string[] {
     );
   }
 
-  if (!command.title || typeof command.title !== 'string') {
-    errors.push(`Command ${index}: missing or invalid "title" field`);
+  if (!command.displayName || typeof command.displayName !== 'string') {
+    errors.push(`Command ${index}: missing or invalid "displayName" field`);
   }
 
   if (!command.description || typeof command.description !== 'string') {
