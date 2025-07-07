@@ -36,7 +36,7 @@ function getAPIBridge(): PluginAPIBridge {
       'Launcher API not available - this plugin must run within Keyed Launcher',
     );
   }
-  return window.__LAUNCHER_API__ as unknown as PluginAPIBridge;
+  return window.__LAUNCHER_API__ as PluginAPIBridge;
 }
 
 export { getAPIBridge };

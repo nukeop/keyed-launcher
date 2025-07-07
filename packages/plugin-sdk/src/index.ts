@@ -20,4 +20,4 @@ export {
   getAPIBridge,
 } from './api';
 
-export type { MacOSApp, Environment } from './api';
+export type { MacOSApp, Environment, PluginAPIBridge } from './api';

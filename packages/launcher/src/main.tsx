@@ -6,11 +6,15 @@ import { PerformanceMonitor } from './utils/performance';
 import { initializePluginSystem } from './plugins/init';
 import { loadBundledPlugins } from './plugins/bundled';
 import { usePluginRegistry } from './stores/plugins';
+import { initializeLauncherAPI } from './plugins/api-bridge';
 
 PerformanceMonitor.startupTimer();
 
 async function initializeApp() {
   try {
+    console.log('🔗 Initializing Launcher API bridge...');
+    initializeLauncherAPI();
+
     console.log('🔌 Initializing plugin system...');
 
     await initializePluginSystem();

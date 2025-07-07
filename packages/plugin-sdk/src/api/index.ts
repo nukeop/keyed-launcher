@@ -1,6 +1,7 @@
 export { getAPIBridge } from './client';
 export type { MacOSApp } from './system';
 export type { Environment } from './environment';
+export type { PluginAPIBridge } from './client';
 
 import * as system from './system';
 import * as shell from './shell';
