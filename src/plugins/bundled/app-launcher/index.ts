@@ -58,7 +58,7 @@ function createLauncherEntries(
     ],
     execute: {
       mode: 'no-view' as const,
-      execute: async (context: CommandContext): Promise<void> => {
+      execute: async (_context: CommandContext): Promise<void> => {
         await launchApp(app);
       },
     },

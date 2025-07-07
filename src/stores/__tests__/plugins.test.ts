@@ -191,7 +191,7 @@ describe('Plugin Registry - Basic State Management', () => {
   it('should unregister plugin commands from command registry', async () => {
     const mockPlugin = new MockPluginBuilder()
       .withId('test-plugin')
-      .withCommand({ id: 'command-test' })
+      .withCommand({ name: 'command-test' })
       .build();
     registry.registerPlugin(mockPlugin);
     registry.unregisterPlugin('command-test');
