@@ -11,7 +11,7 @@ export function CategoryHeader({
 }: CategoryHeaderProps) {
   return (
     <div
-      className="px-2 py-1 text-xs font-medium tracking-wide text-gray-400 uppercase"
+      className="px-2 py-1 text-xs font-medium uppercase tracking-wide text-gray-400"
       data-testid={testId}
     >
       <div className="flex items-center">

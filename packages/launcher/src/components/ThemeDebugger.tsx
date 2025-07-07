@@ -4,7 +4,7 @@ export function ThemeDebugger() {
   const { currentTheme, availableThemes, switchTheme } = useTheme();
 
   return (
-    <div className="fixed top-4 right-4 z-50 rounded-lg border border-white/20 bg-black/80 p-4 text-white">
+    <div className="fixed right-4 top-4 z-50 rounded-lg border border-white/20 bg-black/80 p-4 text-white">
       <h3 className="mb-2 text-sm font-bold">Theme Debugger</h3>
       <div className="mb-2 text-xs">Current: {currentTheme.meta.name}</div>
       <div className="space-y-1">

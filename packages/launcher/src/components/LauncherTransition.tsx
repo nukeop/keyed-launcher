@@ -11,10 +11,10 @@ export function LauncherTransition({
 }: LauncherTransitionProps) {
   return (
     <div
-      className={`w-full h-full flex justify-center items-center transition-all duration-200 ease-out ${
+      className={`flex h-full w-full items-center justify-center transition-all duration-200 ease-out ${
         isVisible
-          ? 'opacity-100 scale-100 translate-y-0'
-          : 'opacity-0 scale-95 translate-y-2'
+          ? 'translate-y-0 scale-100 opacity-100'
+          : 'translate-y-2 scale-95 opacity-0'
       }`}
     >
       {children}

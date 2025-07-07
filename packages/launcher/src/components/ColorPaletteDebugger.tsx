@@ -5,7 +5,7 @@ export function ColorPaletteDebugger() {
   const { currentTheme } = useTheme();
 
   return (
-    <div className="fixed top-4 left-4 z-50 max-h-96 overflow-auto rounded-lg border border-white/20 bg-black/90 p-4 text-white">
+    <div className="fixed left-4 top-4 z-50 max-h-96 overflow-auto rounded-lg border border-white/20 bg-black/90 p-4 text-white">
       <h3 className="mb-3 text-sm font-bold">
         Color Palette: {currentTheme.meta.name}
       </h3>
@@ -27,7 +27,7 @@ export function ColorPaletteDebugger() {
                     style={{ backgroundColor: hexColor }}
                     title={`${colorName}-${shade}: ${hexColor}`}
                   >
-                    <div className="pointer-events-none absolute -top-6 left-1/2 -translate-x-1/2 transform rounded bg-black/80 px-1 text-xs whitespace-nowrap text-white opacity-0 group-hover:opacity-100">
+                    <div className="pointer-events-none absolute -top-6 left-1/2 -translate-x-1/2 transform whitespace-nowrap rounded bg-black/80 px-1 text-xs text-white opacity-0 group-hover:opacity-100">
                       {shade}
                     </div>
                   </div>

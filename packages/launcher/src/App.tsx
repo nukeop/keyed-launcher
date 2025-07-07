@@ -26,7 +26,7 @@ function App() {
   return (
     <ThemeProvider>
       {showDebugger && (
-        <div className="fixed top-4 right-4 z-50 space-y-4">
+        <div className="fixed right-4 top-4 z-50 space-y-4">
           <ThemeDebugger />
           <ColorPaletteDebugger />
         </div>
