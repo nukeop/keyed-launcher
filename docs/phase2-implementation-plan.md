@@ -77,9 +77,9 @@ Transform the dancing skeleton into a functional command palette launcher with p
 
 - **Goal**: Simple plugin system where plugins contribute items to the command palette
 - **Tasks**:
-  - [ ] Design plugin API interface (TypeScript definitions)
-  - [ ] Implement plugin registry and lifecycle management
-  - [ ] Create plugin loading mechanism (dynamic imports)
+  - [X] Design plugin API interface (TypeScript definitions)
+  - [X] Implement plugin registry and lifecycle management
+  - [X] Create plugin loading mechanism (dynamic imports)
   - [ ] Build plugin configuration system
   - [ ] Add plugin enable/disable functionality
 
@@ -87,9 +87,9 @@ Transform the dancing skeleton into a functional command palette launcher with p
 
 - **Goal**: Allow plugins to add searchable items to the palette
 - **Tasks**:
-  - [ ] Define item schema (title, subtitle, icon, action, keywords)
-  - [ ] Plugin item registration system
-  - [ ] Dynamic item generation (for search-based plugins)
+  - [X] Define item schema (title, subtitle, icon, action, keywords)
+  - [X] Plugin item registration system
+  - [X] Dynamic item generation (for search-based plugins)
   - [ ] Item ranking and priority system
   - [ ] Plugin-specific item styling and metadata
 
