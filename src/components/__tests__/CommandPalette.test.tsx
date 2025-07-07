@@ -70,6 +70,8 @@ const mockResults: LauncherEntry[] = [
   },
 ];
 
+window.HTMLElement.prototype.scrollIntoView = vi.fn();
+
 describe('CommandPalette Integration', () => {
   let mockOnSearchChange: ReturnType<typeof vi.fn>;
   let mockOnResultExecute: ReturnType<typeof vi.fn>;
