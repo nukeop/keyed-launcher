@@ -17,7 +17,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
+          cache: 'pnpm'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: latest
 
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable
@@ -33,7 +38,7 @@ jobs:
             ~/.cargo/registry/index/
             ~/.cargo/registry/cache/
             ~/.cargo/git/db/
-            src-tauri/target/
+            packages/launcher/src-tauri/target/
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
       - name: Install system dependencies
@@ -42,14 +47,14 @@ jobs:
           sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
 
       - name: Install frontend dependencies
-        run: npm ci
+        run: pnpm install
 
       - name: Run frontend tests with coverage
-        run: npm run test:coverage
+        run: pnpm test:coverage
 
       - name: Run backend tests with coverage
         run: |
-          cd src-tauri
+          cd packages/launcher/src-tauri
           cargo tarpaulin --verbose --all-features --workspace --timeout 120 --out xml
 
       - name: Upload frontend coverage to Codecov
@@ -63,7 +68,7 @@ jobs:
       - name: Upload backend coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
-          file: ./src-tauri/cobertura.xml
+          file: ./packages/launcher/src-tauri/cobertura.xml
           flags: backend
           name: backend-coverage
           token: ${{ secrets.CODECOV_TOKEN }}

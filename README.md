@@ -2,6 +2,8 @@
 
 Application launcher built with Tauri (Rust + TypeScript). Runs on Windows, macOS, and Linux.
 
+**Note**: This is a monorepo structure with the main launcher application in `packages/launcher/`.
+
 ## Features
 
 - Global shortcut: `Cmd+Shift+Space` (macOS) / `Ctrl+Shift+Space` (Windows/Linux)
@@ -13,7 +15,7 @@ Application launcher built with Tauri (Rust + TypeScript). Runs on Windows, macO
 
 ### Prerequisites
 
-- Node.js 18+ and npm
+- Node.js 18+ and pnpm (package manager)
 - Rust 1.77.2+ with Cargo
 - Platform requirements:
   - Windows: WebView2 runtime
@@ -25,13 +27,13 @@ Application launcher built with Tauri (Rust + TypeScript). Runs on Windows, macO
 ```bash
 git clone https://github.com/nukeop/keyed-launcher.git
 cd keyed-launcher
-npm install
+pnpm install
 
 # Development
-npm run tauri:dev
+pnpm tauri:dev
 
 # Production build
-npm run tauri:build
+pnpm tauri:build
 ```
 
 ## Usage
@@ -44,6 +46,21 @@ The launcher runs in the background with a system tray icon.
 
 ## Development
 
+### Monorepo Structure
+
+```
+keyed-launcher/
+├── packages/
+│   └── launcher/          # Main Tauri application
+│       ├── src/           # React frontend
+│       ├── src-tauri/     # Rust backend
+│       └── package.json   # Launcher dependencies
+├── package.json           # Root workspace configuration
+└── pnpm-workspace.yaml    # pnpm workspace settings
+```
+
+All commands run from the root directory and are automatically routed to the appropriate package.
+
 ### Tech Stack
 
 - Frontend: TypeScript + React + Vite + Tailwind CSS
@@ -55,30 +72,30 @@ The launcher runs in the background with a system tray icon.
 
 ```bash
 # Development
-npm run tauri:dev          # Start development server
-npm run dev               # Frontend only
+pnpm tauri:dev          # Start development server
+pnpm dev               # Frontend only
 
 # Building
-npm run tauri:build       # Build production app
-npm run build            # Build frontend only
+pnpm tauri:build       # Build production app
+pnpm build            # Build frontend only
 
 # Testing
-npm run test             # Run tests
-npm run test:coverage    # Run tests with coverage
-npm run test:watch       # Run tests in watch mode
+pnpm test             # Run tests
+pnpm test:coverage    # Run tests with coverage
+pnpm test:watch       # Run tests in watch mode
 
 # Linting
-npm run lint            # Check code style
-npm run lint:fix        # Fix linting issues
+pnpm lint            # Check code style
+pnpm lint:fix        # Fix linting issues
 ```
 
 ### Build Output
 
 ```bash
-npm run tauri:build
+pnpm tauri:build
 ```
 
-Platform-specific outputs in `src-tauri/target/release/bundle/`:
+Platform-specific outputs in `packages/launcher/src-tauri/target/release/bundle/`:
 - Windows: `.msi` installer and `.exe` executable
 - macOS: `.dmg` installer and `.app` bundle  
 - Linux: `.deb`, `.rpm` packages and `.AppImage`
@@ -86,10 +103,10 @@ Platform-specific outputs in `src-tauri/target/release/bundle/`:
 ## Configuration
 
 ### Global Shortcut
-Modify in `src-tauri/src/shortcuts.rs`. Default: `CmdOrCtrl+Shift+Space`
+Modify in `packages/launcher/src-tauri/src/shortcuts.rs`. Default: `CmdOrCtrl+Shift+Space`
 
 ### Window Settings
-Configure in `src-tauri/tauri.conf.json`:
+Configure in `packages/launcher/src-tauri/tauri.conf.json`:
 - Size: 600x400 pixels
 - Frameless and transparent
 - Always on top, skip taskbar
@@ -99,7 +116,7 @@ Configure in `src-tauri/tauri.conf.json`:
 
 1. Fork the repository
 2. Clone: `git clone https://github.com/your-username/keyed-launcher.git`
-3. Install dependencies: `npm install`
+3. Install dependencies: `pnpm install`
 4. Create feature branch: `git checkout -b feature/name`
 5. Make changes and test
 6. Commit and push
