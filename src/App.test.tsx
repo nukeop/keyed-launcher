@@ -38,7 +38,7 @@ vi.mock('./utils/environment', () => ({
   isProd: vi.fn(() => true),
 }));
 
-const commandExecute = vi.fn();
+const commandExecute = vi.fn().mockResolvedValue({});
 vi.mock('./plugins/commands/command-executor', () => ({
   createCommandExecutor: vi.fn(() => ({
     mode: 'no-view',
