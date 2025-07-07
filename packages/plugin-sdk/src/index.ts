@@ -9,6 +9,8 @@ export type {
   NoViewCommand,
   ViewCommand,
   Plugin,
+  Action,
+  BasicAction,
 } from './types';
 
 export {

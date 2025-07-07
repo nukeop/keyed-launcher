@@ -84,3 +84,24 @@ export interface Plugin {
   onStartup?: () => Promise<void>;
   onUnload?: () => Promise<void>;
 }
+
+export namespace Action {
+  export interface OpenInBrowser {
+    type: 'open-in-browser';
+    url: string;
+  }
+
+  export interface CopyToClipboard {
+    type: 'copy-to-clipboard';
+    text: string;
+  }
+
+  export interface Close {
+    type: 'close';
+  }
+}
+
+export type BasicAction =
+  | Action.OpenInBrowser
+  | Action.CopyToClipboard
+  | Action.Close;
