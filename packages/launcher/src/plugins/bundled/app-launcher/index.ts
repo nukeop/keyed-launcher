@@ -1,13 +1,10 @@
 import { registerMultipleDynamicEntries } from '../../commands';
-import { LauncherEntry, CommandContext } from '../../types';
-import { invoke } from '@tauri-apps/api/core';
-
-interface MacOSApp {
-  name: string;
-  path: string;
-  bundle_id: string;
-  icon: string;
-}
+import {
+  LauncherEntry,
+  CommandContext,
+  PluginAPI,
+  MacOSApp,
+} from '@keyed-launcher/plugin-sdk';
 
 const PLUGIN_ID = 'com.keyed-launcher.app-launcher-macos';
 
@@ -29,10 +26,10 @@ export async function onStartup(): Promise<void> {
 
 async function discoverApps(): Promise<MacOSApp[]> {
   try {
-    const apps = await invoke<MacOSApp[]>('get_macos_applications');
+    const apps = await PluginAPI.system.getApplications();
     return apps;
   } catch (error) {
-    console.error('Failed to get macOS applications from Rust backend:', error);
+    console.error('Failed to get macOS applications from system API:', error);
     throw error;
   }
 }
@@ -69,10 +66,7 @@ async function launchApp(app: MacOSApp): Promise<void> {
   try {
     console.log(`🚀 Launching ${app.name} at ${app.path}`);
 
-    await invoke('plugin:shell|execute', {
-      program: 'open',
-      args: [app.path],
-    });
+    await PluginAPI.shell.execute('open', [app.path]);
   } catch (error) {
     console.error(`Failed to launch ${app.name}:`, error);
     throw new Error(`Failed to launch ${app.name}: ${error}`);

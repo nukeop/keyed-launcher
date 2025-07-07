@@ -2,7 +2,7 @@ import { FC, useEffect, useRef } from 'react';
 import { ResultItem } from './ResultItem';
 import { CategoryHeader } from './CategoryHeader';
 import { groupEntriesByCategory } from '../utils/categoryUtils';
-import { NoViewCommand, ViewCommand } from '../plugins/api/types';
+import { NoViewCommand, ViewCommand } from '@keyed-launcher/plugin-sdk';
 
 export interface LauncherEntry {
   id: string; // Unique ID (pluginId.commandName)
