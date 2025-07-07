@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { Plugin } from '../plugins/types';
 import { useCommandRegistry } from './commands';
+import { registerPluginCommands } from '../plugins/commands';
 
 export interface PluginLoadingStatus {
   status: 'loading' | 'loaded' | 'error' | 'disabled';
@@ -53,6 +54,8 @@ export const usePluginRegistry = create<PluginRegistry>((set, get) => ({
         pluginStatus: newStatus,
       };
     });
+
+    registerPluginCommands(plugin);
 
     if (plugin.onStartup) {
       plugin.onStartup().catch((error) => {
