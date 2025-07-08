@@ -1,3 +1,4 @@
+mod commands;
 #[cfg(target_os = "macos")]
 mod macos_apps;
 mod plugins;
@@ -11,7 +12,6 @@ mod window;
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_fs::init())
-        .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_clipboard_manager::init())
         .plugin(
             tauri_plugin_global_shortcut::Builder::new()
@@ -38,6 +38,8 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![
             #[cfg(target_os = "macos")]
             macos_apps::get_macos_applications,
+            commands::execute_command,
+            commands::execute_command_simple,
             plugins::ensure_plugin_directories,
             plugins::get_plugin_directories,
             theme_watcher::load_user_themes,

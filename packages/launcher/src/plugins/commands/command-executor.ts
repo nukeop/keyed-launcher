@@ -6,6 +6,8 @@ import {
   CommandContext,
 } from '@keyed-launcher/plugin-sdk';
 
+const commandModules = import.meta.glob('../bundled/**/commands/*.ts');
+
 export function createCommandExecutor(
   plugin: Plugin,
   commandName: string,
@@ -15,14 +17,30 @@ export function createCommandExecutor(
     throw new Error(`Command ${commandName} not found`);
   }
 
+  const getBundledCommandPath = (pluginId: string, handlerPath: string) => {
+    const pluginName = pluginId.split('.').pop();
+    return `../bundled/${pluginName}/${handlerPath}`;
+  };
+
   if (command.mode === 'no-view') {
     return {
       mode: 'no-view',
       execute: async (context: CommandContext): Promise<void> => {
         await safePluginExecution(plugin.manifest.id, async () => {
-          const commandModule = await import(
-            /* @vite-ignore */ `${plugin.manifest.id}/${command.handler}`
+          const commandPath = getBundledCommandPath(
+            plugin.manifest.id,
+            command.handler,
           );
+
+          const moduleLoader = commandModules[commandPath];
+          let commandModule;
+
+          if (moduleLoader) {
+            commandModule = await moduleLoader();
+          } else {
+            commandModule = await import(/* @vite-ignore */ commandPath);
+          }
+
           await commandModule.default(context);
         });
       },
@@ -34,9 +52,20 @@ export function createCommandExecutor(
         const result = await safePluginExecution(
           plugin.manifest.id,
           async () => {
-            const commandModule = await import(
-              /* @vite-ignore */ `${plugin.manifest.id}/${command.handler}`
+            const commandPath = getBundledCommandPath(
+              plugin.manifest.id,
+              command.handler,
             );
+
+            const moduleLoader = commandModules[commandPath];
+            let commandModule;
+
+            if (moduleLoader) {
+              commandModule = await moduleLoader();
+            } else {
+              commandModule = await import(/* @vite-ignore */ commandPath);
+            }
+
             return await commandModule.default(context);
           },
         );

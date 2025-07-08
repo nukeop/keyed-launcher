@@ -57,7 +57,7 @@ class LauncherAPIBridge implements PluginAPIBridge {
   shell = {
     async execute(program: string, args: string[] = []): Promise<void> {
       try {
-        await invoke('plugin:shell|execute', {
+        await invoke('execute_command_simple', {
           program,
           args,
         });
