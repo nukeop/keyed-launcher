@@ -19,7 +19,8 @@
     "scripts": {
         "build": "vite build",
         "dev": "vite build --watch",
-        "clean": "rm -rf dist"
+        "clean": "rm -rf dist",
+        "prepublishOnly": "pnpm run clean && pnpm run build"
     },
     "keywords": [
         "keyed-launcher",
@@ -30,10 +31,17 @@
     ],
     "author": "nukeop <12746779+nukeop@users.noreply.github.com>",
     "license": "AGPL-3.0",
+    "homepage": "https://github.com/nukeop/keyed-launcher",
+    "bugs": {
+        "url": "https://github.com/nukeop/keyed-launcher/issues"
+    },
     "repository": {
         "type": "git",
         "url": "https://github.com/nukeop/keyed-launcher.git",
         "directory": "packages/plugin-sdk"
+    },
+    "publishConfig": {
+        "access": "public"
     },
     "peerDependencies": {
         "react": "^18.0.0"

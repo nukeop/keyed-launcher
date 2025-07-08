@@ -1,0 +1,108 @@
+name: SDK Release
+
+on:
+  push:
+    tags:
+      - 'plugin-sdk@*.*.*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g., 1.0.0)'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  release-sdk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: latest
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Extract version from tag or input
+        id: version
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          else
+            # Extract version from tag (plugin-sdk@1.0.0 -> 1.0.0)
+            VERSION=${GITHUB_REF#refs/tags/plugin-sdk@}
+            echo "version=$VERSION" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Update package.json version
+        working-directory: packages/plugin-sdk
+        run: |
+          npm version ${{ steps.version.outputs.version }} --no-git-tag-version
+
+      - name: Build SDK
+        working-directory: packages/plugin-sdk
+        run: pnpm run build
+
+      - name: Run SDK tests
+        working-directory: packages/plugin-sdk
+        run: |
+          if [ -f "package.json" ] && grep -q "test" package.json; then
+            pnpm run test
+          else
+            echo "No tests found, skipping..."
+          fi
+
+      - name: Validate build output
+        working-directory: packages/plugin-sdk
+        run: |
+          # Check that build outputs exist
+          ls -la dist/
+          if [ ! -f "dist/index.js" ] || [ ! -f "dist/index.d.ts" ]; then
+            echo "❌ Build outputs missing"
+            exit 1
+          fi
+          echo "✅ Build outputs validated"
+
+      - name: Publish to NPM
+        working-directory: packages/plugin-sdk
+        run: |
+          echo "Publishing @keyed-launcher/plugin-sdk@${{ steps.version.outputs.version }}"
+          npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create GitHub release
+        if: github.event_name == 'push'
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref_name }}
+          release_name: 'Plugin SDK ${{ steps.version.outputs.version }}'
+          body: |
+            ## Plugin SDK Release ${{ steps.version.outputs.version }}
+            
+            Published to NPM: https://www.npmjs.com/package/@keyed-launcher/plugin-sdk
+            
+            ### Installation
+            ```bash
+            npm install @keyed-launcher/plugin-sdk
+            ```
+            
+            ### Changes
+            See commit history for detailed changes in this release.
+          draft: false
+          prerelease: false
