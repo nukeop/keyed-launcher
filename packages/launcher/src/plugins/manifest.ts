@@ -1,4 +1,4 @@
-import { PluginManifest } from './types';
+import { PluginManifest } from '@keyed-launcher/plugin-sdk';
 
 type UnknownRecord = Record<string, unknown>;
 

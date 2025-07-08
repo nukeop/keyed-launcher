@@ -1,5 +1,10 @@
 import { safePluginExecution } from '../loader';
-import { NoViewCommand, ViewCommand, Plugin, CommandContext } from '../types';
+import {
+  NoViewCommand,
+  ViewCommand,
+  Plugin,
+  CommandContext,
+} from '@keyed-launcher/plugin-sdk';
 
 export function createCommandExecutor(
   plugin: Plugin,

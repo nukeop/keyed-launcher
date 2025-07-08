@@ -1,4 +1,4 @@
-import { Plugin, LauncherEntry } from '../types';
+import { Plugin, LauncherEntry } from '@keyed-launcher/plugin-sdk';
 import { usePluginRegistry } from '../../stores/plugins';
 import { useCommandRegistry, RegisteredCommand } from '../../stores/commands';
 import { createCommandExecutor } from './command-executor';

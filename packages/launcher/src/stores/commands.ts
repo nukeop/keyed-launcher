@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { LauncherEntry } from '../plugins/types';
+import { LauncherEntry } from '@keyed-launcher/plugin-sdk';
 
 export interface RegisteredCommand {
   pluginId?: string;
@@ -10,7 +10,7 @@ export interface RegisteredCommand {
 
 export interface CommandRegistryState {
   registeredCommands: Map<string, RegisteredCommand>;
-  _commandsVersion?: number; // Performance hack:Internal counter for triggering re-renders. We can keep this map mutable, if we increment this every time we modify it
+  _commandsVersion?: number; // Performance hack: Internal counter for triggering re-renders. We can keep this map mutable, if we increment this every time we modify it
 }
 
 export interface CommandRegistryActions {

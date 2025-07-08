@@ -1,4 +1,8 @@
-import { Plugin, PluginManifest, CommandManifest } from '../plugins/types';
+import {
+  Plugin,
+  PluginManifest,
+  CommandManifest,
+} from '@keyed-launcher/plugin-sdk';
 
 export class MockPluginBuilder {
   private manifest: Partial<PluginManifest> = {};

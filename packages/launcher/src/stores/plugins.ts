@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { Plugin } from '../plugins/types';
+import { Plugin } from '@keyed-launcher/plugin-sdk';
 import { useCommandRegistry } from './commands';
 import { registerPluginCommands } from '../plugins/commands';
 

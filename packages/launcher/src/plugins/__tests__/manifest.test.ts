@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { validatePluginManifest, createDefaultManifest } from '../manifest';
-import { PluginManifest } from '../types';
+import { PluginManifest } from '@keyed-launcher/plugin-sdk';
 
 describe('manifest validation', () => {
   const validManifest: PluginManifest = {

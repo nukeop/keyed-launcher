@@ -1,4 +1,4 @@
-import { Plugin } from './types';
+import { Plugin } from '@keyed-launcher/plugin-sdk';
 import { loadPluginManifest } from './manifest';
 import { usePluginRegistry } from '../stores/plugins';
 import { getPluginManifestPath, getPluginCommandPath } from './utils';

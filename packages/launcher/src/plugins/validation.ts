@@ -1,4 +1,4 @@
-import { PluginManifest } from './types';
+import { PluginManifest } from '@keyed-launcher/plugin-sdk';
 
 interface UnvalidatedCommand {
   name?: unknown;

@@ -1,4 +1,4 @@
-import { Plugin, PluginManifest } from './types';
+import { Plugin, PluginManifest } from '@keyed-launcher/plugin-sdk';
 import { loadPluginManifest } from './manifest';
 
 interface PluginModule {
