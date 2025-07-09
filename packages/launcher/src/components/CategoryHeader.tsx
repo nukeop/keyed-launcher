@@ -1,6 +1,9 @@
+import { CommandIcon } from '@keyed-launcher/plugin-sdk';
+import { IconRenderer } from './IconRenderer';
+
 interface CategoryHeaderProps {
   title: string;
-  icon?: string;
+  icon?: CommandIcon;
   'data-testid'?: string;
 }
 
@@ -15,7 +18,11 @@ export function CategoryHeader({
       data-testid={testId}
     >
       <div className="flex items-center">
-        {icon && <span className="mr-2 text-sm">{icon}</span>}
+        {icon && (
+          <div className="mr-2 flex h-4 w-4 items-center justify-center">
+            <IconRenderer icon={icon} className="h-4 w-4" size={16} />
+          </div>
+        )}
         {title.toUpperCase()}
       </div>
     </div>

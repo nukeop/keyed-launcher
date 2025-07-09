@@ -2,22 +2,10 @@ import { FC, useEffect, useRef } from 'react';
 import { ResultItem } from './ResultItem';
 import { CategoryHeader } from './CategoryHeader';
 import { groupEntriesByCategory } from '../utils/categoryUtils';
-import { NoViewCommand, ViewCommand } from '@keyed-launcher/plugin-sdk';
+import { LauncherEntry as SDKLauncherEntry } from '@keyed-launcher/plugin-sdk';
 
-export interface LauncherEntry {
-  id: string; // Unique ID (pluginId.commandName)
-  commandName: string; // Command identifier
-  title: string; // Display name
-  subtitle?: string; // Brief description
-  description: string; // Detailed description
-  mode: 'view' | 'no-view';
-  category?: string; // Domain category
-  pluginId: string; // Plugin ID
-  execute: NoViewCommand | ViewCommand;
-  icon?: string;
-
+export interface LauncherEntry extends SDKLauncherEntry {
   // Legacy compatibility fields (will be removed in future phases)
-  keywords?: string[]; // TODO: Move to plugin manifest
   shortcut?: string; // TODO: Move to plugin manifest
 }
 

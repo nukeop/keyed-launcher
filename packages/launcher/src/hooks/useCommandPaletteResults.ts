@@ -37,7 +37,7 @@ const mockResults: LauncherEntry[] = [
         toggleThemeDebugger();
       },
     },
-    icon: '🎨',
+    icon: { type: 'emoji', emoji: '🎨' },
     shortcut: '⌘+⇧+T',
     keywords: ['theme', 'debug', 'colors', 'palette', 'developer'],
   },

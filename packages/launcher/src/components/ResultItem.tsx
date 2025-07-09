@@ -1,9 +1,11 @@
 import { forwardRef } from 'react';
+import { CommandIcon } from '@keyed-launcher/plugin-sdk';
+import { IconRenderer } from './IconRenderer';
 
 interface ResultItemProps {
   title: string;
   subtitle?: string;
-  icon?: string;
+  icon?: CommandIcon;
   isSelected?: boolean;
   onClick?: () => void;
   shortcut?: string;
@@ -32,7 +34,7 @@ export const ResultItem = forwardRef<HTMLDivElement, ResultItemProps>(
     >
       {icon && (
         <div className="mr-3 flex h-8 w-8 flex-shrink-0 items-center justify-center">
-          <img className="h-8 w-8" src={icon} />
+          <IconRenderer icon={icon} className="h-8 w-8" size={32} />
         </div>
       )}
 

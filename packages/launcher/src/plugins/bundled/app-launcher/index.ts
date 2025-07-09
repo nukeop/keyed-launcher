@@ -45,7 +45,7 @@ function createLauncherEntries(
     description: `Launch ${app.name}`,
     mode: 'no-view' as const,
     category: 'Applications',
-    icon: app.icon || undefined,
+    icon: app.icon ? { type: 'base64', data: app.icon } : undefined,
     keywords: [
       app.name.toLowerCase(),
       ...app.name.toLowerCase().split(' '),

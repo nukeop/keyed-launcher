@@ -1,8 +1,9 @@
 import { LauncherEntry } from '../components/ResultsList';
+import { CommandIcon } from '@keyed-launcher/plugin-sdk';
 
 export interface CategoryGroup {
   category: string;
-  icon?: string;
+  icon?: CommandIcon;
   entries: LauncherEntry[];
 }
 

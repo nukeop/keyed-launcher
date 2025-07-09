@@ -1,0 +1,58 @@
+{
+  "id": "com.keyed-launcher.icon-demo",
+  "name": "Icon Demo Plugin",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "description": "A plugin demonstrating the icon system",
+  "author": "Keyed Launcher",
+  "commands": [
+    {
+      "name": "emoji-example",
+      "displayName": "Emoji Example",
+      "description": "Example command with emoji icon",
+      "mode": "no-view",
+      "handler": "commands/emoji.ts",
+      "icon": {
+        "type": "emoji",
+        "emoji": "🎉"
+      }
+    },
+    {
+      "name": "named-example",
+      "displayName": "Named Example",
+      "description": "Example command with Named icon",
+      "mode": "no-view",
+      "handler": "commands/named.ts",
+      "icon": {
+        "type": "named",
+        "name": "Settings"
+      }
+    },
+    {
+      "name": "named-gradient-example",
+      "displayName": "Named Gradient Example",
+      "description": "Example command with gradient Named icon",
+      "mode": "no-view",
+      "handler": "commands/gradient.ts",
+      "icon": {
+        "type": "named",
+        "name": "Zap",
+        "gradient": {
+          "from": "blue-500",
+          "to": "purple-600"
+        }
+      }
+    },
+    {
+      "name": "base64-example",
+      "displayName": "Base64 Example",
+      "description": "Example command with base64 encoded icon (red square)",
+      "mode": "no-view",
+      "handler": "commands/base64.ts",
+      "icon": {
+        "type": "base64",
+        "data": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg=="
+      }
+    }
+  ]
+}

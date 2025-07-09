@@ -11,6 +11,10 @@ export type {
   Plugin,
   Action,
   BasicAction,
+  EmojiIcon,
+  Base64Icon,
+  NamedIcon,
+  CommandIcon,
 } from './types';
 
 export {

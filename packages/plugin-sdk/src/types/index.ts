@@ -1,5 +1,27 @@
 import React from 'react';
 
+// Icon types
+export interface EmojiIcon {
+  type: 'emoji';
+  emoji: string;
+}
+
+export interface Base64Icon {
+  type: 'base64';
+  data: string; // Base64-encoded image data (with data:image/... prefix)
+}
+
+export interface NamedIcon {
+  type: 'named';
+  name: string; // Icon name from Lucide React
+  gradient?: {
+    from: string; // Tailwind color (e.g., 'blue-500')
+    to: string; // Tailwind color (e.g., 'purple-600')
+  };
+}
+
+export type CommandIcon = EmojiIcon | Base64Icon | NamedIcon | string;
+
 export interface PluginManifest {
   // Plugin identity (store-ready)
   id: string; // Globally unique ID (e.g., "com.author.plugin-name")
@@ -42,7 +64,7 @@ export interface CommandManifest {
   mode: 'view' | 'no-view';
   category?: string; // Domain category
   keywords?: string[]; // Search terms
-  icon?: string; // Icon identifier or URL
+  icon?: CommandIcon; // Icon configuration
 
   // Command execution
   handler: string; // Path to command file (relative to plugin root)
@@ -66,6 +88,7 @@ export interface LauncherEntry {
   category?: string; // Domain category
   pluginId: string; // Plugin ID
   keywords?: string[]; // Search terms
+  icon?: CommandIcon; // Icon configuration
   execute: NoViewCommand | ViewCommand;
 }
 

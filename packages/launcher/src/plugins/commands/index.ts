@@ -22,6 +22,8 @@ export function registerCommand(plugin: Plugin, commandName: string): void {
     mode: command.mode,
     category: command.category,
     pluginId: plugin.manifest.id,
+    icon: command.icon,
+    keywords: command.keywords,
     execute: createCommandExecutor(plugin, command.name),
   };
 

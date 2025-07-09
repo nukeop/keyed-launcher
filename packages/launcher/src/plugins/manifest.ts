@@ -18,6 +18,7 @@ interface UnvalidatedCommand extends UnknownRecord {
   description?: unknown;
   mode?: unknown;
   handler?: unknown;
+  icon?: unknown;
 }
 
 export async function loadPluginManifest(
@@ -157,6 +158,91 @@ function validateCommand(command: UnvalidatedCommand, index: number): string[] {
 
   if (!command.handler || typeof command.handler !== 'string') {
     errors.push(`Command ${index}: missing or invalid "handler" field`);
+  }
+
+  if (command.icon !== undefined) {
+    const iconErrors = validateIcon(command.icon, index);
+    errors.push(...iconErrors);
+  }
+
+  return errors;
+}
+
+function validateIcon(icon: unknown, commandIndex: number): string[] {
+  const errors: string[] = [];
+
+  if (typeof icon === 'string') {
+    return errors;
+  }
+
+  if (typeof icon !== 'object' || icon === null) {
+    errors.push(`Command ${commandIndex}: icon must be a string or object`);
+    return errors;
+  }
+
+  const iconObj = icon as Record<string, unknown>;
+
+  if (!iconObj.type || typeof iconObj.type !== 'string') {
+    errors.push(
+      `Command ${commandIndex}: icon object must have a "type" field`,
+    );
+    return errors;
+  }
+
+  switch (iconObj.type) {
+    case 'emoji':
+      if (!iconObj.emoji || typeof iconObj.emoji !== 'string') {
+        errors.push(
+          `Command ${commandIndex}: emoji icon must have an "emoji" field`,
+        );
+      }
+      break;
+
+    case 'base64':
+      if (!iconObj.data || typeof iconObj.data !== 'string') {
+        errors.push(
+          `Command ${commandIndex}: base64 icon must have a "data" field`,
+        );
+      } else if (!iconObj.data.startsWith('data:image/')) {
+        errors.push(
+          `Command ${commandIndex}: base64 icon data must start with "data:image/"`,
+        );
+      }
+      break;
+
+    case 'named':
+      if (!iconObj.name || typeof iconObj.name !== 'string') {
+        errors.push(
+          `Command ${commandIndex}: named icon must have a "name" field`,
+        );
+      }
+
+      // Validate gradient if present
+      if (iconObj.gradient !== undefined) {
+        if (typeof iconObj.gradient !== 'object' || iconObj.gradient === null) {
+          errors.push(
+            `Command ${commandIndex}: named icon gradient must be an object`,
+          );
+        } else {
+          const gradient = iconObj.gradient as Record<string, unknown>;
+          if (!gradient.from || typeof gradient.from !== 'string') {
+            errors.push(
+              `Command ${commandIndex}: named icon gradient must have a "from" field`,
+            );
+          }
+          if (!gradient.to || typeof gradient.to !== 'string') {
+            errors.push(
+              `Command ${commandIndex}: named icon gradient must have a "to" field`,
+            );
+          }
+        }
+      }
+      break;
+
+    default:
+      errors.push(
+        `Command ${commandIndex}: unsupported icon type "${iconObj.type}"`,
+      );
   }
 
   return errors;
