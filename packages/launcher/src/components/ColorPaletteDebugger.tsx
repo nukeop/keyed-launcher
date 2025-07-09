@@ -1,5 +1,4 @@
-import { useTheme } from '../theming';
-import { generateColorPalette } from '../theming/colorUtils';
+import { useTheme, generateColorPalette } from '@keyed-launcher/plugin-sdk';
 
 export function ColorPaletteDebugger() {
   const { currentTheme } = useTheme();

@@ -143,6 +143,13 @@ importers:
         version: 3.2.4(@types/node@24.0.10)(jiti@2.4.2)(jsdom@26.1.0)(lightningcss@1.30.1)(yaml@2.8.0)
 
   packages/plugin-sdk:
+    dependencies:
+      '@tauri-apps/api':
+        specifier: ^2.6.0
+        version: 2.6.0
+      colord:
+        specifier: ^2.9.3
+        version: 2.9.3
     devDependencies:
       '@types/react':
         specifier: ^18.0.0

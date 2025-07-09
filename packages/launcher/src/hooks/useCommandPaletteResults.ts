@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import { LauncherEntry } from '../components/ResultsList';
 import { usePluginRegistry } from '../stores/plugins';
 import { useCommandRegistry } from '../stores/commands';
+import { CommandContext, useTheme } from '@keyed-launcher/plugin-sdk';
 
 let showThemeDebugger = false;
 let forceUpdate: (() => void) | null = null;
@@ -51,6 +52,7 @@ export function useCommandPaletteResults(searchQuery: string) {
   );
   const commandsVersion = useCommandRegistry((state) => state._commandsVersion);
   const isPluginEnabled = usePluginRegistry((state) => state.isPluginEnabled);
+  const theme = useTheme();
 
   forceUpdate = () => setUpdateTrigger((prev) => prev + 1);
 
@@ -92,9 +94,9 @@ export function useCommandPaletteResults(searchQuery: string) {
 
   const executeResult = (result: LauncherEntry) => {
     if (result.execute) {
-      const context = {
+      const context: CommandContext = {
         environment: {
-          theme: 'default',
+          theme,
           platform: 'web',
           debug: true,
         },

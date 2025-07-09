@@ -5,10 +5,10 @@ import { CommandPalette } from './components/CommandPalette';
 import { AppContainer } from './components/AppContainer';
 import { LauncherTransition } from './components/LauncherTransition';
 import { userPerformanceMonitoringStartup } from './hooks/usePerformanceMonitoringStartup';
-import { ThemeProvider } from './theming';
 import { ThemeDebugger } from './components/ThemeDebugger';
 import { ColorPaletteDebugger } from './components/ColorPaletteDebugger';
 import { isThemeDebuggerVisible } from './hooks/useCommandPaletteResults';
+import { ThemeProvider } from '@keyed-launcher/plugin-sdk';
 
 function App() {
   const { searchQuery, setSearchQuery, isVisible, hideWindow } =

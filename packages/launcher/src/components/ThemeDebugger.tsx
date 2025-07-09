@@ -1,4 +1,4 @@
-import { useTheme } from '../theming';
+import { useTheme } from '@keyed-launcher/plugin-sdk';
 
 export function ThemeDebugger() {
   const { currentTheme, availableThemes, switchTheme } = useTheme();
