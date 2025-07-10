@@ -1,3 +1,4 @@
+import { invoke } from '@tauri-apps/api/core';
 import { create } from 'zustand';
 
 interface LauncherState {
@@ -32,7 +33,6 @@ export const useLauncherStore = create<LauncherState>((set, get) => ({
     return new Promise((resolve) => {
       setTimeout(async () => {
         try {
-          const { invoke } = await import('@tauri-apps/api/core');
           await invoke('hide_window');
         } catch (error) {
           console.error('Failed to hide window:', error);

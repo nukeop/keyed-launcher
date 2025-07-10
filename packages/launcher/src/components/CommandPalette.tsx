@@ -1,17 +1,17 @@
 import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { SearchBar } from './SearchBar';
 import { ResultsList, LauncherEntry } from './ResultsList';
 import { ActionBar } from './ActionBar';
 import {
   isThemeDebuggerVisible,
   hideThemeDebugger,
+  useCommandPaletteResults,
 } from '../hooks/useCommandPaletteResults';
 
 interface CommandPaletteProps {
   searchQuery: string;
   onSearchChange: (query: string) => void;
-  results: LauncherEntry[];
-  onResultExecute: (result: LauncherEntry) => void;
   onClose: () => Promise<void>;
   emptyMessage?: string;
 }
@@ -19,12 +19,17 @@ interface CommandPaletteProps {
 export function CommandPalette({
   searchQuery,
   onSearchChange,
-  results,
-  onResultExecute,
   onClose,
   emptyMessage = 'Start typing to search...',
 }: CommandPaletteProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const navigate = useNavigate();
+
+  const { results, executeResult } = useCommandPaletteResults(searchQuery);
+
+  const handleBackClick = () => {
+    navigate('/');
+  };
 
   useEffect(() => {
     setSelectedIndex(0);
@@ -67,7 +72,7 @@ export function CommandPalette({
           if (results.length === 0) return;
           event.preventDefault();
           if (results[selectedIndex]) {
-            onResultExecute(results[selectedIndex]);
+            executeResult(results[selectedIndex]);
           }
           break;
       }
@@ -78,14 +83,14 @@ export function CommandPalette({
   }, [
     results,
     selectedIndex,
-    onResultExecute,
+    executeResult,
     searchQuery,
     onSearchChange,
     onClose,
   ]);
 
   const handleItemClick = (result: LauncherEntry) => {
-    onResultExecute(result);
+    executeResult(result);
   };
 
   return (
@@ -94,8 +99,8 @@ export function CommandPalette({
         value={searchQuery}
         onChange={onSearchChange}
         placeholder="Type to search..."
+        onBackClick={handleBackClick}
       />
-
       <ResultsList
         results={results}
         selectedIndex={selectedIndex}

@@ -1,4 +1,5 @@
 import React from 'react';
+import { ThemeContextType } from '../theming';
 
 // Icon types
 export interface EmojiIcon {
@@ -72,7 +73,7 @@ export interface CommandManifest {
 
 export interface CommandContext {
   environment: {
-    theme: string;
+    theme: ThemeContextType;
     platform: string;
     debug: boolean;
   };

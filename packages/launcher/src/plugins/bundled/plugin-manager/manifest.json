@@ -1,0 +1,32 @@
+{
+    "id": "com.keyed-launcher.plugin-manager",
+    "name": "Plugin Manager",
+    "version": "1.0.0",
+    "apiVersion": "1.0.0",
+    "description": "View and manage installed plugins",
+    "author": "Keyed Launcher",
+    "namespace": "keyed-launcher",
+    "license": "MIT",
+    "category": "System",
+    "keywords": [
+        "plugins",
+        "manager",
+        "installed",
+        "system"
+    ],
+    "commands": [
+        {
+            "name": "show-plugins",
+            "displayName": "Plugin Manager",
+            "subtitle": "System Tool",
+            "description": "View all installed plugins",
+            "mode": "view",
+            "category": "System",
+            "icon": {
+                "type": "emoji",
+                "emoji": "🔌"
+            },
+            "handler": "show-plugins"
+        }
+    ]
+}
