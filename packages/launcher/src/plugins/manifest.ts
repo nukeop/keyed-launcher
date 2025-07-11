@@ -105,8 +105,6 @@ export function validatePluginManifest(
     );
   }
 
-  console.log(`Manifest is valid`, manifest);
-
   return manifest as PluginManifest;
 }
 

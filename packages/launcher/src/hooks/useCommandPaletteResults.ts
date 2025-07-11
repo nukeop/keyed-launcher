@@ -63,15 +63,6 @@ export function useCommandPaletteResults(searchQuery: string) {
       )
       .map((command) => command.entry);
 
-    console.log(
-      '🔍 Debug: getAllLauncherEntries returned:',
-      pluginEntries.length,
-      'entries',
-    );
-    console.log(
-      '🔍 Debug: Plugin entries:',
-      pluginEntries.map((e) => e.title),
-    );
     return [...mockResults, ...pluginEntries];
   }, [registeredCommands, commandsVersion, isPluginEnabled]);
 

@@ -11,7 +11,7 @@ export const userPerformanceMonitoringStartup = () => {
     showWindow();
     startup.end();
 
-    const memoryInterval = startMonitoring();
+    startMonitoring();
 
     const handleFocus = () => {
       trackWindowShow(showWindow);
@@ -20,9 +20,6 @@ export const userPerformanceMonitoringStartup = () => {
     window.addEventListener('focus', handleFocus);
     return () => {
       window.removeEventListener('focus', handleFocus);
-      if (memoryInterval) {
-        clearInterval(memoryInterval);
-      }
     };
   }, [showWindow]);
 };

@@ -39,7 +39,6 @@ export const useCommandRegistry = create<CommandRegistry>((set, get) => ({
       : command.commandName;
 
     state.registeredCommands.set(commandId, command);
-    console.log(`Registered command: ${commandId} (${command.source})`);
 
     // Trigger re-render
     set((prevState) => ({
@@ -52,7 +51,6 @@ export const useCommandRegistry = create<CommandRegistry>((set, get) => ({
     const state = get();
     if (state.registeredCommands.has(commandId)) {
       state.registeredCommands.delete(commandId);
-      console.log(`Unregistered command: ${commandId}`);
 
       // Trigger re-render
       set((prevState) => ({
@@ -94,7 +92,6 @@ export const useCommandRegistry = create<CommandRegistry>((set, get) => ({
 
     for (const commandId of commandsToRemove) {
       state.registeredCommands.delete(commandId);
-      console.log(`Unregistered command: ${commandId}`);
     }
 
     if (commandsToRemove.length > 0) {

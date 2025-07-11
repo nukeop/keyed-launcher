@@ -73,7 +73,5 @@ export function initializeLauncherAPI(): void {
   if (typeof window !== 'undefined') {
     const apiInstance = new LauncherAPIBridge();
     (window as any).__LAUNCHER_API__ = apiInstance;
-
-    console.log('🔗 Launcher API bridge initialized');
   }
 }

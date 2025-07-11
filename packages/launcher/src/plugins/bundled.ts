@@ -56,7 +56,6 @@ export async function loadBundledPlugins(): Promise<{
       };
 
       results.loaded.push(plugin);
-      console.log(`✅ Loaded bundled plugin: ${manifest.id}`);
     } catch (error) {
       const pluginId =
         manifestPath.match(/\.\/bundled\/([^\/]+)\//)?.[1] || 'unknown';

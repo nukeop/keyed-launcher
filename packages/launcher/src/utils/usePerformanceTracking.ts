@@ -41,15 +41,9 @@ export const usePerformanceTracking = () => {
   };
 
   const startMonitoring = () => {
-    if (!import.meta.env.DEV) return null;
-
-    PerformanceMonitor.startFPSMonitoring();
-
-    const memoryInterval = setInterval(() => {
-      PerformanceMonitor.logMemoryUsage();
-    }, 30000);
-
-    return memoryInterval;
+    if (import.meta.env.DEV) {
+      PerformanceMonitor.startFPSMonitoring();
+    }
   };
 
   return {

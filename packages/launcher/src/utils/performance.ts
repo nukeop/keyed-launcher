@@ -1,3 +1,5 @@
+import { invoke } from '@tauri-apps/api/core';
+
 interface MemoryInfo {
   usedJSHeapSize: number;
   totalJSHeapSize: number;
@@ -23,7 +25,6 @@ export class PerformanceMonitor {
       return 0;
     }
     const duration = performance.now() - this.startTime;
-    console.log(`Startup time: ${duration.toFixed(2)}ms`);
     this.startTime = null;
     return duration;
   }
@@ -37,7 +38,6 @@ export class PerformanceMonitor {
         this.fps = Math.round(
           (this.frameCount * 1000) / (currentTime - this.lastTime),
         );
-        console.log(`FPS: ${this.fps}`);
         this.frameCount = 0;
         this.lastTime = currentTime;
       }
@@ -67,7 +67,6 @@ export class PerformanceMonitor {
         };
       }
 
-      const { invoke } = await import('@tauri-apps/api/core');
       const [usedKb, totalKb] =
         await invoke<[number, number]>('get_memory_usage');
 
@@ -78,19 +77,6 @@ export class PerformanceMonitor {
     } catch (error) {
       console.warn('Memory API error:', error);
       return { used: 'Error', total: 'N/A' };
-    }
-  }
-
-  static logMemoryUsage() {
-    if (!this.isEnabled) return;
-    if ('memory' in performance) {
-      const memory = (performance as Performance & { memory: MemoryInfo })
-        .memory;
-      console.log({
-        used: `${(memory.usedJSHeapSize / 1024 / 1024).toFixed(2)} MB`,
-        total: `${(memory.totalJSHeapSize / 1024 / 1024).toFixed(2)} MB`,
-        limit: `${(memory.jsHeapSizeLimit / 1024 / 1024).toFixed(2)} MB`,
-      });
     }
   }
 }

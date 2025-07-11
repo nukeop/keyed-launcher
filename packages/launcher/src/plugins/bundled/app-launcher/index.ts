@@ -9,15 +9,11 @@ import {
 const PLUGIN_ID = 'com.keyed-launcher.app-launcher-macos';
 
 export async function onStartup(): Promise<void> {
-  console.log('🍎 Starting macOS App Launcher plugin...');
-
   try {
     const apps = await discoverApps();
     const entries = createLauncherEntries(apps);
 
     registerMultipleDynamicEntries(PLUGIN_ID, entries);
-
-    console.log(`✅ Registered ${entries.length} applications`);
   } catch (error) {
     console.error('❌ Failed to initialize app launcher plugin:', error);
     throw error;
@@ -64,8 +60,6 @@ function createLauncherEntries(
 
 async function launchApp(app: MacOSApp): Promise<void> {
   try {
-    console.log(`🚀 Launching ${app.name} at ${app.path}`);
-
     await PluginAPI.shell.execute('open', [app.path]);
   } catch (error) {
     console.error(`Failed to launch ${app.name}:`, error);
@@ -73,6 +67,4 @@ async function launchApp(app: MacOSApp): Promise<void> {
   }
 }
 
-export async function onUnload(): Promise<void> {
-  console.log('🍎 Unloading macOS App Launcher plugin...');
-}
+export async function onUnload(): Promise<void> {}

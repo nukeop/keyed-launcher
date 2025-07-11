@@ -12,16 +12,9 @@ PerformanceMonitor.startupTimer();
 
 async function initializeApp() {
   try {
-    console.log('🔗 Initializing Launcher API bridge...');
     initializeLauncherAPI();
-
-    console.log('🔌 Initializing plugin system...');
-
     await initializePluginSystem();
-
     const { loaded, errors } = await loadBundledPlugins();
-
-    console.log(`✅ Loaded ${loaded.length} bundled plugins`);
     if (errors.length > 0) {
       console.warn(`⚠️ ${errors.length} plugin loading errors:`, errors);
     }
@@ -30,8 +23,6 @@ async function initializeApp() {
     loaded.forEach((plugin) => {
       registerPlugin(plugin);
     });
-
-    console.log('🚀 Plugin system ready');
   } catch (error) {
     console.error('❌ Failed to initialize plugin system:', error);
   }
@@ -43,15 +34,4 @@ initializeApp().then(() => {
       <App />
     </React.StrictMode>,
   );
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-  PerformanceMonitor.endStartupTimer();
-  PerformanceMonitor.startFPSMonitoring();
-
-  if (import.meta.env.DEV) {
-    setInterval(() => {
-      PerformanceMonitor.logMemoryUsage();
-    }, 5000);
-  }
 });
