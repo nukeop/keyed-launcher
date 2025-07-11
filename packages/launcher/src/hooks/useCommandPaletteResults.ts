@@ -3,6 +3,7 @@ import { LauncherEntry } from '../components/ResultsList';
 import { usePluginRegistry } from '../stores/plugins';
 import { useCommandRegistry } from '../stores/commands';
 import { CommandContext, useTheme } from '@keyed-launcher/plugin-sdk';
+import { useNavigate } from 'react-router-dom';
 
 let showThemeDebugger = false;
 let forceUpdate: (() => void) | null = null;
@@ -53,6 +54,7 @@ export function useCommandPaletteResults(searchQuery: string) {
   const commandsVersion = useCommandRegistry((state) => state._commandsVersion);
   const isPluginEnabled = usePluginRegistry((state) => state.isPluginEnabled);
   const theme = useTheme();
+  const navigate = useNavigate();
 
   forceUpdate = () => setUpdateTrigger((prev) => prev + 1);
 
@@ -98,9 +100,7 @@ export function useCommandPaletteResults(searchQuery: string) {
           console.error(`Error executing command ${result.id}:`, error);
         });
       } else {
-        result.execute.execute(context).catch((error) => {
-          console.error(`Error executing view command ${result.id}:`, error);
-        });
+        navigate(`/plugin/${result.pluginId}/${result.commandName}`);
       }
     }
   };

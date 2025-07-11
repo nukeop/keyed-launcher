@@ -6,7 +6,7 @@ import {
   CommandContext,
 } from '@keyed-launcher/plugin-sdk';
 
-const commandModules = import.meta.glob('../bundled/**/commands/*.ts');
+const commandModules = import.meta.glob('../bundled/**/commands/*.{ts,tsx}');
 
 export function createCommandExecutor(
   plugin: Plugin,
@@ -48,33 +48,22 @@ export function createCommandExecutor(
   } else {
     return {
       mode: 'view',
-      execute: async (context: CommandContext): Promise<React.ReactElement> => {
-        const result = await safePluginExecution(
+      execute: async () => {
+        const commandPath = getBundledCommandPath(
           plugin.manifest.id,
-          async () => {
-            const commandPath = getBundledCommandPath(
-              plugin.manifest.id,
-              command.handler,
-            );
-
-            const moduleLoader = commandModules[commandPath];
-            let commandModule;
-
-            if (moduleLoader) {
-              commandModule = await moduleLoader();
-            } else {
-              commandModule = await import(/* @vite-ignore */ commandPath);
-            }
-
-            return await commandModule.default(context);
-          },
+          command.handler,
         );
 
-        if (!result) {
-          throw new Error(`Command ${commandName} failed to execute`);
+        const moduleLoader = commandModules[commandPath];
+        let commandModule;
+
+        if (moduleLoader) {
+          commandModule = await moduleLoader();
+        } else {
+          commandModule = await import(/* @vite-ignore */ commandPath);
         }
 
-        return result;
+        return commandModule.default;
       },
     };
   }

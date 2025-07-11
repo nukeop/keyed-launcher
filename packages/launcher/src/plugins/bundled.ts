@@ -22,7 +22,9 @@ export async function loadBundledPlugins(): Promise<{
   const manifestModules = import.meta.glob<ManifestModule>(
     './bundled/*/manifest.json',
   );
-  const pluginModules = import.meta.glob<PluginModule>('./bundled/*/index.ts');
+  const pluginModules = import.meta.glob<PluginModule>(
+    './bundled/*/index.{ts,tsx}',
+  );
 
   for (const manifestPath in manifestModules) {
     try {

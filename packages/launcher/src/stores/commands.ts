@@ -29,14 +29,22 @@ export interface CommandRegistryActions {
 
 export type CommandRegistry = CommandRegistryState & CommandRegistryActions;
 
+export const createCommandId = (pluginId: string, commandName: string) => {
+  return pluginId ? `${pluginId}.${commandName}` : commandName;
+};
+
+export const deriveCommandId = (command: RegisteredCommand) => {
+  return command.pluginId
+    ? createCommandId(command.pluginId, command.commandName)
+    : command.commandName;
+};
+
 export const useCommandRegistry = create<CommandRegistry>((set, get) => ({
   registeredCommands: new Map(),
 
   registerCommand: (command: RegisteredCommand) => {
     const state = get();
-    const commandId = command.pluginId
-      ? `${command.pluginId}.${command.commandName}`
-      : command.commandName;
+    const commandId = deriveCommandId(command);
 
     state.registeredCommands.set(commandId, command);
 

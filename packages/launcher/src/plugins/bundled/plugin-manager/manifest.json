@@ -26,7 +26,7 @@
                 "type": "emoji",
                 "emoji": "🔌"
             },
-            "handler": "show-plugins"
+            "handler": "commands/show-plugins"
         }
     ]
 }

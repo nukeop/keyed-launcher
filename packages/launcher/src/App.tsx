@@ -9,6 +9,7 @@ import { ColorPaletteDebugger } from './components/ColorPaletteDebugger';
 import { isThemeDebuggerVisible } from './hooks/useCommandPaletteResults';
 import { ThemeProvider } from '@keyed-launcher/plugin-sdk';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { PluginView } from './plugins/components/PluginVIew';
 
 function App() {
   const { searchQuery, setSearchQuery, isVisible, hideWindow } =
@@ -47,14 +48,7 @@ function App() {
               />
               <Route
                 path="/plugin/:pluginId/:commandName"
-                element={
-                  <CommandPalette
-                    searchQuery={searchQuery}
-                    onSearchChange={setSearchQuery}
-                    onClose={handleClose}
-                    emptyMessage="Start typing to search applications..."
-                  />
-                }
+                element={<PluginView />}
               />
             </Routes>
           </AppContainer>
