@@ -1,11 +1,12 @@
 import { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { createCommandId, useCommandRegistry } from '../../stores/commands';
 import {
   CommandContext,
   useTheme,
   ViewCommand,
 } from '@keyed-launcher/plugin-sdk';
+import { createCommandId, useCommandRegistry } from '../../stores/commands';
+import { ViewWithSearchBar } from '../../components/Views/ViewWithSearchBar';
 
 export type PluginViewProps = {};
 
@@ -46,9 +47,9 @@ export const PluginView: FC<PluginViewProps> = () => {
   console.log({ PluginComponent });
 
   return (
-    <div>
+    <ViewWithSearchBar>
       {isLoadingPluginComponent && <div>Loading...</div>}
       {PluginComponent && <PluginComponent {...context} />}
-    </div>
+    </ViewWithSearchBar>
   );
 };

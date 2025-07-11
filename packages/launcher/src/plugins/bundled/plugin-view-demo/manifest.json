@@ -1,0 +1,19 @@
+{
+    "id": "com.keyed-launcher.plugin-view-demo",
+    "name": "Plugin View Demo",
+    "version": "1.0.0",
+    "apiVersion": "1.0.0",
+    "description": "A plugin demonstrating view plugins",
+    "author": "nukeop",
+    "commands": [
+        {
+            "name": "test-view",
+            "displayName": "Test View",
+            "subtitle": "Plugin View Demo",
+            "description": "A test view command",
+            "mode": "view",
+            "category": "Test",
+            "handler": "commands/test-view"
+        }
+    ]
+}

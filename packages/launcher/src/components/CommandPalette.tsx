@@ -1,6 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { SearchBar } from './SearchBar';
 import { ResultsList, LauncherEntry } from './ResultsList';
 import { ActionBar } from './ActionBar';
 import {
@@ -8,28 +6,18 @@ import {
   hideThemeDebugger,
   useCommandPaletteResults,
 } from '../hooks/useCommandPaletteResults';
+import { ViewWithSearchBar } from './Views/ViewWithSearchBar';
+import { useLauncherStore } from '../stores/launcher';
 
 interface CommandPaletteProps {
-  searchQuery: string;
-  onSearchChange: (query: string) => void;
   onClose: () => Promise<void>;
-  emptyMessage?: string;
 }
 
-export function CommandPalette({
-  searchQuery,
-  onSearchChange,
-  onClose,
-  emptyMessage = 'Start typing to search...',
-}: CommandPaletteProps) {
+export function CommandPalette({ onClose }: CommandPaletteProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const navigate = useNavigate();
+  const { searchQuery, setSearchQuery } = useLauncherStore();
 
   const { results, executeResult } = useCommandPaletteResults(searchQuery);
-
-  const handleBackClick = () => {
-    navigate('/');
-  };
 
   useEffect(() => {
     setSelectedIndex(0);
@@ -43,7 +31,7 @@ export function CommandPalette({
           if (isThemeDebuggerVisible()) {
             hideThemeDebugger();
           } else if (searchQuery.length > 0) {
-            onSearchChange('');
+            setSearchQuery('');
           } else {
             onClose();
           }
@@ -85,7 +73,7 @@ export function CommandPalette({
     selectedIndex,
     executeResult,
     searchQuery,
-    onSearchChange,
+    setSearchQuery,
     onClose,
   ]);
 
@@ -94,22 +82,13 @@ export function CommandPalette({
   };
 
   return (
-    <div data-testid="command-palette" className="flex h-full flex-1 flex-col">
-      <SearchBar
-        value={searchQuery}
-        onChange={onSearchChange}
-        placeholder="Type to search..."
-        onBackClick={handleBackClick}
-      />
+    <ViewWithSearchBar data-testid="command-palette">
       <ResultsList
         results={results}
         selectedIndex={selectedIndex}
         onItemClick={handleItemClick}
-        emptyMessage={
-          searchQuery.length === 0 ? emptyMessage : 'No results found'
-        }
       />
       <ActionBar icon="⚙️" />
-    </div>
+    </ViewWithSearchBar>
   );
 }

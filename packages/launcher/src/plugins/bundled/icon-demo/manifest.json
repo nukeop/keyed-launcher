@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "apiVersion": "1.0.0",
   "description": "A plugin demonstrating the icon system",
-  "author": "Keyed Launcher",
+  "author": "nukeop",
   "commands": [
     {
       "name": "emoji-example",
