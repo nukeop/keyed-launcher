@@ -1,6 +1,6 @@
-import { FC } from 'react';
 import { useLauncherStore } from '../../stores/launcher';
 import { SearchBar } from '../SearchBar';
+import { FC } from 'react';
 
 export type ViewWithSearchBarProps = {
   'data-testid'?: string;

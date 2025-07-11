@@ -1,8 +1,8 @@
-import { FC, useEffect, useRef } from 'react';
-import { ResultItem } from './ResultItem';
-import { CategoryHeader } from './CategoryHeader';
 import { groupEntriesByCategory } from '../utils/categoryUtils';
+import { CategoryHeader } from './CategoryHeader';
+import { ResultItem } from './ResultItem';
 import { LauncherEntry as SDKLauncherEntry } from '@keyed-launcher/plugin-sdk';
+import { FC, useEffect, useRef } from 'react';
 
 export interface LauncherEntry extends SDKLauncherEntry {
   // Legacy compatibility fields (will be removed in future phases)

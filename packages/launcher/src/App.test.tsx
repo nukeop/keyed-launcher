@@ -1,12 +1,12 @@
-import { describe, it, expect, vi, beforeAll } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import App from './App';
-import { setInvoke } from './test/tauri';
+import { registerCommand } from './plugins/commands';
+import { CommandRegistry, useCommandRegistry } from './stores/commands';
 import { PluginRegistry, usePluginRegistry } from './stores/plugins';
 import { MockPluginBuilder } from './test/mockPluginBuilder';
-import { CommandRegistry, useCommandRegistry } from './stores/commands';
-import { registerCommand } from './plugins/commands';
+import { setInvoke } from './test/tauri';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { beforeAll, describe, expect, it, vi } from 'vitest';
 
 vi.mock('@tauri-apps/api/core', () => ({
   invoke: vi.fn(),

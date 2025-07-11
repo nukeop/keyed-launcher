@@ -1,5 +1,5 @@
-import { create } from 'zustand';
 import { LauncherEntry } from '@keyed-launcher/plugin-sdk';
+import { create } from 'zustand';
 
 export interface RegisteredCommand {
   pluginId?: string;

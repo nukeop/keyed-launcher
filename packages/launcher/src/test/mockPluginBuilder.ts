@@ -1,7 +1,7 @@
 import {
+  CommandManifest,
   Plugin,
   PluginManifest,
-  CommandManifest,
 } from '@keyed-launcher/plugin-sdk';
 
 export class MockPluginBuilder {

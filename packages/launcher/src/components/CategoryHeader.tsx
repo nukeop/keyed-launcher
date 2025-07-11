@@ -1,5 +1,5 @@
-import { CommandIcon } from '@keyed-launcher/plugin-sdk';
 import { IconRenderer } from './IconRenderer';
+import { CommandIcon } from '@keyed-launcher/plugin-sdk';
 
 interface CategoryHeaderProps {
   title: string;

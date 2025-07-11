@@ -1,6 +1,6 @@
-import { describe, it, expect, vi } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
 import { ActionBar } from '../ActionBar';
+import { render, screen, waitFor } from '@testing-library/react';
+import { describe, expect, it, vi } from 'vitest';
 
 vi.mock('../../utils/environment', () => ({
   isDev: vi.fn(() => false),

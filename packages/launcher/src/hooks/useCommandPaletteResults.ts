@@ -1,8 +1,8 @@
-import { useState, useMemo } from 'react';
 import { LauncherEntry } from '../components/ResultsList';
-import { usePluginRegistry } from '../stores/plugins';
 import { useCommandRegistry } from '../stores/commands';
+import { usePluginRegistry } from '../stores/plugins';
 import { CommandContext, useTheme } from '@keyed-launcher/plugin-sdk';
+import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 let showThemeDebugger = false;

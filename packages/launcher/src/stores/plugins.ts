@@ -1,7 +1,7 @@
-import { create } from 'zustand';
-import { Plugin } from '@keyed-launcher/plugin-sdk';
-import { useCommandRegistry } from './commands';
 import { registerPluginCommands } from '../plugins/commands';
+import { useCommandRegistry } from './commands';
+import { Plugin } from '@keyed-launcher/plugin-sdk';
+import { create } from 'zustand';
 
 export interface PluginLoadingStatus {
   status: 'loading' | 'loaded' | 'error' | 'disabled';

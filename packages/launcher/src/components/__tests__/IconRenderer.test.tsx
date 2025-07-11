@@ -1,6 +1,6 @@
-import { render, screen } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
 import { IconRenderer } from '../IconRenderer';
+import { render, screen } from '@testing-library/react';
+import { describe, expect, it } from 'vitest';
 
 describe('IconRenderer', () => {
   it('renders emoji icons correctly', () => {

@@ -1,9 +1,9 @@
 import { registerMultipleDynamicEntries } from '../../commands';
 import {
-  LauncherEntry,
   CommandContext,
-  PluginAPI,
+  LauncherEntry,
   MacOSApp,
+  PluginAPI,
 } from '@keyed-launcher/plugin-sdk';
 
 const PLUGIN_ID = 'com.keyed-launcher.app-launcher-macos';

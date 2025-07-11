@@ -1,7 +1,7 @@
-import { describe, it, expect, vi } from 'vitest';
-import { render, screen, within } from '@testing-library/react';
-import { PerformanceDashboard } from '../PerformanceDashboard';
 import { isProd } from '../../utils/environment';
+import { PerformanceDashboard } from '../PerformanceDashboard';
+import { render, screen, within } from '@testing-library/react';
+import { describe, expect, it, vi } from 'vitest';
 
 vi.mock('../../utils/performance', () => ({
   PerformanceMonitor: {

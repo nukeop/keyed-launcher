@@ -1,19 +1,18 @@
+import { AppContainer } from './components/AppContainer';
+import { ColorPaletteDebugger } from './components/ColorPaletteDebugger';
+import { CommandPalette } from './components/CommandPalette';
+import { LauncherTransition } from './components/LauncherTransition';
+import { ThemeDebugger } from './components/ThemeDebugger';
+import { isThemeDebuggerVisible } from './hooks/useCommandPaletteResults';
+import { userPerformanceMonitoringStartup } from './hooks/usePerformanceMonitoringStartup';
+import { PluginView } from './plugins/components/PluginVIew';
 import { useLauncherStore } from './stores/launcher';
 import { usePerformanceTracking } from './utils/usePerformanceTracking';
-import { CommandPalette } from './components/CommandPalette';
-import { AppContainer } from './components/AppContainer';
-import { LauncherTransition } from './components/LauncherTransition';
-import { userPerformanceMonitoringStartup } from './hooks/usePerformanceMonitoringStartup';
-import { ThemeDebugger } from './components/ThemeDebugger';
-import { ColorPaletteDebugger } from './components/ColorPaletteDebugger';
-import { isThemeDebuggerVisible } from './hooks/useCommandPaletteResults';
 import { ThemeProvider } from '@keyed-launcher/plugin-sdk';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { PluginView } from './plugins/components/PluginVIew';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 function App() {
-  const { searchQuery, setSearchQuery, isVisible, hideWindow } =
-    useLauncherStore();
+  const { isVisible, hideWindow } = useLauncherStore();
   const { trackWindowHide } = usePerformanceTracking();
   const showDebugger = isThemeDebuggerVisible();
 
@@ -37,14 +36,7 @@ function App() {
             <Routes>
               <Route
                 path="/"
-                element={
-                  <CommandPalette
-                    searchQuery={searchQuery}
-                    onSearchChange={setSearchQuery}
-                    onClose={handleClose}
-                    emptyMessage="Start typing to search applications..."
-                  />
-                }
+                element={<CommandPalette onClose={handleClose} />}
               />
               <Route
                 path="/plugin/:pluginId/:commandName"

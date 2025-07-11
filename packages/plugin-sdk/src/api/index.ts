@@ -1,13 +1,13 @@
+import * as clipboard from './clipboard';
+import * as environment from './environment';
+import * as notifications from './notifications';
+import * as shell from './shell';
+import * as system from './system';
+
 export { getAPIBridge } from './client';
 export type { MacOSApp } from './system';
 export type { Environment } from './environment';
 export type { PluginAPIBridge } from './client';
-
-import * as system from './system';
-import * as shell from './shell';
-import * as notifications from './notifications';
-import * as environment from './environment';
-import * as clipboard from './clipboard';
 
 export const PluginAPI = {
   system,

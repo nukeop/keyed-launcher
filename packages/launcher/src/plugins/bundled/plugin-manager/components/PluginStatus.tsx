@@ -1,6 +1,6 @@
-import { FC } from 'react';
-import { CheckCircle, XCircle, Loader2, AlertCircle } from 'lucide-react';
 import { PluginLoadingStatus } from '../../../../stores/plugins';
+import { AlertCircle, CheckCircle, Loader2, XCircle } from 'lucide-react';
+import { FC } from 'react';
 
 interface PluginStatusProps {
   status?: PluginLoadingStatus;

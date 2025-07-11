@@ -1,7 +1,7 @@
-import { Plugin } from '@keyed-launcher/plugin-sdk';
-import { loadPluginManifest } from './manifest';
 import { usePluginRegistry } from '../stores/plugins';
-import { getPluginManifestPath, getPluginCommandPath } from './utils';
+import { loadPluginManifest } from './manifest';
+import { getPluginCommandPath, getPluginManifestPath } from './utils';
+import { Plugin } from '@keyed-launcher/plugin-sdk';
 
 export interface PluginLoadErrorInfo {
   pluginPath: string;

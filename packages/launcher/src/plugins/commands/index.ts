@@ -1,7 +1,7 @@
-import { Plugin, LauncherEntry } from '@keyed-launcher/plugin-sdk';
+import { RegisteredCommand, useCommandRegistry } from '../../stores/commands';
 import { usePluginRegistry } from '../../stores/plugins';
-import { useCommandRegistry, RegisteredCommand } from '../../stores/commands';
 import { createCommandExecutor } from './command-executor';
+import { LauncherEntry, Plugin } from '@keyed-launcher/plugin-sdk';
 
 export function registerCommand(plugin: Plugin, commandName: string): void {
   const command = plugin.manifest.commands.find((c) => c.name === commandName);

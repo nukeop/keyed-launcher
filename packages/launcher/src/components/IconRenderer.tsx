@@ -1,13 +1,8 @@
-import React from 'react';
-import { icons } from 'lucide-react';
+import { isBase64Icon, isEmojiIcon, isNamedIcon } from '../utils/iconUtils';
 import { CommandIcon } from '@keyed-launcher/plugin-sdk';
+import { icons } from 'lucide-react';
+import React from 'react';
 import { twMerge } from 'tailwind-merge';
-
-import {
-  isEmojiIcon,
-  isBase64Icon,
-  isNamedIcon as isNamedIcon,
-} from '../utils/iconUtils';
 
 interface IconRendererProps {
   icon: CommandIcon | undefined;

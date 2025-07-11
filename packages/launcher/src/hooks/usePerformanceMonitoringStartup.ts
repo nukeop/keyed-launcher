@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
 import { useLauncherStore } from '../stores/launcher';
 import { usePerformanceTracking } from '../utils/usePerformanceTracking';
+import { useEffect } from 'react';
 
 export const userPerformanceMonitoringStartup = () => {
   const { showWindow } = useLauncherStore();

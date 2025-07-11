@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react';
-import { ResultsList, LauncherEntry } from './ResultsList';
-import { ActionBar } from './ActionBar';
 import {
-  isThemeDebuggerVisible,
   hideThemeDebugger,
+  isThemeDebuggerVisible,
   useCommandPaletteResults,
 } from '../hooks/useCommandPaletteResults';
-import { ViewWithSearchBar } from './Views/ViewWithSearchBar';
 import { useLauncherStore } from '../stores/launcher';
+import { ActionBar } from './ActionBar';
+import { LauncherEntry, ResultsList } from './ResultsList';
+import { ViewWithSearchBar } from './Views/ViewWithSearchBar';
+import { useEffect, useState } from 'react';
 
 interface CommandPaletteProps {
   onClose: () => Promise<void>;

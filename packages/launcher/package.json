@@ -13,8 +13,8 @@
         "test": "vitest run",
         "test:coverage": "vitest run --coverage",
         "test:watch": "vitest",
-        "lint": "eslint",
-        "lint:fix": "eslint --fix",
+        "lint": "eslint \"src/**/**.{js,jsx,ts,tsx}\"",
+        "lint:fix": "eslint \"src/**/**.{js,jsx,ts,tsx}\" --fix",
         "clean": "rm -rf dist build .tauri/target"
     },
     "author": {

@@ -1,21 +1,21 @@
-import {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  ReactNode,
-} from 'react';
-import { invoke } from '@tauri-apps/api/core';
-import { listen } from '@tauri-apps/api/event';
-import { Theme, ThemeContextType } from './types';
-import { generateTailwindColorProperties } from './colorUtils';
-import raycastTheme from '../themes/raycast-inspired.json';
+import catppuccinTheme from '../themes/catppuccin-mocha.json';
 import draculaTheme from '../themes/dracula.json';
+import minimalTheme from '../themes/minimal.json';
+import nordTheme from '../themes/nord.json';
+import raycastTheme from '../themes/raycast-inspired.json';
 import spotlightTheme from '../themes/spotlight.json';
 import terminalTheme from '../themes/terminal.json';
-import minimalTheme from '../themes/minimal.json';
-import catppuccinTheme from '../themes/catppuccin-mocha.json';
-import nordTheme from '../themes/nord.json';
+import { generateTailwindColorProperties } from './colorUtils';
+import { Theme, ThemeContextType } from './types';
+import { invoke } from '@tauri-apps/api/core';
+import { listen } from '@tauri-apps/api/event';
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 

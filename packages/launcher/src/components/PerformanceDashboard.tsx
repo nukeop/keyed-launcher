@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { PerformanceMonitor } from '../utils/performance';
 import { isProd } from '../utils/environment';
+import { PerformanceMonitor } from '../utils/performance';
+import { useEffect, useState } from 'react';
 
 interface PerformanceStats {
   fps: number;

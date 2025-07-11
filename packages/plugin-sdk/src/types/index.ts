@@ -1,5 +1,5 @@
-import React from 'react';
 import { ThemeContextType } from '../theming';
+import React from 'react';
 
 // Icon types
 export interface EmojiIcon {

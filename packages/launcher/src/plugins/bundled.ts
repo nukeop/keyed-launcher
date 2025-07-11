@@ -1,5 +1,5 @@
-import { Plugin, PluginManifest } from '@keyed-launcher/plugin-sdk';
 import { loadPluginManifest } from './manifest';
+import { Plugin, PluginManifest } from '@keyed-launcher/plugin-sdk';
 
 interface PluginModule {
   onStartup?: () => Promise<void>;

@@ -1,5 +1,5 @@
-import { FC, ReactNode } from 'react';
 import { PerformanceDashboard } from './PerformanceDashboard';
+import { FC, ReactNode } from 'react';
 
 export type ActionBarProps = {
   icon?: string | ReactNode;

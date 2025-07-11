@@ -1,9 +1,9 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { PluginRegistry, usePluginRegistry } from '../plugins';
 import {
-  MockPluginBuilder,
   createMockPlugin,
+  MockPluginBuilder,
 } from '../../test/mockPluginBuilder';
+import { PluginRegistry, usePluginRegistry } from '../plugins';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const mockUnregisterCommands = vi.fn();
 vi.mock('../commands', () => ({

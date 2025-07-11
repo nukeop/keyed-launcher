@@ -1,9 +1,9 @@
+import type { MacOSApp, PluginAPIBridge } from '@keyed-launcher/plugin-sdk';
 import { invoke } from '@tauri-apps/api/core';
 import {
-  writeText as writeTextTauri,
   readText as readTextTauri,
+  writeText as writeTextTauri,
 } from '@tauri-apps/plugin-clipboard-manager';
-import type { PluginAPIBridge, MacOSApp } from '@keyed-launcher/plugin-sdk';
 
 class LauncherAPIBridge implements PluginAPIBridge {
   system = {

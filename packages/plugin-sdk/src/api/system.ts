@@ -1,4 +1,5 @@
 import './global';
+
 import { getAPIBridge } from './client';
 
 export interface MacOSApp {

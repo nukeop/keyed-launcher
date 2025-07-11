@@ -1,6 +1,6 @@
-import { forwardRef } from 'react';
-import { CommandIcon } from '@keyed-launcher/plugin-sdk';
 import { IconRenderer } from './IconRenderer';
+import { CommandIcon } from '@keyed-launcher/plugin-sdk';
+import { forwardRef } from 'react';
 
 interface ResultItemProps {
   title: string;

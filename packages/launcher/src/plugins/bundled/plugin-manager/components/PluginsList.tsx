@@ -1,8 +1,8 @@
-import { FC, useMemo } from 'react';
-import { Plugin } from '@keyed-launcher/plugin-sdk';
-import { usePluginRegistry } from '../../../../stores/plugins';
 import { CategoryHeader } from '../../../../components/CategoryHeader';
+import { usePluginRegistry } from '../../../../stores/plugins';
 import { PluginItem } from './PluginItem';
+import { Plugin } from '@keyed-launcher/plugin-sdk';
+import { FC, useMemo } from 'react';
 
 interface PluginGroup {
   category: string;

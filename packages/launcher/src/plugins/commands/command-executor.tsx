@@ -1,9 +1,9 @@
 import { safePluginExecution } from '../loader';
 import {
-  NoViewCommand,
-  ViewCommand,
-  Plugin,
   CommandContext,
+  NoViewCommand,
+  Plugin,
+  ViewCommand,
 } from '@keyed-launcher/plugin-sdk';
 
 const commandModules = import.meta.glob('../bundled/**/commands/*.{ts,tsx}');

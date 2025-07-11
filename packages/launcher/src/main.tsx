@@ -1,13 +1,14 @@
+import App from './App';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
-import App from './App';
 import './index.css';
-import { PerformanceMonitor } from './utils/performance';
-import { initializePluginSystem } from './plugins/init';
-import { loadBundledPlugins } from './plugins/bundled';
-import { usePluginRegistry } from './stores/plugins';
+
 import { initializeLauncherAPI } from './plugins/api-bridge';
+import { loadBundledPlugins } from './plugins/bundled';
+import { initializePluginSystem } from './plugins/init';
+import { usePluginRegistry } from './stores/plugins';
+import { PerformanceMonitor } from './utils/performance';
 
 PerformanceMonitor.startupTimer();
 

@@ -20,7 +20,9 @@
         "build": "vite build",
         "dev": "vite build --watch",
         "clean": "rm -rf dist",
-        "prepublishOnly": "pnpm run clean && pnpm run build"
+        "prepublishOnly": "pnpm run clean && pnpm run build",
+        "lint": "eslint \"src/**/**.{js,jsx,ts,tsx}\"",
+        "lint:fix": "eslint \"src/**/**.{js,jsx,ts,tsx}\" --fix"
     },
     "keywords": [
         "keyed-launcher",
