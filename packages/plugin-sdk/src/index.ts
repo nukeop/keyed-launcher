@@ -27,3 +27,5 @@ export {
 export type { MacOSApp, Environment, PluginAPIBridge } from './api';
 
 export * from './theming';
+
+export * from './components';

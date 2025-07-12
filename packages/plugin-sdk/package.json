@@ -58,6 +58,8 @@
     },
     "dependencies": {
         "@tauri-apps/api": "^2.6.0",
-        "colord": "^2.9.3"
+        "colord": "^2.9.3",
+        "react-markdown": "^10.1.0",
+        "tailwind-merge": "^3.3.1"
     }
 }
