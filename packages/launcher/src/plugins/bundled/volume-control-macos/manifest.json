@@ -1,0 +1,230 @@
+{
+    "id": "com.keyed-launcher.volume-control-macos",
+    "name": "macOS Volume Control",
+    "version": "1.0.0",
+    "apiVersion": "1.0.0",
+    "description": "Control system volume on macOS - adjust levels, mute/unmute, and set presets",
+    "author": "nukeop",
+    "namespace": "keyed-launcher",
+    "license": "MIT",
+    "category": "System",
+    "keywords": [
+        "volume",
+        "audio",
+        "sound",
+        "mute",
+        "speaker",
+        "system"
+    ],
+    "commands": [
+        {
+            "name": "volume-up",
+            "displayName": "Volume Up",
+            "subtitle": "Increase system volume",
+            "description": "Increase the system volume by 10%",
+            "mode": "no-view",
+            "category": "Volume",
+            "icon": {
+                "type": "named",
+                "name": "Volume2",
+                "gradient": {
+                    "from": "blue-500",
+                    "to": "green-600"
+                }
+            },
+            "keywords": [
+                "volume",
+                "up",
+                "increase",
+                "louder",
+                "audio",
+                "sound"
+            ],
+            "handler": "commands/volume-up.ts"
+        },
+        {
+            "name": "volume-down",
+            "displayName": "Volume Down",
+            "subtitle": "Decrease system volume",
+            "description": "Decrease the system volume by 10%",
+            "mode": "no-view",
+            "category": "Volume",
+            "icon": {
+                "type": "named",
+                "name": "Volume1",
+                "gradient": {
+                    "from": "green-500",
+                    "to": "blue-600"
+                }
+            },
+            "keywords": [
+                "volume",
+                "down",
+                "decrease",
+                "quieter",
+                "lower",
+                "audio",
+                "sound"
+            ],
+            "handler": "commands/volume-down.ts"
+        },
+        {
+            "name": "volume-mute-toggle",
+            "displayName": "Toggle Mute",
+            "subtitle": "Mute or unmute system audio",
+            "description": "Toggle mute state of the system audio",
+            "mode": "no-view",
+            "category": "Volume",
+            "icon": {
+                "type": "named",
+                "name": "VolumeX",
+                "gradient": {
+                    "from": "gray-500",
+                    "to": "red-600"
+                }
+            },
+            "keywords": [
+                "mute",
+                "unmute",
+                "toggle",
+                "silence",
+                "audio",
+                "sound"
+            ],
+            "handler": "commands/volume-mute-toggle.ts"
+        },
+        {
+            "name": "volume-set-0",
+            "displayName": "Set Volume to 0%",
+            "subtitle": "Silence system audio",
+            "description": "Set the system volume to 0%",
+            "mode": "no-view",
+            "category": "Volume",
+            "icon": {
+                "type": "named",
+                "name": "VolumeX",
+                "gradient": {
+                    "from": "slate-500",
+                    "to": "gray-600"
+                }
+            },
+            "keywords": [
+                "volume",
+                "set",
+                "0",
+                "zero",
+                "silence",
+                "quiet",
+                "audio",
+                "sound"
+            ],
+            "handler": "commands/volume-set-0.ts"
+        },
+        {
+            "name": "volume-set-25",
+            "displayName": "Set Volume to 25%",
+            "subtitle": "Low volume preset",
+            "description": "Set the system volume to 25%",
+            "mode": "no-view",
+            "category": "Volume",
+            "icon": {
+                "type": "named",
+                "name": "Volume1",
+                "gradient": {
+                    "from": "emerald-400",
+                    "to": "green-500"
+                }
+            },
+            "keywords": [
+                "volume",
+                "set",
+                "25",
+                "low",
+                "quiet",
+                "audio",
+                "sound"
+            ],
+            "handler": "commands/volume-set-25.ts"
+        },
+        {
+            "name": "volume-set-50",
+            "displayName": "Set Volume to 50%",
+            "subtitle": "Medium volume preset",
+            "description": "Set the system volume to 50%",
+            "mode": "no-view",
+            "category": "Volume",
+            "icon": {
+                "type": "named",
+                "name": "Volume1",
+                "gradient": {
+                    "from": "blue-400",
+                    "to": "cyan-500"
+                }
+            },
+            "keywords": [
+                "volume",
+                "set",
+                "50",
+                "medium",
+                "half",
+                "audio",
+                "sound"
+            ],
+            "handler": "commands/volume-set-50.ts"
+        },
+        {
+            "name": "volume-set-75",
+            "displayName": "Set Volume to 75%",
+            "subtitle": "High volume preset",
+            "description": "Set the system volume to 75%",
+            "mode": "no-view",
+            "category": "Volume",
+            "icon": {
+                "type": "named",
+                "name": "Volume2",
+                "gradient": {
+                    "from": "orange-400",
+                    "to": "yellow-500"
+                }
+            },
+            "keywords": [
+                "volume",
+                "set",
+                "75",
+                "high",
+                "loud",
+                "audio",
+                "sound"
+            ],
+            "handler": "commands/volume-set-75.ts"
+        },
+        {
+            "name": "volume-set-100",
+            "displayName": "Set Volume to 100%",
+            "subtitle": "Maximum volume preset",
+            "description": "Set the system volume to 100%",
+            "mode": "no-view",
+            "category": "Volume",
+            "icon": {
+                "type": "named",
+                "name": "Volume2",
+                "gradient": {
+                    "from": "red-500",
+                    "to": "orange-600"
+                }
+            },
+            "keywords": [
+                "volume",
+                "set",
+                "100",
+                "max",
+                "maximum",
+                "full",
+                "loud",
+                "audio",
+                "sound"
+            ],
+            "handler": "commands/volume-set-100.ts"
+        }
+    ]
+}

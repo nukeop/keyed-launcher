@@ -2,15 +2,21 @@
     "tabWidth": 2,
     "singleQuote": true,
     "trailingComma": "all",
-    "importOrderSeparation": true,
-    "importOrderSortSpecifiers": true,
     "importOrder": [
         "^@?(.*)$",
+        "<BUILTIN_MODULES>",
         "<THIRD_PARTY_MODULES>",
+        " ",
+        " ",
         "^[./]",
         "^[../]"
     ],
+    "importOrderParserPlugins": [
+        "typescript",
+        "jsx"
+    ],
     "plugins": [
-        "prettier-plugin-tailwindcss"
+        "prettier-plugin-tailwindcss",
+        "@ianvs/prettier-plugin-sort-imports"
     ]
 }
