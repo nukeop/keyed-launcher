@@ -1,4 +1,4 @@
-import React from 'react';
+import { FC } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 export interface LabelProps {
@@ -8,7 +8,7 @@ export interface LabelProps {
   className?: string;
 }
 
-export const Label: React.FC<LabelProps> = ({
+export const Label: FC<LabelProps> = ({
   title,
   text,
   icon,

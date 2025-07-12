@@ -1,5 +1,5 @@
+import { CommandIcon } from '..';
 import { isBase64Icon, isEmojiIcon, isNamedIcon } from '../utils/iconUtils';
-import { CommandIcon } from '@keyed-launcher/plugin-sdk';
 import { icons } from 'lucide-react';
 import React from 'react';
 import { twMerge } from 'tailwind-merge';

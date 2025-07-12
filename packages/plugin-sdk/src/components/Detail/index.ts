@@ -1,2 +1,2 @@
-export { default as Detail } from './Detail';
+export { Detail } from './Detail';
 export type { DetailProps } from './Detail';

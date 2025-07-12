@@ -1,16 +1,7 @@
 import { groupEntriesByCategory } from '../utils/categoryUtils';
 import { CategoryHeader } from './CategoryHeader';
-import { ResultItem } from './ResultItem';
-import { LauncherEntry as SDKLauncherEntry } from '@keyed-launcher/plugin-sdk';
+import { ItemKind, LauncherEntry, List } from '@keyed-launcher/plugin-sdk';
 import { FC, useEffect, useRef } from 'react';
-
-export interface LauncherEntry extends SDKLauncherEntry {
-  // Legacy compatibility fields (will be removed in future phases)
-  shortcut?: string; // TODO: Move to plugin manifest
-}
-
-// Keep Result as alias for backwards compatibility during transition
-export type Result = LauncherEntry;
 
 interface ResultsListProps {
   results: LauncherEntry[];
@@ -71,16 +62,16 @@ export const ResultsList: FC<ResultsListProps> = ({
             globalIndex++;
 
             return (
-              <ResultItem
+              <List.Item
                 ref={isSelected ? selectedItemRef : undefined}
                 data-testid={`result-item-${result.id}`}
                 key={result.id}
                 title={result.title}
                 subtitle={result.subtitle}
+                kind={ItemKind.Application}
                 icon={result.icon}
-                shortcut={result.shortcut}
                 isSelected={isSelected}
-                onClick={() => onItemClick(result)}
+                onAction={() => onItemClick(result)}
               />
             );
           })}

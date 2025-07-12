@@ -1,9 +1,4 @@
-import {
-  Base64Icon,
-  CommandIcon,
-  EmojiIcon,
-  NamedIcon,
-} from '@keyed-launcher/plugin-sdk';
+import { Base64Icon, CommandIcon, EmojiIcon, NamedIcon } from '..';
 
 export function isEmojiIcon(icon: CommandIcon): icon is EmojiIcon {
   return typeof icon === 'object' && icon.type === 'emoji';

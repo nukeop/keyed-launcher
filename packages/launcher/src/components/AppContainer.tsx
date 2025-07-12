@@ -6,7 +6,7 @@ type AppContainerProps = {
 
 export const AppContainer: FC<AppContainerProps> = ({ children }) => {
   return (
-    <div className="relative flex h-full w-full flex-col rounded-lg border border-white/20 bg-black/60">
+    <div className="relative flex h-full w-full flex-col rounded-lg border border-white/20 bg-black/80">
       {children}
     </div>
   );

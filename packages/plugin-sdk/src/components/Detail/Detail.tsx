@@ -1,21 +1,21 @@
 import { Metadata } from './Metadata';
-import React from 'react';
+import React, { FC } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { twMerge } from 'tailwind-merge';
 
-export interface DetailProps {
+export type DetailProps = {
   className?: string;
   markdown?: string;
   metadata?: React.ReactNode;
   isLoading?: boolean;
   navigationTitle?: string;
-}
+};
 
-interface DetailComponent extends React.FC<DetailProps> {
+interface DetailComponent extends FC<DetailProps> {
   Metadata: typeof Metadata;
 }
 
-const DetailBase: React.FC<DetailProps> = ({
+const DetailBase: FC<DetailProps> = ({
   className = '',
   markdown = '',
   metadata = null,
@@ -38,7 +38,5 @@ const DetailBase: React.FC<DetailProps> = ({
   );
 };
 
-const Detail = DetailBase as DetailComponent;
+export const Detail = DetailBase as DetailComponent;
 Detail.Metadata = Metadata;
-
-export default Detail;

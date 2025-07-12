@@ -1,22 +1,18 @@
 import { Item } from './Item';
-import React from 'react';
+import { FC, ReactNode } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 export interface TagListProps {
   title: string;
-  children?: React.ReactNode;
+  children?: ReactNode;
   className?: string;
 }
 
-interface TagListComponent extends React.FC<TagListProps> {
+interface TagListComponent extends FC<TagListProps> {
   Item: typeof Item;
 }
 
-const TagListBase: React.FC<TagListProps> = ({
-  title,
-  children,
-  className = '',
-}) => {
+const TagListBase: FC<TagListProps> = ({ title, children, className = '' }) => {
   return (
     <div className={twMerge('flex flex-col gap-2', className)}>
       <div className="text-xs font-medium text-gray-400">{title}</div>

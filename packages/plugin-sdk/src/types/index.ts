@@ -79,11 +79,20 @@ export interface CommandContext {
   };
 }
 
+export enum ItemKind {
+  Application = 'Application',
+  Command = 'Command',
+  PluginCommand = 'Plugin Command',
+  QuickLink = 'Quick Link',
+  SystemSettings = 'System Settings',
+}
+
 export interface LauncherEntry {
   id: string; // Unique ID (pluginId.commandName)
   commandName: string; // Command identifier
   title: string; // Display name
   subtitle?: string; // Brief description
+  kind?: ItemKind; // See ItemKind
   description: string; // Detailed description
   mode: 'view' | 'no-view';
   category?: string; // Domain category

@@ -1,4 +1,4 @@
-import React from 'react';
+import { FC } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 export interface ItemProps {
@@ -7,7 +7,7 @@ export interface ItemProps {
   className?: string;
 }
 
-export const Item: React.FC<ItemProps> = ({ text, color, className = '' }) => {
+export const Item: FC<ItemProps> = ({ text, color, className = '' }) => {
   return (
     <span
       className={twMerge(

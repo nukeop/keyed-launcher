@@ -1,5 +1,4 @@
-import { IconRenderer } from './IconRenderer';
-import { CommandIcon } from '@keyed-launcher/plugin-sdk';
+import { CommandIcon, IconRenderer } from '@keyed-launcher/plugin-sdk';
 
 interface CategoryHeaderProps {
   title: string;
@@ -14,7 +13,7 @@ export function CategoryHeader({
 }: CategoryHeaderProps) {
   return (
     <div
-      className="px-2 py-1 text-xs font-medium uppercase tracking-wide text-gray-400"
+      className="px-2 pt-4 pb-2 text-sm font-medium tracking-wide text-gray-400"
       data-testid={testId}
     >
       <div className="flex items-center">
@@ -23,7 +22,7 @@ export function CategoryHeader({
             <IconRenderer icon={icon} className="h-4 w-4" size={16} />
           </div>
         )}
-        {title.toUpperCase()}
+        {title}
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import { LinkIcon } from 'lucide-react';
-import React from 'react';
+import { FC } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 export interface LinkProps {
@@ -9,7 +9,7 @@ export interface LinkProps {
   className?: string;
 }
 
-export const Link: React.FC<LinkProps> = ({
+export const Link: FC<LinkProps> = ({
   title,
   target,
   text,
