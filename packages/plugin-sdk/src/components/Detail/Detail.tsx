@@ -19,15 +19,17 @@ const DetailBase: React.FC<DetailProps> = ({
   className = '',
 }) => {
   return (
-    <div className={twMerge('flex h-full gap-4', className)}>
-      {children && (
-        <div className="flex-none w-70 p-4 border-r border-gray-200 overflow-y-auto text-white">
-          {children}
-        </div>
-      )}
+    <div
+      className={twMerge('flex flex-row h-full gap-4 text-white', className)}
+    >
       <div className="flex-1 p-4 overflow-y-auto prose prose-sm max-w-none">
         <ReactMarkdown>{markdown}</ReactMarkdown>
       </div>
+      {children && (
+        <div className="flex-none w-70 p-4 border-r border-gray-600 overflow-y-auto text-white">
+          {children}
+        </div>
+      )}
     </div>
   );
 };

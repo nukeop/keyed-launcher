@@ -44,8 +44,6 @@ export const PluginView: FC<PluginViewProps> = () => {
     loadComponent();
   }, [loadPluginComponent, context]);
 
-  console.log({ PluginComponent });
-
   return (
     <ViewWithSearchBar>
       {isLoadingPluginComponent && <div>Loading...</div>}

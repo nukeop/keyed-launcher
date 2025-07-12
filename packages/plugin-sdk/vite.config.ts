@@ -1,5 +1,5 @@
-import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 
 export default defineConfig({
@@ -8,6 +8,8 @@ export default defineConfig({
     dts({
       include: ['src'],
       exclude: ['**/*.test.*', '**/*.spec.*'],
+      insertTypesEntry: true,
+      copyDtsFiles: false,
     }),
   ],
   build: {
@@ -27,5 +29,6 @@ export default defineConfig({
       },
     },
     sourcemap: true,
+    watch: {},
   },
 });
