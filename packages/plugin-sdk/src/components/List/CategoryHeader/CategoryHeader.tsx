@@ -1,19 +1,22 @@
 import { CommandIcon, IconRenderer } from '@keyed-launcher/plugin-sdk';
+import { FC } from 'react';
 
-interface CategoryHeaderProps {
+export type CategoryHeaderProps = {
   title: string;
   icon?: CommandIcon;
   'data-testid'?: string;
-}
+};
 
-export function CategoryHeader({
+interface CategoryHeaderComponent extends FC<CategoryHeaderProps> {}
+
+const CategoryHeaderBase: FC<CategoryHeaderProps> = ({
   title,
   icon,
   'data-testid': testId,
-}: CategoryHeaderProps) {
+}) => {
   return (
     <div
-      className="px-2 pt-4 pb-2 text-sm font-medium tracking-wide text-gray-400"
+      className="px-2 py-2 text-sm font-medium tracking-wide text-gray-400"
       data-testid={testId}
     >
       <div className="flex items-center">
@@ -26,4 +29,6 @@ export function CategoryHeader({
       </div>
     </div>
   );
-}
+};
+
+export const CategoryHeader = CategoryHeaderBase as CategoryHeaderComponent;

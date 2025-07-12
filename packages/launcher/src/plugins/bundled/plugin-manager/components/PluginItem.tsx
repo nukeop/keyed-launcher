@@ -1,7 +1,6 @@
-import { IconRenderer } from '../../../../components/IconRenderer';
 import { PluginLoadingStatus } from '../../../../stores/plugins';
 import { PluginStatus } from './PluginStatus';
-import { Plugin } from '@keyed-launcher/plugin-sdk';
+import { IconRenderer, Plugin } from '@keyed-launcher/plugin-sdk';
 import { FC } from 'react';
 
 interface PluginItemProps {

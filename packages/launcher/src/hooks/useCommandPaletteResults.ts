@@ -1,7 +1,10 @@
-import { LauncherEntry } from '../components/ResultsList';
 import { useCommandRegistry } from '../stores/commands';
 import { usePluginRegistry } from '../stores/plugins';
-import { CommandContext, useTheme } from '@keyed-launcher/plugin-sdk';
+import {
+  CommandContext,
+  LauncherEntry,
+  useTheme,
+} from '@keyed-launcher/plugin-sdk';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -40,7 +43,6 @@ const mockResults: LauncherEntry[] = [
       },
     },
     icon: { type: 'emoji', emoji: '🎨' },
-    shortcut: '⌘+⇧+T',
     keywords: ['theme', 'debug', 'colors', 'palette', 'developer'],
   },
 ];

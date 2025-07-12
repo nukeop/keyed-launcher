@@ -1,7 +1,6 @@
-import { CategoryHeader } from '../../../../components/CategoryHeader';
 import { usePluginRegistry } from '../../../../stores/plugins';
 import { PluginItem } from './PluginItem';
-import { Plugin } from '@keyed-launcher/plugin-sdk';
+import { List, Plugin } from '@keyed-launcher/plugin-sdk';
 import { FC, useMemo } from 'react';
 
 interface PluginGroup {
@@ -72,7 +71,7 @@ export const PluginsList: FC<PluginsListProps> = ({ searchQuery = '' }) => {
     <div className="flex flex-col space-y-2">
       {filteredAndGroupedPlugins.map((group) => (
         <div key={group.category}>
-          <CategoryHeader
+          <List.CategoryHeader
             title={`${group.category} (${group.plugins.length})`}
             data-testid="plugin-category-header"
           />

@@ -4,8 +4,8 @@ import {
   useCommandPaletteResults,
 } from '../hooks/useCommandPaletteResults';
 import { useLauncherStore } from '../stores/launcher';
-import { LauncherEntry, ResultsList } from './ResultsList';
 import { ViewWithSearchBar } from './Views/ViewWithSearchBar';
+import { LauncherEntry, List } from '@keyed-launcher/plugin-sdk';
 import { useEffect, useState } from 'react';
 
 interface CommandPaletteProps {
@@ -82,10 +82,10 @@ export function CommandPalette({ onClose }: CommandPaletteProps) {
 
   return (
     <ViewWithSearchBar data-testid="command-palette">
-      <ResultsList
+      <List
         results={results}
         selectedIndex={selectedIndex}
-        onItemClick={handleItemClick}
+        onItemAction={handleItemClick}
       />
     </ViewWithSearchBar>
   );

@@ -1,5 +1,5 @@
 import { CommandPalette } from '../CommandPalette';
-import { LauncherEntry } from '../ResultsList';
+import { LauncherEntry } from '@keyed-launcher/plugin-sdk';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
@@ -31,7 +31,6 @@ const mockResults: LauncherEntry[] = [
     mode: 'no-view',
     category: 'Applications',
     pluginId: 'test-plugin',
-    shortcut: '⌘+C',
     execute: {
       mode: 'no-view',
       execute: vi.fn(),
@@ -51,7 +50,6 @@ const mockResults: LauncherEntry[] = [
       mode: 'no-view',
       execute: vi.fn(),
     },
-    shortcut: '⌘+T',
   },
   {
     id: '3',
