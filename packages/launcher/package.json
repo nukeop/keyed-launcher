@@ -23,6 +23,7 @@
     "license": "AGPL-3.0",
     "description": "High-performance multiplatform launcher built with Tauri",
     "devDependencies": {
+        "@tailwindcss/typography": "^0.5.16",
         "@tauri-apps/cli": "^2.6.0",
         "@testing-library/jest-dom": "^6.6.3",
         "@testing-library/react": "^16.3.0",

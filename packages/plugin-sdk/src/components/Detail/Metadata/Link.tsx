@@ -1,3 +1,4 @@
+import { LinkIcon } from 'lucide-react';
 import React from 'react';
 import { twMerge } from 'tailwind-merge';
 
@@ -16,14 +17,17 @@ export const Link: React.FC<LinkProps> = ({
 }) => {
   return (
     <div className={twMerge('flex flex-col gap-1', className)}>
-      <div className="text-xs font-semibold text-gray-600">{title}</div>
+      <div className="text-xs font-medium text-gray-400">{title}</div>
       <a
         href={target}
-        className="text-sm text-blue-600 hover:text-blue-800 hover:underline"
+        className="flex flex-row items-center text-sm text-blue-500 hover:underline"
         target="_blank"
         rel="noopener noreferrer"
       >
         {text || target}
+        <span className="rounded-full bg-white/20 text-white p-1 ml-1">
+          <LinkIcon size={12} />
+        </span>
       </a>
     </div>
   );

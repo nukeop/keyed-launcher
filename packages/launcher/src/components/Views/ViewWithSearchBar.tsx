@@ -1,4 +1,5 @@
 import { useLauncherStore } from '../../stores/launcher';
+import { ActionBar } from '../ActionBar';
 import { SearchBar } from '../SearchBar';
 import { FC, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -42,7 +43,8 @@ export const ViewWithSearchBar: FC<ViewWithSearchBarProps> = ({
         placeholder="Type to search..."
         onBackClick={isRoot ? undefined : () => navigate('/')}
       />
-      {children}
+      <div className="flex-1 overflow-y-hidden">{children}</div>
+      <ActionBar icon="⚙️" />
     </div>
   );
 };

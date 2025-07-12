@@ -19,7 +19,7 @@ const TagListBase: React.FC<TagListProps> = ({
 }) => {
   return (
     <div className={twMerge('flex flex-col gap-2', className)}>
-      <div className="text-xs font-semibold text-gray-600">{title}</div>
+      <div className="text-xs font-medium text-gray-400">{title}</div>
       <div className="flex flex-wrap gap-1.5">{children}</div>
     </div>
   );

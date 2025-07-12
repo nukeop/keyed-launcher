@@ -57,7 +57,7 @@ export const ResultsList: FC<ResultsListProps> = ({
   return (
     <div
       ref={scrollContainerRef}
-      className="flex h-24 flex-1 flex-col overflow-y-auto px-1"
+      className="flex h-full flex-1 flex-col overflow-y-auto px-1"
       data-testid="results-list"
     >
       {categoryGroups.map((group) => (

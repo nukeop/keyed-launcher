@@ -4,7 +4,6 @@ import {
   useCommandPaletteResults,
 } from '../hooks/useCommandPaletteResults';
 import { useLauncherStore } from '../stores/launcher';
-import { ActionBar } from './ActionBar';
 import { LauncherEntry, ResultsList } from './ResultsList';
 import { ViewWithSearchBar } from './Views/ViewWithSearchBar';
 import { useEffect, useState } from 'react';
@@ -88,7 +87,6 @@ export function CommandPalette({ onClose }: CommandPaletteProps) {
         selectedIndex={selectedIndex}
         onItemClick={handleItemClick}
       />
-      <ActionBar icon="⚙️" />
     </ViewWithSearchBar>
   );
 }
