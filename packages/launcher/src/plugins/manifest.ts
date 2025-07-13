@@ -147,10 +147,10 @@ function validateCommand(command: UnvalidatedCommand, index: number): string[] {
   if (
     !command.mode ||
     typeof command.mode !== 'string' ||
-    !['view', 'no-view'].includes(command.mode)
+    !['view', 'no-view', 'inline'].includes(command.mode)
   ) {
     errors.push(
-      `Command ${index}: missing or invalid "mode" field (must be "view" or "no-view")`,
+      `Command ${index}: missing or invalid "mode" field (must be "view", "no-view", or "inline")`,
     );
   }
 

@@ -1,4 +1,4 @@
-import { createDefaultManifest, validatePluginManifest } from '../manifest';
+import { createDefaultManifest, validatePluginManifest } from './manifest';
 import { PluginManifest } from '@keyed-launcher/plugin-sdk';
 import { describe, expect, it } from 'vitest';
 

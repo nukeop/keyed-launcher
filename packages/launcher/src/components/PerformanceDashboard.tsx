@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/rules-of-hooks */
+// We're calling hooks conditionally, but the condition will never change at runtime
 import { isProd } from '../utils/environment';
 import { PerformanceMonitor } from '../utils/performance';
 import { useEffect, useState } from 'react';

@@ -94,7 +94,7 @@ export interface LauncherEntry {
   subtitle?: string; // Brief description
   kind?: ItemKind; // See ItemKind
   description: string; // Detailed description
-  mode: 'view' | 'no-view';
+  mode: 'view' | 'no-view' | 'inline';
   category?: string; // Domain category
   pluginId: string; // Plugin ID
   keywords?: string[]; // Search terms

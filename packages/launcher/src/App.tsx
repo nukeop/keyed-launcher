@@ -7,20 +7,14 @@ import { isThemeDebuggerVisible } from './hooks/useCommandPaletteResults';
 import { userPerformanceMonitoringStartup } from './hooks/usePerformanceMonitoringStartup';
 import { PluginView } from './plugins/components/PluginVIew';
 import { useLauncherStore } from './stores/launcher';
-import { usePerformanceTracking } from './utils/usePerformanceTracking';
 import { ThemeProvider } from '@keyed-launcher/plugin-sdk';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 function App() {
-  const { isVisible, hideWindow } = useLauncherStore();
-  const { trackWindowHide } = usePerformanceTracking();
+  const { isVisible } = useLauncherStore();
   const showDebugger = isThemeDebuggerVisible();
 
   userPerformanceMonitoringStartup();
-
-  const handleClose = async () => {
-    await trackWindowHide(hideWindow);
-  };
 
   return (
     <BrowserRouter>
@@ -34,10 +28,7 @@ function App() {
         <LauncherTransition isVisible={isVisible}>
           <AppContainer>
             <Routes>
-              <Route
-                path="/"
-                element={<CommandPalette onClose={handleClose} />}
-              />
+              <Route path="/" element={<CommandPalette />} />
               <Route
                 path="/plugin/:pluginId/:commandName"
                 element={<PluginView />}

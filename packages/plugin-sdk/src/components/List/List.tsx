@@ -1,3 +1,4 @@
+import { useListKeyboardNavigation } from '../../hooks/useListKeyboardNavigation';
 import { ItemKind, LauncherEntry } from '../../types';
 import { groupEntriesByCategory } from '../../utils/categoryUtils';
 import { CategoryHeader } from './CategoryHeader/CategoryHeader';
@@ -7,7 +8,6 @@ import { FC, useEffect, useRef } from 'react';
 
 export type ListProps = {
   results: LauncherEntry[];
-  selectedIndex: number;
   onItemAction: (item: LauncherEntry) => void;
   'data-testid'?: string;
 };
@@ -19,12 +19,16 @@ interface ListComponent extends FC<ListProps> {
 
 const ListBase: FC<ListProps> = ({
   results,
-  selectedIndex,
   onItemAction,
   'data-testid': testId,
 }) => {
+  const { selectedIndex } = useListKeyboardNavigation({
+    results,
+    onItemAction,
+  });
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const selectedItemRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     if (selectedItemRef.current && scrollContainerRef.current) {
       selectedItemRef.current.scrollIntoView({

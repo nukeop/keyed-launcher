@@ -1,6 +1,6 @@
 @import 'tailwindcss';
 
-@source '../../plugin-sdk/dist';
+@source '../../plugin-sdk';
 
 @plugin "@tailwindcss/typography";
 
