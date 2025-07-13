@@ -1,33 +1,33 @@
 {
-    "id": "com.keyed-launcher.plugin-manager",
-    "name": "Plugin Manager",
+    "id": "com.keyed-launcher.theme-manager",
+    "name": "Theme Manager",
     "version": "1.0.0",
     "apiVersion": "1.0.0",
-    "description": "View and manage installed plugins",
+    "description": "View and manage installed themes",
     "author": "nukeop",
     "namespace": "keyed-launcher",
     "license": "MIT",
     "category": "System",
     "keywords": [
-        "plugins",
+        "themes",
         "manager",
         "installed",
         "system"
     ],
     "commands": [
         {
-            "name": "show-plugins",
-            "displayName": "Plugin Manager",
+            "name": "show-themes",
+            "displayName": "Theme Manager",
             "subtitle": "System Tool",
             "kind": "Command",
-            "description": "View all installed plugins",
+            "description": "View all installed themes",
             "mode": "view",
             "category": "System",
             "icon": {
                 "type": "emoji",
-                "emoji": "🔌"
+                "emoji": "🎨"
             },
-            "handler": "commands/show-plugins"
+            "handler": "commands/show-themes"
         }
     ]
 }

@@ -93,7 +93,7 @@ export interface LauncherEntry {
   title: string; // Display name
   subtitle?: string; // Brief description
   kind?: ItemKind; // See ItemKind
-  description: string; // Detailed description
+  description?: string; // Detailed description
   mode: 'view' | 'no-view' | 'inline';
   category?: string; // Domain category
   pluginId: string; // Plugin ID
