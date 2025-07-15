@@ -14,7 +14,11 @@ export const CommandPalette: FC = () => {
 
   return (
     <ViewWithSearchBar data-testid="command-palette">
-      <List results={results} onItemAction={handleItemClick} />
+      <List
+        results={results}
+        onItemAction={handleItemClick}
+        data-testid="command-palette-list"
+      />
     </ViewWithSearchBar>
   );
 };

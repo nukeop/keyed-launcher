@@ -1,4 +1,4 @@
-import { CommandIcon, IconRenderer } from '@keyed-launcher/plugin-sdk';
+import { CommandIcon, IconRenderer } from '../../..';
 import { FC } from 'react';
 
 export type CategoryHeaderProps = {
@@ -17,7 +17,7 @@ const CategoryHeaderBase: FC<CategoryHeaderProps> = ({
   return (
     <div
       className="px-2 py-2 text-sm font-medium tracking-wide text-gray-400"
-      data-testid={testId}
+      data-testid={testId ?? 'plugin-list-category-header'}
     >
       <div className="flex items-center">
         {icon && (

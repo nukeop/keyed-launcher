@@ -53,7 +53,6 @@ export function useCommandPaletteResults(searchQuery: string) {
   const registeredCommands = useCommandRegistry(
     (state) => state.registeredCommands,
   );
-  const commandsVersion = useCommandRegistry((state) => state._commandsVersion);
   const isPluginEnabled = usePluginRegistry((state) => state.isPluginEnabled);
   const theme = useTheme();
   const navigate = useNavigate();
@@ -68,7 +67,7 @@ export function useCommandPaletteResults(searchQuery: string) {
       .map((command) => command.entry);
 
     return [...mockResults, ...pluginEntries];
-  }, [registeredCommands, commandsVersion, isPluginEnabled]);
+  }, [registeredCommands, isPluginEnabled]);
 
   const filteredResults = useMemo(() => {
     if (!searchQuery.trim()) {

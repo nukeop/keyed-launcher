@@ -62,7 +62,7 @@ export interface CommandManifest {
   displayName: string; // Display name
   subtitle?: string; // Brief description
   description: string; // Detailed description
-  mode: 'view' | 'no-view';
+  mode: 'view' | 'no-view' | 'inline';
   category?: string; // Domain category
   keywords?: string[]; // Search terms
   icon?: CommandIcon; // Icon configuration
@@ -99,7 +99,7 @@ export interface LauncherEntry {
   pluginId: string; // Plugin ID
   keywords?: string[]; // Search terms
   icon?: CommandIcon; // Icon configuration
-  execute: NoViewCommand | ViewCommand;
+  execute: NoViewCommand | ViewCommand | InlineCommand;
 }
 
 export interface NoViewCommand {
@@ -110,6 +110,11 @@ export interface NoViewCommand {
 export interface ViewCommand {
   mode: 'view';
   execute: (context: CommandContext) => Promise<React.ReactElement>;
+}
+
+export interface InlineCommand {
+  mode: 'inline';
+  execute: (context: CommandContext) => Promise<void>;
 }
 
 export interface Plugin {

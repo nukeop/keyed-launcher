@@ -42,6 +42,7 @@ const ItemBase = forwardRef<HTMLDivElement, ItemProps>(
       )}
       onClick={onAction}
       data-testid={testId ?? 'plugin-list-item'}
+      data-selected={isSelected}
     >
       <div className="flex flex-row justify-between flex-1">
         <div className="mr-3 flex h-8 w-8 flex-shrink-0 items-center justify-center">

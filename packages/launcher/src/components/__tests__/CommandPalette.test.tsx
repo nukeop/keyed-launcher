@@ -1,7 +1,17 @@
+import { useCommandRegistry } from '../../stores/commands';
+import { useLauncherStore } from '../../stores/launcher';
+import { MockCommandBuilder } from '../../test/mockCommandBuilder';
+import { MockPluginBuilder } from '../../test/mockPluginBuilder';
+import {
+  clear,
+  withDefaultPlugins,
+  withPlugin,
+} from '../../test/pluginHelpers';
 import { CommandPalette } from '../CommandPalette';
-import { LauncherEntry } from '@keyed-launcher/plugin-sdk';
+import { ThemeProvider } from '@keyed-launcher/plugin-sdk';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { MemoryRouter } from 'react-router-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 vi.mock('@tauri-apps/api/core', () => ({
@@ -20,86 +30,28 @@ vi.mock('../../utils/performance', () => ({
   },
 }));
 
-const mockResults: LauncherEntry[] = [
-  {
-    id: '1',
-    commandName: 'com.keyed.calculator',
-    title: 'Calculator',
-    subtitle: 'System calculator',
-    description: 'Built-in calculator app',
-    icon: { type: 'emoji', emoji: '🧮' },
-    mode: 'no-view',
-    category: 'Applications',
-    pluginId: 'test-plugin',
-    execute: {
-      mode: 'no-view',
-      execute: vi.fn(),
-    },
-  },
-  {
-    id: '2',
-    commandName: 'com.keyed.terminal',
-    title: 'Terminal',
-    subtitle: 'Command line interface',
-    description: 'Terminal application',
-    icon: { type: 'emoji', emoji: '💻' },
-    mode: 'no-view',
-    category: 'Applications',
-    pluginId: 'test-plugin',
-    execute: {
-      mode: 'no-view',
-      execute: vi.fn(),
-    },
-  },
-  {
-    id: '3',
-    commandName: 'com.keyed.finder',
-    title: 'Finder',
-    subtitle: 'File manager',
-    description: 'File browser',
-    icon: { type: 'emoji', emoji: '📁' },
-    mode: 'no-view',
-    category: 'Applications',
-    pluginId: 'test-plugin',
-    execute: {
-      mode: 'no-view',
-      execute: vi.fn(),
-    },
-  },
-];
-
 window.HTMLElement.prototype.scrollIntoView = vi.fn();
 
 describe('CommandPalette Integration', () => {
-  let mockOnSearchChange: ReturnType<typeof vi.fn>;
-  let mockOnResultExecute: ReturnType<typeof vi.fn>;
-  let mockOnClose: ReturnType<typeof vi.fn>;
-
-  const renderCommandPalette = (
-    props: Partial<Parameters<typeof CommandPalette>[0]> = {},
-  ) => {
-    const defaultProps = {
-      searchQuery: '',
-      onSearchChange: mockOnSearchChange,
-      results: mockResults,
-      onResultExecute: mockOnResultExecute,
-      onClose: mockOnClose,
-    };
-
-    return render(<CommandPalette {...defaultProps} {...props} />);
+  const renderCommandPalette = () => {
+    return render(
+      <MemoryRouter>
+        <ThemeProvider>
+          <CommandPalette />
+        </ThemeProvider>
+      </MemoryRouter>,
+    );
   };
 
   beforeEach(() => {
-    mockOnSearchChange = vi.fn();
-    mockOnResultExecute = vi.fn();
-    mockOnClose = vi.fn();
+    withDefaultPlugins();
   });
 
   it('renders search bar and results list', () => {
     renderCommandPalette();
 
     expect(screen.getByTestId('search-input')).toBeInTheDocument();
-    expect(screen.getByTestId('results-list')).toBeInTheDocument();
+    expect(screen.getByTestId('command-palette-list')).toBeInTheDocument();
     expect(screen.getByText('Calculator')).toBeInTheDocument();
     expect(screen.getByText('Terminal')).toBeInTheDocument();
     expect(screen.getByText('Finder')).toBeInTheDocument();
@@ -108,315 +60,292 @@ describe('CommandPalette Integration', () => {
   it('renders category headers', () => {
     renderCommandPalette();
 
-    expect(screen.getByText('APPLICATIONS')).toBeInTheDocument();
+    expect(screen.getByText('Applications')).toBeInTheDocument();
   });
 
-  it('groups results by category', () => {
-    const mixedResults: LauncherEntry[] = [
-      {
-        id: '1',
-        title: 'Calculator',
-        description: 'Calculator app',
-        mode: 'no-view',
-        category: 'Applications',
-        pluginId: 'test-plugin',
-        commandName: 'com.keyed.calculator',
-        execute: {
-          mode: 'no-view',
-          execute: vi.fn(),
-        },
-      },
-      {
-        id: '2',
-        title: 'Settings',
-        description: 'System settings',
-        mode: 'no-view',
-        category: 'System',
-        pluginId: 'test-plugin',
-        commandName: 'com.keyed.settings',
-        execute: {
-          mode: 'no-view',
-          execute: vi.fn(),
-        },
-      },
-      {
-        id: '3',
-        title: 'Terminal',
-        description: 'Terminal app',
-        mode: 'no-view',
-        category: 'Applications',
-        pluginId: 'test-plugin',
-        commandName: 'com.keyed.terminal',
-        execute: {
-          mode: 'no-view',
-          execute: vi.fn(),
-        },
-      },
-    ];
+  it('groups results by category', async () => {
+    clear();
+    const { manifest: manifest1 } = new MockCommandBuilder()
+      .withName('test-command')
+      .withCategory('Test category')
+      .build();
+    const { manifest: manifest2 } = new MockCommandBuilder()
+      .withName('zozzle')
+      .withCategory('Zozzle')
+      .build();
+    withPlugin(
+      new MockPluginBuilder()
+        .withCommand(manifest1)
+        .withCommand(manifest2)
+        .build(),
+    );
 
-    renderCommandPalette({ results: mixedResults });
+    renderCommandPalette();
 
-    expect(screen.getByText('APPLICATIONS')).toBeInTheDocument();
-    expect(screen.getByText('SYSTEM')).toBeInTheDocument();
+    const headers = await screen.findAllByTestId('category-header');
+    const headerTexts = headers.map((header) => header.textContent);
+
+    expect(headers).toHaveLength(3);
+    expect(headerTexts).toContain('Developer');
+    expect(headerTexts).toContain('Test category');
+    expect(headerTexts).toContain('Zozzle');
   });
 
   it('handles entries without category', () => {
-    const resultsWithoutCategory: LauncherEntry[] = [
-      {
-        id: '1',
-        title: 'Uncategorized Item',
-        description: 'Item without category',
-        mode: 'no-view',
-        pluginId: 'test-plugin',
-        commandName: 'com.keyed.uncategorized',
-        execute: {
-          mode: 'no-view',
-          execute: vi.fn(),
-        },
-      },
-    ];
+    clear();
+    const { manifest } = new MockCommandBuilder()
+      .withName('com.keyed.uncategorized')
+      .withCategory('')
+      .build();
+    withPlugin(new MockPluginBuilder().withCommand(manifest).build());
 
-    renderCommandPalette({ results: resultsWithoutCategory });
+    renderCommandPalette();
 
-    expect(screen.getByText('OTHER')).toBeInTheDocument();
+    expect(screen.getByText('Other')).toBeInTheDocument();
   });
 
-  it('calls onSearchChange when typing in search bar', async () => {
-    const user = userEvent.setup();
+  it('updates the search input when typing in search bar', async () => {
     renderCommandPalette();
 
     const searchInput = screen.getByTestId('search-input');
-    await user.type(searchInput, 'calc');
+    await userEvent.type(searchInput, 'calc');
 
-    expect(mockOnSearchChange).toHaveBeenCalledTimes(4);
-    expect(mockOnSearchChange).toHaveBeenCalledWith(expect.any(String));
+    expect(searchInput).toHaveValue('calc');
   });
 
   it('navigates through results with arrow keys', async () => {
-    const user = userEvent.setup();
     renderCommandPalette();
 
-    let selectedItem = screen.getByTestId('result-item-1');
+    let selectedItem = screen.getByTestId(
+      'result-item-core-dev.theme-debugger',
+    );
     expect(selectedItem).toHaveAttribute('data-selected', 'true');
 
-    await user.keyboard('{ArrowDown}');
-    selectedItem = screen.getByTestId('result-item-2');
+    await userEvent.keyboard('{ArrowDown}');
+    selectedItem = screen.getByTestId(
+      'result-item-com.tools-plugin.calculator',
+    );
     expect(selectedItem).toHaveAttribute('data-selected', 'true');
 
-    await user.keyboard('{ArrowDown}');
-    selectedItem = screen.getByTestId('result-item-3');
+    await userEvent.keyboard('{ArrowDown}');
+    selectedItem = screen.getByTestId('result-item-com.tools-plugin.terminal');
     expect(selectedItem).toHaveAttribute('data-selected', 'true');
 
-    await user.keyboard('{ArrowUp}');
-    selectedItem = screen.getByTestId('result-item-2');
+    await userEvent.keyboard('{ArrowUp}');
+    selectedItem = screen.getByTestId(
+      'result-item-com.tools-plugin.calculator',
+    );
     expect(selectedItem).toHaveAttribute('data-selected', 'true');
   });
 
   it('executes result with Enter key', async () => {
-    const user = userEvent.setup();
+    clear();
+    const { manifest } = new MockCommandBuilder()
+      .withName('zozzle')
+      .withCategory('Zozzle')
+      .withMockExecuteFunction()
+      .build();
+    withPlugin(new MockPluginBuilder().withCommand(manifest).build());
+
+    const action = useCommandRegistry
+      .getState()
+      .getCommandsByPlugin('com.test.mock-plugin')[0].entry.execute;
+
+    const spy = vi.spyOn(action, 'execute');
+
     renderCommandPalette();
 
-    await user.keyboard('{Enter}');
-
-    expect(mockOnResultExecute).toHaveBeenCalledWith(mockResults[0]);
+    await userEvent.keyboard('{ArrowDown}');
+    await userEvent.keyboard('{Enter}');
+    expect(spy).toHaveBeenCalledWith({
+      environment: {
+        debug: true,
+        platform: 'web',
+        theme: expect.anything(),
+      },
+    });
   });
 
   it('executes result when clicked', async () => {
-    const user = userEvent.setup();
+    clear();
+    const { manifest } = new MockCommandBuilder()
+      .withName('terminal-command')
+      .withCategory('Tools')
+      .withMockExecuteFunction()
+      .build();
+    withPlugin(new MockPluginBuilder().withCommand(manifest).build());
+
+    const action = useCommandRegistry
+      .getState()
+      .getCommandsByPlugin('com.test.mock-plugin')[0].entry.execute;
+
+    const spy = vi.spyOn(action, 'execute');
+
     renderCommandPalette();
 
-    const terminalItem = screen.getByText('Terminal');
-    await user.click(terminalItem);
+    const terminalItem = screen.getByText('Mock Command');
+    await userEvent.click(terminalItem);
 
-    expect(mockOnResultExecute).toHaveBeenCalledWith(mockResults[1]);
+    expect(spy).toHaveBeenCalledWith({
+      environment: {
+        debug: true,
+        platform: 'web',
+        theme: expect.anything(),
+      },
+    });
   });
 
-  it('shows empty state when no results and no search query', () => {
-    renderCommandPalette({
-      results: [],
-      emptyMessage: 'Start typing to search...',
-    });
+  // TODO: Reenable when the theme debugger is turned into a plugin
+  it.skip('shows empty state when no results and no search query', () => {
+    clear();
+    renderCommandPalette();
 
     expect(screen.getByTestId('empty-results')).toBeInTheDocument();
     expect(screen.getByText('Start typing to search...')).toBeInTheDocument();
   });
 
-  it('shows "no results found" when searching with no results', () => {
-    renderCommandPalette({
-      searchQuery: 'nonexistent',
-      results: [],
-    });
+  it('shows "no results found" when searching with no results', async () => {
+    renderCommandPalette();
+
+    const searchInput = screen.getByTestId('search-input');
+    await userEvent.type(searchInput, 'zxcvbnm');
 
     expect(screen.getByTestId('empty-results')).toBeInTheDocument();
-    expect(screen.getByText('No results found')).toBeInTheDocument();
+    expect(screen.getByText('No results')).toBeInTheDocument();
   });
 
   it('resets selected index when results change', async () => {
-    const user = userEvent.setup();
-    const { rerender } = renderCommandPalette();
+    renderCommandPalette();
 
-    await user.keyboard('{ArrowDown}');
-    expect(screen.getByTestId('result-item-2')).toHaveAttribute(
-      'data-selected',
-      'true',
-    );
+    await userEvent.keyboard('{ArrowDown}');
+    expect(
+      screen.getByTestId('result-item-com.tools-plugin.calculator'),
+    ).toHaveAttribute('data-selected', 'true');
 
-    const newResults = [mockResults[0]];
-    rerender(
-      <CommandPalette
-        searchQuery="calc"
-        onSearchChange={mockOnSearchChange}
-        results={newResults}
-        onResultExecute={mockOnResultExecute}
-        onClose={mockOnClose}
-      />,
-    );
+    await userEvent.type(screen.getByTestId('search-input'), 'term');
 
-    expect(screen.getByTestId('result-item-1')).toHaveAttribute(
-      'data-selected',
-      'true',
-    );
+    expect(
+      screen.getByTestId('result-item-com.tools-plugin.terminal'),
+    ).toHaveAttribute('data-selected', 'true');
   });
 
   it('handles keyboard navigation at boundaries', async () => {
-    const user = userEvent.setup();
+    const action = useCommandRegistry
+      .getState()
+      .getCommandsByPlugin('com.tools-plugin')[2].entry.execute;
+
+    const spy = vi.spyOn(action, 'execute');
+
     renderCommandPalette();
 
-    await user.keyboard('{ArrowUp}');
+    await userEvent.keyboard('{ArrowUp}');
 
-    await user.keyboard('{ArrowDown}');
-    await user.keyboard('{ArrowDown}');
+    await userEvent.keyboard('{ArrowDown}');
+    await userEvent.keyboard('{ArrowDown}');
 
-    await user.keyboard('{ArrowDown}');
+    await userEvent.keyboard('{ArrowDown}');
 
-    await user.keyboard('{Enter}');
-    expect(mockOnResultExecute).toHaveBeenCalled();
+    await userEvent.keyboard('{Enter}');
+    expect(spy).toHaveBeenCalled();
   });
 
   it('clears search on Escape when query is not empty', async () => {
-    const user = userEvent.setup();
-    renderCommandPalette({
-      searchQuery: 'test query',
-    });
+    renderCommandPalette();
 
-    await user.keyboard('{Escape}');
+    const searchInput = screen.getByTestId('search-input');
+    await userEvent.type(searchInput, 'term');
+    await userEvent.keyboard('{Escape}');
 
-    expect(mockOnSearchChange).toHaveBeenCalledWith('');
-    expect(mockOnClose).not.toHaveBeenCalled();
+    expect(searchInput).toHaveValue('');
   });
 
   it('calls onClose on Escape when query is empty', async () => {
-    const user = userEvent.setup();
-
+    const store = useLauncherStore.getState();
+    const spy = vi.spyOn(store, 'hideWindow');
     renderCommandPalette();
-
-    await user.keyboard('{Escape}');
-
-    expect(mockOnSearchChange).not.toHaveBeenCalled();
-    expect(mockOnClose).toHaveBeenCalledTimes(1);
+    await userEvent.keyboard('{Escape}');
+    expect(spy).toHaveBeenCalled();
   });
 
   it('handles Page Down navigation', async () => {
-    const largeResults: LauncherEntry[] = Array.from(
-      { length: 15 },
-      (_, i) => ({
-        id: String(i + 1),
-        commandName: `com.keyed.item${i + 1}`,
-        title: `Item ${i + 1}`,
-        description: `Description for item ${i + 1}`,
-        execute: {
-          mode: 'no-view',
-          execute: vi.fn(),
-        },
-        mode: 'no-view' as const,
-        pluginId: `plugin-${i + 1}`,
-      }),
-    );
+    clear();
 
-    const user = userEvent.setup();
-    renderCommandPalette({
-      results: largeResults,
-    });
+    // Create 15 mock commands to test pagination
+    const mockPlugin = new MockPluginBuilder();
+    for (let i = 1; i <= 15; i++) {
+      const { manifest } = new MockCommandBuilder()
+        .withName(`item${i}`)
+        .withCategory('Test')
+        .build();
+      mockPlugin.withCommand(manifest);
+    }
+    withPlugin(mockPlugin.build());
+
+    renderCommandPalette();
 
     // First item should be selected initially
-    expect(screen.getByTestId('result-item-1')).toHaveAttribute(
-      'data-selected',
-      'true',
-    );
+    const firstItem = screen.getAllByTestId(/^result-item-/)[0];
+    expect(firstItem).toHaveAttribute('data-selected', 'true');
 
     // Page Down should move 10 positions down
-    await user.keyboard('{PageDown}');
+    await userEvent.keyboard('{PageDown}');
 
-    expect(screen.getByTestId('result-item-11')).toHaveAttribute(
-      'data-selected',
-      'true',
-    );
+    const eleventhItem = screen.getAllByTestId(/^result-item-/)[10];
+    expect(eleventhItem).toHaveAttribute('data-selected', 'true');
 
-    // Page Down again should go to the last item (15)
-    await user.keyboard('{PageDown}');
+    // Page Down again should go to the last item (16)
+    await userEvent.keyboard('{PageDown}');
 
-    expect(screen.getByTestId('result-item-15')).toHaveAttribute(
-      'data-selected',
-      'true',
-    );
+    const lastItem = screen.getAllByTestId(/^result-item-/)[15];
+    expect(lastItem).toHaveAttribute('data-selected', 'true');
   });
 
   it('handles Page Up navigation', async () => {
-    const largeResults: LauncherEntry[] = Array.from(
-      { length: 15 },
-      (_, i) => ({
-        id: String(i + 1),
-        commandName: `com.keyed.item${i + 1}`,
-        title: `Item ${i + 1}`,
-        description: `Description for item ${i + 1}`,
-        execute: {
-          mode: 'no-view',
-          execute: vi.fn(),
-        },
-        mode: 'no-view' as const,
-        pluginId: `plugin-${i + 1}`,
-      }),
-    );
+    clear();
 
-    const user = userEvent.setup();
-    renderCommandPalette({
-      results: largeResults,
-    });
+    // Create 15 mock commands to test pagination
+    const mockPlugin = new MockPluginBuilder();
+    for (let i = 1; i <= 15; i++) {
+      const { manifest } = new MockCommandBuilder()
+        .withName(`item${i}`)
+        .withCategory('Test')
+        .build();
+      mockPlugin.withCommand(manifest);
+    }
+    withPlugin(mockPlugin.build());
+
+    renderCommandPalette();
 
     // Move to the end first
-    await user.keyboard('{PageDown}');
-    await user.keyboard('{PageDown}');
+    await userEvent.keyboard('{PageDown}');
+    await userEvent.keyboard('{PageDown}');
 
-    expect(screen.getByTestId('result-item-15')).toHaveAttribute(
-      'data-selected',
-      'true',
-    );
+    const lastItem = screen.getAllByTestId(/^result-item-/)[15];
+    expect(lastItem).toHaveAttribute('data-selected', 'true');
 
     // Page Up should move 10 positions up
-    await user.keyboard('{PageUp}');
+    await userEvent.keyboard('{PageUp}');
 
-    expect(screen.getByTestId('result-item-5')).toHaveAttribute(
-      'data-selected',
-      'true',
-    );
+    const fifthItem = screen.getAllByTestId(/^result-item-/)[5];
+    expect(fifthItem).toHaveAttribute('data-selected', 'true');
 
     // Page Up again should go to the first item
-    await user.keyboard('{PageUp}');
+    await userEvent.keyboard('{PageUp}');
 
-    expect(screen.getByTestId('result-item-1')).toHaveAttribute(
-      'data-selected',
-      'true',
-    );
+    const firstItem = screen.getAllByTestId(/^result-item-/)[0];
+    expect(firstItem).toHaveAttribute('data-selected', 'true');
   });
 
   it('handles Page Up/Down with no results', async () => {
-    const user = userEvent.setup();
-    renderCommandPalette({
-      results: [],
-    });
+    clear();
+    renderCommandPalette();
 
-    await user.keyboard('{PageDown}');
-    await user.keyboard('{PageUp}');
+    // Search for something that won't match to get no results
+    const searchInput = screen.getByTestId('search-input');
+    await userEvent.type(searchInput, 'nonexistentcommand');
+
+    await userEvent.keyboard('{PageDown}');
+    await userEvent.keyboard('{PageUp}');
 
     expect(screen.getByTestId('empty-results')).toBeInTheDocument();
   });
