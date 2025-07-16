@@ -14,7 +14,7 @@ pub async fn execute_command(program: String, args: Vec<String>) -> Result<Comma
     let output = Command::new(&program)
         .args(&args)
         .output()
-        .map_err(|e| format!("Failed to execute command '{}': {}", program, e))?;
+        .map_err(|e| format!("Failed to execute command '{program}': {e}"))?;
 
     let result = CommandOutput {
         success: output.status.success(),
@@ -31,7 +31,7 @@ pub async fn execute_command_simple(program: String, args: Vec<String>) -> Resul
     let output = Command::new(&program)
         .args(&args)
         .output()
-        .map_err(|e| format!("Failed to execute command '{}': {}", program, e))?;
+        .map_err(|e| format!("Failed to execute command '{program}': {e}"))?;
 
     if !output.status.success() {
         let stderr = String::from_utf8_lossy(&output.stderr);
