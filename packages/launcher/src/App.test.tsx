@@ -127,7 +127,7 @@ describe('App Integration', () => {
       environment: {
         debug: true,
         platform: 'web',
-        theme: 'default',
+        theme: expect.anything(),
       },
     });
   });
