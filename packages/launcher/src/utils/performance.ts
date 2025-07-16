@@ -6,6 +6,12 @@ interface MemoryInfo {
   jsHeapSizeLimit: number;
 }
 
+declare global {
+  interface Performance {
+    memory?: MemoryInfo;
+  }
+}
+
 export class PerformanceMonitor {
   private static startTime: number | null = null;
   private static frameCount = 0;
@@ -56,8 +62,8 @@ export class PerformanceMonitor {
     if (!this.isEnabled) return { used: '0 MB', total: '0 MB' };
 
     try {
-      if ('memory' in performance && (performance as any).memory) {
-        const memory = (performance as any).memory;
+      if (performance.memory) {
+        const memory = performance.memory as MemoryInfo;
         const used = memory.usedJSHeapSize || 0;
         const total = memory.totalJSHeapSize || 0;
 

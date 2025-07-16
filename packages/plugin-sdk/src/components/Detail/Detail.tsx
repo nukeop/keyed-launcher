@@ -7,8 +7,6 @@ export type DetailProps = {
   className?: string;
   markdown?: string;
   metadata?: React.ReactNode;
-  isLoading?: boolean;
-  navigationTitle?: string;
 };
 
 interface DetailComponent extends FC<DetailProps> {
@@ -19,8 +17,6 @@ const DetailBase: FC<DetailProps> = ({
   className = '',
   markdown = '',
   metadata = null,
-  isLoading = false,
-  navigationTitle = '',
 }) => {
   return (
     <div
