@@ -94,16 +94,33 @@ async function loadPluginModules(
       const commandPath = getPluginCommandPath(pluginPath, command.handler);
       const commandModule = await import(/* @vite-ignore */ commandPath);
 
-      if (!commandModule.default) {
-        throw new Error(
-          `Command ${command.name} does not export a default function`,
-        );
-      }
+      if (command.mode === 'inline') {
+        if (
+          !commandModule.shouldActivate ||
+          typeof commandModule.shouldActivate !== 'function'
+        ) {
+          throw new Error(
+            `Inline command ${command.name} must export a shouldActivate function`,
+          );
+        }
 
-      if (typeof commandModule.default !== 'function') {
-        throw new Error(
-          `Command ${command.name} default export is not a function`,
-        );
+        if (!commandModule.default) {
+          throw new Error(
+            `Inline command ${command.name} must export a default React component`,
+          );
+        }
+      } else {
+        if (!commandModule.default) {
+          throw new Error(
+            `Command ${command.name} does not export a default function`,
+          );
+        }
+
+        if (typeof commandModule.default !== 'function') {
+          throw new Error(
+            `Command ${command.name} default export is not a function`,
+          );
+        }
       }
 
       if (

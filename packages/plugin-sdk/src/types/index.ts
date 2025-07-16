@@ -114,7 +114,8 @@ export interface ViewCommand {
 
 export interface InlineCommand {
   mode: 'inline';
-  execute: (context: CommandContext) => Promise<void>;
+  shouldActivate: (input: string) => Promise<boolean>;
+  execute: (context: CommandContext) => Promise<React.ReactElement>;
 }
 
 export interface Plugin {
