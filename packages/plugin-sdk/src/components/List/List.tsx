@@ -2,6 +2,7 @@ import { useListKeyboardNavigation } from '../../hooks/useListKeyboardNavigation
 import { ItemKind, LauncherEntry } from '../../types';
 import { groupEntriesByCategory } from '../../utils/categoryUtils';
 import { CategoryHeader } from './CategoryHeader/CategoryHeader';
+import { InlineItem } from './InlineItem/InlineItem';
 import { Item } from './Item/Item';
 import { SearchIcon } from 'lucide-react';
 import { FC, useEffect, useRef } from 'react';
@@ -15,6 +16,7 @@ export type ListProps = {
 interface ListComponent extends FC<ListProps> {
   Item: typeof Item;
   CategoryHeader: typeof CategoryHeader;
+  InlineItem: typeof InlineItem;
 }
 
 const ListBase: FC<ListProps> = ({
@@ -97,3 +99,4 @@ const ListBase: FC<ListProps> = ({
 export const List = ListBase as ListComponent;
 List.Item = Item;
 List.CategoryHeader = CategoryHeader;
+List.InlineItem = InlineItem;
