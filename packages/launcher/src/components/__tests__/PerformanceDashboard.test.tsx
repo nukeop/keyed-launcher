@@ -1,19 +1,10 @@
+import { mockPerformance } from '../../test/performanceHelpers';
 import { isProd } from '../../utils/environment';
 import { PerformanceDashboard } from '../PerformanceDashboard';
 import { render, screen, within } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 
-vi.mock('../../utils/performance', () => ({
-  PerformanceMonitor: {
-    getCurrentFPS: vi.fn(() => 60),
-    getMemoryStats: vi.fn(() =>
-      Promise.resolve({
-        used: '32 MB',
-        total: '64 MB',
-      }),
-    ),
-  },
-}));
+mockPerformance();
 
 vi.mock('../../utils/environment', () => ({
   isDev: vi.fn(() => true),

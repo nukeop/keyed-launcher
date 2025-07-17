@@ -1,3 +1,4 @@
+import { mockPerformance } from '../../test/performanceHelpers';
 import { ActionBar } from '../ActionBar';
 import { render, screen, waitFor } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
@@ -7,17 +8,7 @@ vi.mock('../../utils/environment', () => ({
   isProd: vi.fn(() => false), // Set to false so performance dashboard renders
 }));
 
-vi.mock('../../utils/performance', () => ({
-  PerformanceMonitor: {
-    getCurrentFPS: vi.fn(() => 60),
-    getMemoryStats: vi.fn(() =>
-      Promise.resolve({
-        used: '128 MB',
-        total: '8 GB',
-      }),
-    ),
-  },
-}));
+mockPerformance();
 
 describe('ActionBar', () => {
   it('renders with default props', () => {

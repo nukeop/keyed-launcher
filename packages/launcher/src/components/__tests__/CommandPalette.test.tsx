@@ -2,6 +2,7 @@ import { useCommandRegistry } from '../../stores/commands';
 import { useLauncherStore } from '../../stores/launcher';
 import { MockCommandBuilder } from '../../test/mockCommandBuilder';
 import { MockPluginBuilder } from '../../test/mockPluginBuilder';
+import { mockPerformance } from '../../test/performanceHelpers';
 import {
   clear,
   withDefaultPlugins,
@@ -18,17 +19,7 @@ vi.mock('@tauri-apps/api/core', () => ({
   invoke: vi.fn(),
 }));
 
-vi.mock('../../utils/performance', () => ({
-  PerformanceMonitor: {
-    getCurrentFPS: vi.fn(() => 60),
-    getMemoryStats: vi.fn(() =>
-      Promise.resolve({
-        used: '32 MB',
-        total: '64 MB',
-      }),
-    ),
-  },
-}));
+mockPerformance();
 
 window.HTMLElement.prototype.scrollIntoView = vi.fn();
 
