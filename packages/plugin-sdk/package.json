@@ -1,0 +1,80 @@
+{
+    "name": "@keyed-launcher/plugin-sdk",
+    "version": "1.0.0",
+    "description": "Plugin SDK for Keyed Launcher",
+    "type": "module",
+    "main": "./dist/index.js",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "development": {
+                "types": "./src/index.ts",
+                "import": "./src/index.ts"
+            },
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.js",
+            "require": "./dist/index.cjs"
+        }
+    },
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "build": "vite build",
+        "dev": "vite build --watch",
+        "clean": "rm -rf dist",
+        "prepublishOnly": "pnpm run clean && pnpm run build",
+        "lint": "eslint \"src/**/**.{js,jsx,ts,tsx}\"",
+        "lint:fix": "eslint \"src/**/**.{js,jsx,ts,tsx}\" --fix"
+    },
+    "keywords": [
+        "keyed-launcher",
+        "plugin",
+        "sdk",
+        "launcher",
+        "productivity"
+    ],
+    "author": "nukeop <12746779+nukeop@users.noreply.github.com>",
+    "license": "AGPL-3.0",
+    "homepage": "https://github.com/nukeop/keyed-launcher",
+    "bugs": {
+        "url": "https://github.com/nukeop/keyed-launcher/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/nukeop/keyed-launcher.git",
+        "directory": "packages/plugin-sdk"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "peerDependencies": {
+        "react": "^18.0.0"
+    },
+    "devDependencies": {
+        "@testing-library/react": "^16.3.0",
+        "@types/react": "^18.0.0",
+        "@typescript-eslint/eslint-plugin": "^8.35.0",
+        "@typescript-eslint/parser": "^8.35.0",
+        "@vitejs/plugin-react": "^4.0.0",
+        "eslint": "^8.57.1",
+        "eslint-config-prettier": "^10.1.5",
+        "eslint-plugin-prettier": "^5.5.1",
+        "eslint-plugin-react": "^7.37.5",
+        "eslint-plugin-react-hooks": "^5.2.0",
+        "eslint-plugin-react-refresh": "^0.4.20",
+        "react": "^18.0.0",
+        "typescript": "^5.0.0",
+        "vite": "^7.0.0",
+        "vite-plugin-dts": "^4.0.0",
+        "vitest": "^3.2.4"
+    },
+    "dependencies": {
+        "@tauri-apps/api": "^2.6.0",
+        "colord": "^2.9.3",
+        "lucide-react": "^0.525.0",
+        "react-markdown": "^10.1.0",
+        "tailwind-merge": "^3.3.1"
+    }
+}

@@ -1,0 +1,225 @@
+import { usePluginRegistry } from '../stores/plugins';
+import { loadPluginManifest } from './manifest';
+import { getPluginCommandPath, getPluginManifestPath } from './utils';
+import { Plugin } from '@keyed-launcher/plugin-sdk';
+
+export interface PluginLoadErrorInfo {
+  pluginPath: string;
+  error: string;
+  type: 'manifest' | 'module' | 'validation';
+}
+
+export async function loadPlugin(pluginPath: string): Promise<Plugin> {
+  try {
+    const manifestPath = getPluginManifestPath(pluginPath);
+    const manifest = await loadPluginManifest(manifestPath);
+
+    const plugin: Plugin = {
+      manifest,
+      onUnload: undefined,
+    };
+
+    await loadPluginModules(plugin, pluginPath);
+
+    return plugin;
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    throw new PluginLoadError(pluginPath, errorMessage, getErrorType(error));
+  }
+}
+
+export async function loadPluginsFromDirectory(directoryPath: string): Promise<{
+  loaded: Plugin[];
+  errors: PluginLoadErrorInfo[];
+}> {
+  const results = {
+    loaded: [] as Plugin[],
+    errors: [] as PluginLoadErrorInfo[],
+  };
+
+  try {
+    const pluginDirs = await discoverPluginDirectories(directoryPath);
+
+    for (const pluginDir of pluginDirs) {
+      try {
+        const plugin = await loadPlugin(pluginDir);
+        results.loaded.push(plugin);
+      } catch (error) {
+        if (error instanceof PluginLoadError) {
+          results.errors.push({
+            pluginPath: error.pluginPath,
+            error: error.message,
+            type: getErrorType(error),
+          });
+        } else {
+          results.errors.push({
+            pluginPath: pluginDir,
+            error: error instanceof Error ? error.message : String(error),
+            type: 'validation',
+          });
+        }
+        console.error(`Failed to load plugin from ${pluginDir}:`, error);
+      }
+    }
+  } catch (error) {
+    console.error(`Failed to scan directory ${directoryPath}:`, error);
+  }
+
+  return results;
+}
+
+async function loadPluginModules(
+  plugin: Plugin,
+  pluginPath: string,
+): Promise<void> {
+  const manifest = plugin.manifest;
+
+  try {
+    const mainModulePath = `${pluginPath}/index.ts`;
+    const mainModule = await import(/* @vite-ignore */ mainModulePath);
+
+    if (mainModule.onStartup && typeof mainModule.onStartup === 'function') {
+      plugin.onStartup = mainModule.onStartup;
+    }
+
+    if (mainModule.onUnload && typeof mainModule.onUnload === 'function') {
+      plugin.onUnload = mainModule.onUnload;
+    }
+  } catch (error) {
+    console.log(`No main module found for plugin ${manifest.id}: ${error}`);
+  }
+
+  for (const command of manifest.commands) {
+    try {
+      const commandPath = getPluginCommandPath(pluginPath, command.handler);
+      const commandModule = await import(/* @vite-ignore */ commandPath);
+
+      if (command.mode === 'inline') {
+        if (
+          !commandModule.shouldActivate ||
+          typeof commandModule.shouldActivate !== 'function'
+        ) {
+          throw new Error(
+            `Inline command ${command.name} must export a shouldActivate function`,
+          );
+        }
+
+        if (!commandModule.default) {
+          throw new Error(
+            `Inline command ${command.name} must export a default React component`,
+          );
+        }
+      } else {
+        if (!commandModule.default) {
+          throw new Error(
+            `Command ${command.name} does not export a default function`,
+          );
+        }
+
+        if (typeof commandModule.default !== 'function') {
+          throw new Error(
+            `Command ${command.name} default export is not a function`,
+          );
+        }
+      }
+
+      if (
+        commandModule.onUnload &&
+        typeof commandModule.onUnload === 'function'
+      ) {
+        const existingOnUnload = plugin.onUnload;
+        plugin.onUnload = async () => {
+          if (existingOnUnload) {
+            await existingOnUnload();
+          }
+          await commandModule.onUnload();
+        };
+      }
+    } catch (error) {
+      throw new Error(
+        `Failed to load command "${command.name}" from ${command.handler}: ${
+          error instanceof Error ? error.message : String(error)
+        }`,
+      );
+    }
+  }
+}
+
+async function discoverPluginDirectories(
+  directoryPath: string,
+): Promise<string[]> {
+  try {
+    const response = await fetch(`file://${directoryPath}`);
+    if (!response.ok) {
+      return [];
+    }
+
+    return [];
+  } catch {
+    return [];
+  }
+}
+
+function getErrorType(error: unknown): PluginLoadErrorInfo['type'] {
+  if (error instanceof Error) {
+    if (
+      error.message.includes('manifest') ||
+      error.message.includes('Invalid plugin manifest')
+    ) {
+      return 'manifest';
+    }
+    if (error.message.includes('import') || error.message.includes('module')) {
+      return 'module';
+    }
+  }
+  return 'validation';
+}
+
+export class PluginLoadError extends Error {
+  constructor(
+    public readonly pluginPath: string,
+    message: string,
+    public readonly type: 'manifest' | 'module' | 'validation',
+  ) {
+    super(message);
+    this.name = 'PluginLoadError';
+  }
+}
+
+export function isolatePluginError(
+  pluginId: string,
+  operation: () => void,
+): void {
+  try {
+    operation();
+  } catch (error) {
+    console.error(`Plugin ${pluginId} error:`, error);
+
+    const registry = usePluginRegistry.getState();
+    registry.setPluginStatus(pluginId, {
+      status: 'error',
+      error: error instanceof Error ? error.message : String(error),
+    });
+
+    registry.disablePlugin(pluginId);
+  }
+}
+
+export async function safePluginExecution<T>(
+  pluginId: string,
+  operation: () => Promise<T>,
+): Promise<T | null> {
+  try {
+    return await operation();
+  } catch (error) {
+    console.error(`Plugin ${pluginId} execution error:`, error);
+
+    const registry = usePluginRegistry.getState();
+    registry.setPluginStatus(pluginId, {
+      status: 'error',
+      error: error instanceof Error ? error.message : String(error),
+    });
+
+    return null;
+  }
+}

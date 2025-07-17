@@ -1,2 +1,4 @@
 node_modules
 dist
+packages/launcher/src-tauri/target
+packages/launcher/src-tauri/gen/schemas

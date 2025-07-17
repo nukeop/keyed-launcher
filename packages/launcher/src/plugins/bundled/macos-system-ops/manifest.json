@@ -1,0 +1,141 @@
+{
+    "id": "com.keyed-launcher.macos-system-ops",
+    "name": "macOS System Operations",
+    "version": "1.0.0",
+    "apiVersion": "1.0.0",
+    "description": "Essential macOS system operations - shutdown, restart, sleep, logout, and lock screen",
+    "author": "nukeop",
+    "namespace": "keyed-launcher",
+    "license": "MIT",
+    "category": "System",
+    "keywords": [
+        "system",
+        "power",
+        "shutdown",
+        "restart",
+        "sleep",
+        "logout",
+        "lock",
+        "macos"
+    ],
+    "commands": [
+        {
+            "name": "shutdown",
+            "displayName": "Shut Down",
+            "subtitle": "Power off the system",
+            "description": "Shut down the Mac immediately",
+            "mode": "no-view",
+            "category": "Power",
+            "icon": {
+                "type": "named",
+                "name": "Power",
+                "gradient": {
+                    "from": "red-500",
+                    "to": "orange-600"
+                }
+            },
+            "keywords": [
+                "shutdown",
+                "power",
+                "off",
+                "halt",
+                "turn off"
+            ],
+            "handler": "commands/shutdown.ts"
+        },
+        {
+            "name": "restart",
+            "displayName": "Restart",
+            "subtitle": "Reboot the system",
+            "description": "Restart the Mac immediately",
+            "mode": "no-view",
+            "category": "Power",
+            "icon": {
+                "type": "named",
+                "name": "RotateCcw",
+                "gradient": {
+                    "from": "orange-500",
+                    "to": "red-600"
+                }
+            },
+            "keywords": [
+                "restart",
+                "reboot",
+                "reset",
+                "power cycle"
+            ],
+            "handler": "commands/restart.ts"
+        },
+        {
+            "name": "sleep",
+            "displayName": "Sleep",
+            "subtitle": "Put the system to sleep",
+            "description": "Put the Mac to sleep mode",
+            "mode": "no-view",
+            "category": "Power",
+            "icon": {
+                "type": "named",
+                "name": "Moon",
+                "gradient": {
+                    "from": "indigo-500",
+                    "to": "purple-600"
+                }
+            },
+            "keywords": [
+                "sleep",
+                "suspend",
+                "standby",
+                "power save"
+            ],
+            "handler": "commands/sleep.ts"
+        },
+        {
+            "name": "logout",
+            "displayName": "Log Out",
+            "subtitle": "Log out current user",
+            "description": "Log out the current user session",
+            "mode": "no-view",
+            "category": "Session",
+            "icon": {
+                "type": "named",
+                "name": "LogOut",
+                "gradient": {
+                    "from": "blue-500",
+                    "to": "cyan-600"
+                }
+            },
+            "keywords": [
+                "logout",
+                "log out",
+                "sign out",
+                "session",
+                "user"
+            ],
+            "handler": "commands/logout.ts"
+        },
+        {
+            "name": "lock-screen",
+            "displayName": "Lock Screen",
+            "subtitle": "Lock the screen",
+            "description": "Lock the screen and require password to unlock",
+            "mode": "no-view",
+            "category": "Security",
+            "icon": {
+                "type": "named",
+                "name": "Lock",
+                "gradient": {
+                    "from": "emerald-500",
+                    "to": "teal-600"
+                }
+            },
+            "keywords": [
+                "lock",
+                "screen",
+                "security",
+                "password",
+                "protect"
+            ],
+            "handler": "commands/lock-screen.ts"
+        }
+    ]
+}
