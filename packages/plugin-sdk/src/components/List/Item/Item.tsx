@@ -1,15 +1,22 @@
 import { CommandIcon, ItemKind } from '../../../types';
 import { IconRenderer } from '../../IconRenderer';
-import { forwardRef, ForwardRefExoticComponent, RefAttributes } from 'react';
+import { useListContext } from '../ListContext';
+import {
+  FC,
+  ForwardRefExoticComponent,
+  RefAttributes,
+  useEffect,
+  useRef,
+} from 'react';
 import { twMerge } from 'tailwind-merge';
 
 export type ItemProps = {
   className?: string;
+  id: string;
   title: string;
   subtitle?: string;
   kind?: ItemKind;
   icon?: CommandIcon;
-  isSelected?: boolean;
   onAction?: () => void;
   'data-testid'?: string;
 };
@@ -19,20 +26,36 @@ interface ItemComponent
     ItemProps & RefAttributes<HTMLDivElement>
   > {}
 
-const ItemBase = forwardRef<HTMLDivElement, ItemProps>(
-  (
-    {
-      className,
-      title,
-      subtitle,
-      kind,
-      icon,
-      isSelected,
-      onAction,
-      'data-testid': testId,
-    },
-    ref,
-  ) => (
+const ItemBase: FC<ItemProps> = ({
+  className,
+  id,
+  title,
+  subtitle,
+  kind,
+  icon,
+  onAction,
+  'data-testid': testId,
+}) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const { registerItem, unregisterItem, selectedId } = useListContext();
+  const isSelected = selectedId === id;
+
+  useEffect(() => {
+    registerItem(id, ref);
+    return () => unregisterItem(id);
+  }, [id]);
+
+  useEffect(() => {
+    if (isSelected) {
+      ref.current?.focus();
+      ref?.current?.scrollIntoView({
+        behavior: 'instant',
+        block: 'nearest',
+      });
+    }
+  }, [isSelected]);
+
+  return (
     <div
       ref={ref}
       className={twMerge(
@@ -62,7 +85,7 @@ const ItemBase = forwardRef<HTMLDivElement, ItemProps>(
         </div>
       </div>
     </div>
-  ),
-);
+  );
+};
 
 export const Item = ItemBase as ItemComponent;

@@ -2,7 +2,7 @@ import { useCommandPaletteResults } from '../hooks/useCommandPaletteResults';
 import { useInlineCommands } from '../hooks/useInlineCommands';
 import { useLauncherStore } from '../stores/launcher';
 import { ViewWithSearchBar } from './Views/ViewWithSearchBar';
-import { LauncherEntry, List } from '@keyed-launcher/plugin-sdk';
+import { ItemKind, LauncherEntry, List } from '@keyed-launcher/plugin-sdk';
 import { FC } from 'react';
 
 export const CommandPalette: FC = () => {
@@ -18,11 +18,22 @@ export const CommandPalette: FC = () => {
 
   return (
     <ViewWithSearchBar data-testid="command-palette">
-      <List
-        results={allResults}
-        onItemAction={handleItemClick}
-        data-testid="command-palette-list"
-      />
+      <List data-testid="command-palette-list">
+        {allResults.map((result) => (
+          <List.Item
+            key={result.id}
+            id={result.id}
+            title={result.title}
+            subtitle={result.subtitle}
+            kind={ItemKind.Application}
+            icon={result.icon}
+            onClick={() => handleItemClick(result)}
+            data-testid="command-palette-list-item"
+          >
+            {result.title}
+          </List.Item>
+        ))}
+      </List>
     </ViewWithSearchBar>
   );
 };

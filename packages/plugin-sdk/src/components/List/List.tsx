@@ -1,102 +1,164 @@
-import { useListKeyboardNavigation } from '../../hooks/useListKeyboardNavigation';
-import { ItemKind, LauncherEntry } from '../../types';
-import { groupEntriesByCategory } from '../../utils/categoryUtils';
-import { CategoryHeader } from './CategoryHeader/CategoryHeader';
-import { InlineItem } from './InlineItem/InlineItem';
+import { InlineItem } from './InlineItem';
 import { Item } from './Item/Item';
-import { SearchIcon } from 'lucide-react';
-import { FC, useEffect, useRef } from 'react';
+import { ListContext, ListContextType } from './ListContext';
+import { Section } from './Section/Section';
+import { useListKeyboardNavigation } from './useListKeyboardNavigation';
+import {
+  Children,
+  FC,
+  isValidElement,
+  ReactNode,
+  RefObject,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
 export type ListProps = {
-  results: LauncherEntry[];
-  onItemAction: (item: LauncherEntry) => void;
+  children: ReactNode;
+  filtering?: boolean;
+  isLoading?: boolean;
+  selectedItemId?: string | null;
+  onSelectionChange: (id: string) => void;
   'data-testid'?: string;
 };
 
 interface ListComponent extends FC<ListProps> {
   Item: typeof Item;
-  CategoryHeader: typeof CategoryHeader;
+  Section: typeof Section;
   InlineItem: typeof InlineItem;
 }
 
-const ListBase: FC<ListProps> = ({
-  results,
-  onItemAction,
+function getOrderedItemIds(children: ReactNode): string[] {
+  const ids: string[] = [];
+
+  Children.forEach(children, (child) => {
+    if (!isValidElement(child)) return;
+
+    if (child.type === List.Item) {
+      ids.push(child.props.id);
+    } else if (child.type === List.Section) {
+      ids.push(...getOrderedItemIds(child.props.children));
+    }
+  });
+
+  return ids;
+}
+
+const InnerList: FC<{ children: ReactNode; 'data-testid'?: string }> = ({
+  children,
   'data-testid': testId,
 }) => {
-  const { selectedIndex } = useListKeyboardNavigation({
-    results,
-    onItemAction,
-  });
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const selectedItemRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (selectedItemRef.current && scrollContainerRef.current) {
-      selectedItemRef.current.scrollIntoView({
-        behavior: 'instant',
-        block: 'nearest',
-      });
-    }
-  }, [selectedIndex]);
-
-  if (results.length === 0) {
-    return (
-      <div
-        className="flex flex-1 items-center justify-center py-12"
-        data-testid="empty-results"
-      >
-        <div className="text-center">
-          <div className="flex flex-row items-center justify-center mb-2 text-gray-400">
-            <SearchIcon size={48} />
-          </div>
-          <div className="text-gray-400">No results</div>
-        </div>
-      </div>
-    );
-  }
-
-  const categoryGroups = groupEntriesByCategory(results);
-
-  let globalIndex = 0;
-
+  useListKeyboardNavigation();
   return (
     <div
-      ref={scrollContainerRef}
+      role="listbox"
       className="flex h-full flex-1 flex-col overflow-y-auto px-2 py-2 my-2"
       data-testid={testId ?? 'plugin-list'}
     >
-      {categoryGroups.map((group) => (
-        <div key={group.category}>
-          <CategoryHeader
-            title={group.category}
-            data-testid="category-header"
-          />
-          {group.entries.map((result) => {
-            const isSelected = globalIndex === selectedIndex;
-            globalIndex++;
-
-            return (
-              <List.Item
-                ref={isSelected ? selectedItemRef : undefined}
-                data-testid={`result-item-${result.id}`}
-                key={result.id}
-                title={result.title}
-                subtitle={result.subtitle}
-                kind={ItemKind.Application}
-                icon={result.icon}
-                isSelected={isSelected}
-                onAction={() => onItemAction(result)}
-              />
-            );
-          })}
-        </div>
-      ))}
+      {children}
     </div>
+  );
+};
+
+const ListBase: FC<ListProps> = ({
+  children,
+  filtering,
+  isLoading,
+  selectedItemId,
+  onSelectionChange,
+  'data-testid': testId,
+}) => {
+  const itemRefs = useRef(new Map<string, RefObject<HTMLElement>>());
+  const orderedItemIds = useMemo(() => getOrderedItemIds(children), [children]);
+  const [internalSelectedId, setInternalSelectedId] = useState<string | null>(
+    null,
+  );
+  const selectedId = selectedItemId ?? internalSelectedId;
+
+  useEffect(() => {
+    if (selectedItemId !== undefined) {
+      setInternalSelectedId(selectedItemId);
+    } else if (internalSelectedId === null && orderedItemIds.length > 0) {
+      setInternalSelectedId(orderedItemIds[0]);
+    }
+  }, [selectedItemId, orderedItemIds.join(',')]);
+
+  const registerItem = useCallback(
+    (id: string, ref: React.RefObject<HTMLElement>) => {
+      itemRefs.current.set(id, ref);
+    },
+    [],
+  );
+
+  const unregisterItem = useCallback((id: string) => {
+    itemRefs.current.delete(id);
+  }, []);
+
+  const getItemRef = useCallback((id: string) => itemRefs.current.get(id), []);
+
+  const getIndex = useCallback(
+    (id: string) => orderedItemIds.indexOf(id),
+    [orderedItemIds],
+  );
+
+  const getIdByDelta = useCallback(
+    (delta: number, withWraparound = false): string | null => {
+      if (!selectedId) return null;
+      const index = orderedItemIds.indexOf(selectedId);
+      if (index === -1) return null;
+
+      let next = index + delta;
+      const len = orderedItemIds.length;
+
+      if (withWraparound) {
+        next = (next + len) % len;
+      } else {
+        if (next < 0 || next >= len) return null;
+      }
+
+      return orderedItemIds[next] ?? null;
+    },
+    [orderedItemIds, selectedId],
+  );
+
+  const setSelectedId = useCallback(
+    (id: string) => {
+      // Uncontrolled
+      if (selectedItemId === undefined) {
+        setInternalSelectedId(id);
+      }
+
+      // Controlled
+      onSelectionChange?.(id);
+    },
+    [selectedItemId, onSelectionChange],
+  );
+
+  const onSelectedItemAction = () => {};
+
+  const contextValue: ListContextType = {
+    registerItem,
+    unregisterItem,
+    getItemRef,
+    orderedItemIds,
+    selectedId,
+    setSelectedId,
+    getIndex,
+    getIdByDelta,
+    onSelectedItemAction,
+  };
+
+  return (
+    <ListContext.Provider value={contextValue}>
+      <InnerList data-testid={testId}>{children}</InnerList>
+    </ListContext.Provider>
   );
 };
 
 export const List = ListBase as ListComponent;
 List.Item = Item;
-List.CategoryHeader = CategoryHeader;
+List.Section = Section;
 List.InlineItem = InlineItem;
