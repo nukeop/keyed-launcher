@@ -40,6 +40,7 @@ pub fn run() {
             macos_apps::get_macos_applications,
             commands::execute_command,
             commands::execute_command_simple,
+            commands::get_os_info,
             plugins::ensure_plugin_directories,
             plugins::get_plugin_directories,
             theme_watcher::load_user_themes,

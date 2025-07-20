@@ -17,6 +17,16 @@ export type {
   CommandIcon,
 } from './types';
 
+export { Keyboard } from './types/keyboard';
+
+export {
+  resolveShortcut,
+  getCommonShortcut,
+  formatShortcut,
+} from './utils/keyboardUtils';
+
+export { getPlatform, type Platform } from './utils/platformUtils';
+
 export {
   PluginAPI,
   useEnvironment,

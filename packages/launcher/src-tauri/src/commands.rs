@@ -1,4 +1,5 @@
 use std::process::Command;
+use sysinfo::System;
 use tauri::command;
 
 #[derive(Debug, serde::Serialize)]
@@ -7,6 +8,13 @@ pub struct CommandOutput {
     pub code: Option<i32>,
     pub stdout: String,
     pub stderr: String,
+}
+
+#[derive(Debug, serde::Serialize)]
+pub struct OSInfo {
+    pub name: String,
+    pub version: String,
+    pub platform: String,
 }
 
 #[command]
@@ -44,4 +52,29 @@ pub async fn execute_command_simple(program: String, args: Vec<String>) -> Resul
     }
 
     Ok(())
+}
+
+#[command]
+pub async fn get_os_info() -> Result<OSInfo, String> {
+    let mut system = System::new();
+    system.refresh_system();
+
+    let name = System::name().unwrap_or_else(|| "Unknown".to_string());
+    let version = System::os_version().unwrap_or_else(|| "Unknown".to_string());
+    
+    let platform = if cfg!(target_os = "macos") {
+        "macOS".to_string()
+    } else if cfg!(target_os = "windows") {
+        "windows".to_string()
+    } else if cfg!(target_os = "linux") {
+        "linux".to_string()
+    } else {
+        "unknown".to_string()
+    };
+
+    Ok(OSInfo {
+        name,
+        version,
+        platform,
+    })
 }

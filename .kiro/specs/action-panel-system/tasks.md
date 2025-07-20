@@ -1,6 +1,6 @@
 # Implementation Plan
 
-- [ ] 1. Create keyboard system types and utilities
+- [-] 1. Create keyboard system types and utilities
   - Define Keyboard namespace with Key, Modifier, KeyCombination, and Shortcut types
   - Implement Keyboard.Shortcut.Common enum with predefined shortcuts
   - Create platform detection utility for resolving platform-specific shortcuts (use the Tauri `os-info` plugin)
