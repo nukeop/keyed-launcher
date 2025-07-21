@@ -1,6 +1,6 @@
 import { useLauncherStore } from '../../stores/launcher';
 import { usePerformanceTracking } from '../../utils/usePerformanceTracking';
-import { ActionBar } from '../ActionBar';
+import { ActionBar } from '../ActionBar/ActionBar';
 import { SearchBar } from '../SearchBar';
 import { FC, useCallback, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';

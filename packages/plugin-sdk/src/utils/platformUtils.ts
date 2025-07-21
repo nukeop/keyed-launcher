@@ -9,16 +9,12 @@ interface OSInfo {
 export type Platform = 'macOS' | 'windows' | 'linux' | 'unknown';
 
 let cachedPlatform: Platform | null = null;
+let initializationPromise: Promise<Platform> | null = null;
 
-export async function getPlatform(): Promise<Platform> {
-  if (cachedPlatform) {
-    return cachedPlatform;
-  }
-
+async function fetchPlatform(): Promise<Platform> {
   try {
     const osInfo = await invoke<OSInfo>('get_os_info');
-    cachedPlatform = osInfo.platform as Platform;
-    return cachedPlatform;
+    return osInfo.platform as Platform;
   } catch (error) {
     console.warn(
       'Failed to get OS info from Tauri, falling back to navigator.platform:',
@@ -28,15 +24,32 @@ export async function getPlatform(): Promise<Platform> {
     // Fallback to browser detection
     const platform = navigator.platform.toLowerCase();
     if (platform.includes('mac')) {
-      cachedPlatform = 'macOS';
+      return 'macOS';
     } else if (platform.includes('win')) {
-      cachedPlatform = 'windows';
+      return 'windows';
     } else if (platform.includes('linux')) {
-      cachedPlatform = 'linux';
+      return 'linux';
     } else {
-      cachedPlatform = 'unknown';
+      return 'unknown';
     }
-
-    return cachedPlatform;
   }
+}
+
+export async function initializePlatform(): Promise<Platform> {
+  if (!initializationPromise) {
+    initializationPromise = fetchPlatform().then((platform) => {
+      cachedPlatform = platform;
+      return platform;
+    });
+  }
+  return initializationPromise;
+}
+
+export function getPlatform(): Platform {
+  if (cachedPlatform === null) {
+    throw new Error(
+      'Platform not initialized. Call initializePlatform() first.',
+    );
+  }
+  return cachedPlatform;
 }

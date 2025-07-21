@@ -1,4 +1,4 @@
-import { CommandIcon, LauncherEntry } from '@keyed-launcher/plugin-sdk';
+import { CommandIcon, LauncherEntry } from '../types';
 
 export interface CategoryGroup {
   category: string;

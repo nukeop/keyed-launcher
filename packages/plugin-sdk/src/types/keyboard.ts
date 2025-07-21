@@ -59,7 +59,7 @@ export namespace Keyboard {
     | 'f11'
     | 'f12';
 
-  export type Modifier = 'cmd' | 'ctrl' | 'alt' | 'shift';
+  export type Modifier = 'cmd' | 'super' | 'ctrl' | 'alt' | 'shift';
 
   export interface KeyCombination {
     key: Key;

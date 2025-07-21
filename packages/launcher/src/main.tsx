@@ -9,11 +9,13 @@ import { loadBundledPlugins } from './plugins/bundled';
 import { initializePluginSystem } from './plugins/init';
 import { usePluginRegistry } from './stores/plugins';
 import { PerformanceMonitor } from './utils/performance';
+import { initializePlatform } from '@keyed-launcher/plugin-sdk';
 
 PerformanceMonitor.startupTimer();
 
 async function initializeApp() {
   try {
+    await initializePlatform();
     initializeLauncherAPI();
     await initializePluginSystem();
     const { loaded, errors } = await loadBundledPlugins();

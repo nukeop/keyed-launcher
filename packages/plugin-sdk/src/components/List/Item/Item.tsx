@@ -4,6 +4,7 @@ import { useListContext } from '../ListContext';
 import {
   FC,
   ForwardRefExoticComponent,
+  ReactNode,
   RefAttributes,
   useEffect,
   useRef,
@@ -17,6 +18,7 @@ export type ItemProps = {
   subtitle?: string;
   kind?: ItemKind;
   icon?: CommandIcon;
+  actions?: ReactNode;
   onAction?: () => void;
   'data-testid'?: string;
 };

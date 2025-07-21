@@ -22,10 +22,14 @@ export { Keyboard } from './types/keyboard';
 export {
   resolveShortcut,
   getCommonShortcut,
-  formatShortcut,
+  formatKeyOrModifier,
 } from './utils/keyboardUtils';
 
-export { getPlatform, type Platform } from './utils/platformUtils';
+export {
+  getPlatform,
+  initializePlatform,
+  type Platform,
+} from './utils/platformUtils';
 
 export {
   PluginAPI,

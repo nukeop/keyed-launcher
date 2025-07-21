@@ -56,12 +56,9 @@ pub async fn execute_command_simple(program: String, args: Vec<String>) -> Resul
 
 #[command]
 pub async fn get_os_info() -> Result<OSInfo, String> {
-    let mut system = System::new();
-    system.refresh_system();
-
     let name = System::name().unwrap_or_else(|| "Unknown".to_string());
     let version = System::os_version().unwrap_or_else(|| "Unknown".to_string());
-    
+
     let platform = if cfg!(target_os = "macos") {
         "macOS".to_string()
     } else if cfg!(target_os = "windows") {
