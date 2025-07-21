@@ -28,8 +28,8 @@
                 "type": "named",
                 "name": "Volume2",
                 "gradient": {
-                    "from": "blue-500",
-                    "to": "green-600"
+                    "from": "stone-400",
+                    "to": "stone-600"
                 }
             },
             "keywords": [
@@ -53,8 +53,8 @@
                 "type": "named",
                 "name": "Volume1",
                 "gradient": {
-                    "from": "green-500",
-                    "to": "blue-600"
+                    "from": "stone-400",
+                    "to": "stone-600"
                 }
             },
             "keywords": [
@@ -79,8 +79,8 @@
                 "type": "named",
                 "name": "VolumeX",
                 "gradient": {
-                    "from": "gray-500",
-                    "to": "red-600"
+                    "from": "stone-400",
+                    "to": "stone-600"
                 }
             },
             "keywords": [
@@ -104,8 +104,8 @@
                 "type": "named",
                 "name": "VolumeX",
                 "gradient": {
-                    "from": "slate-500",
-                    "to": "gray-600"
+                    "from": "stone-400",
+                    "to": "stone-600"
                 }
             },
             "keywords": [
@@ -131,8 +131,8 @@
                 "type": "named",
                 "name": "Volume1",
                 "gradient": {
-                    "from": "emerald-400",
-                    "to": "green-500"
+                    "from": "stone-400",
+                    "to": "stone-600"
                 }
             },
             "keywords": [
@@ -157,8 +157,8 @@
                 "type": "named",
                 "name": "Volume1",
                 "gradient": {
-                    "from": "blue-400",
-                    "to": "cyan-500"
+                    "from": "stone-400",
+                    "to": "stone-600"
                 }
             },
             "keywords": [
@@ -183,8 +183,8 @@
                 "type": "named",
                 "name": "Volume2",
                 "gradient": {
-                    "from": "orange-400",
-                    "to": "yellow-500"
+                    "from": "stone-400",
+                    "to": "stone-600"
                 }
             },
             "keywords": [
@@ -209,8 +209,8 @@
                 "type": "named",
                 "name": "Volume2",
                 "gradient": {
-                    "from": "red-500",
-                    "to": "orange-600"
+                    "from": "stone-400",
+                    "to": "stone-600"
                 }
             },
             "keywords": [

@@ -1,6 +1,7 @@
 import { AppContainer } from './components/AppContainer';
 import { ColorPaletteDebugger } from './components/ColorPaletteDebugger';
 import { CommandPalette } from './components/CommandPalette';
+import { Dummy } from './components/Dummy';
 import { LauncherTransition } from './components/LauncherTransition';
 import { ThemeDebugger } from './components/ThemeDebugger';
 import { isThemeDebuggerVisible } from './hooks/useCommandPaletteResults';

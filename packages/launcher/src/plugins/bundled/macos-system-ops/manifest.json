@@ -30,8 +30,8 @@
                 "type": "named",
                 "name": "Power",
                 "gradient": {
-                    "from": "red-500",
-                    "to": "orange-600"
+                    "from": "zinc-300",
+                    "to": "zinc-600"
                 }
             },
             "keywords": [
@@ -54,8 +54,8 @@
                 "type": "named",
                 "name": "RotateCcw",
                 "gradient": {
-                    "from": "orange-500",
-                    "to": "red-600"
+                    "from": "zinc-300",
+                    "to": "zinc-600"
                 }
             },
             "keywords": [
@@ -77,8 +77,8 @@
                 "type": "named",
                 "name": "Moon",
                 "gradient": {
-                    "from": "indigo-500",
-                    "to": "purple-600"
+                    "from": "zinc-300",
+                    "to": "zinc-600"
                 }
             },
             "keywords": [
@@ -100,8 +100,8 @@
                 "type": "named",
                 "name": "LogOut",
                 "gradient": {
-                    "from": "blue-500",
-                    "to": "cyan-600"
+                    "from": "zinc-300",
+                    "to": "zinc-600"
                 }
             },
             "keywords": [
@@ -124,8 +124,8 @@
                 "type": "named",
                 "name": "Lock",
                 "gradient": {
-                    "from": "emerald-500",
-                    "to": "teal-600"
+                    "from": "zinc-300",
+                    "to": "zinc-600"
                 }
             },
             "keywords": [
