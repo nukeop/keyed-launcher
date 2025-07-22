@@ -8,7 +8,7 @@ import { isThemeDebuggerVisible } from './hooks/useCommandPaletteResults';
 import { userPerformanceMonitoringStartup } from './hooks/usePerformanceMonitoringStartup';
 import { PluginView } from './plugins/components/PluginVIew';
 import { useLauncherStore } from './stores/launcher';
-import { ThemeProvider } from '@keyed-launcher/plugin-sdk';
+import { ActionProvider, ThemeProvider } from '@keyed-launcher/plugin-sdk';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 function App() {
@@ -28,13 +28,15 @@ function App() {
         )}
         <LauncherTransition isVisible={isVisible}>
           <AppContainer>
-            <Routes>
-              <Route path="/" element={<CommandPalette />} />
-              <Route
-                path="/plugin/:pluginId/:commandName"
-                element={<PluginView />}
-              />
-            </Routes>
+            <ActionProvider>
+              <Routes>
+                <Route path="/" element={<CommandPalette />} />
+                <Route
+                  path="/plugin/:pluginId/:commandName"
+                  element={<PluginView />}
+                />
+              </Routes>
+            </ActionProvider>
           </AppContainer>
         </LauncherTransition>
       </ThemeProvider>

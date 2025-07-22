@@ -1,3 +1,4 @@
+import { useActionContext } from '../../../providers/ActionContext';
 import { CommandIcon, ItemKind } from '../../../types';
 import { IconRenderer } from '../../IconRenderer';
 import { useListContext } from '../ListContext';
@@ -35,11 +36,13 @@ const ItemBase: FC<ItemProps> = ({
   subtitle,
   kind,
   icon,
+  actions,
   onAction,
   'data-testid': testId,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const { registerItem, unregisterItem, selectedId } = useListContext();
+  const { setCurrentActions } = useActionContext();
   const isSelected = selectedId === id;
 
   useEffect(() => {
@@ -56,6 +59,14 @@ const ItemBase: FC<ItemProps> = ({
       });
     }
   }, [isSelected]);
+
+  useEffect(() => {
+    if (isSelected && actions) {
+      setCurrentActions(actions);
+    } else if (isSelected && !actions) {
+      setCurrentActions(null);
+    }
+  }, [isSelected, actions, setCurrentActions]);
 
   return (
     <div
