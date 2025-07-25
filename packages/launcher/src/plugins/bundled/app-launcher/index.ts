@@ -1,6 +1,7 @@
 import { registerMultipleDynamicEntries } from '../../commands';
 import {
   CommandContext,
+  ItemKind,
   LauncherEntry,
   MacOSApp,
   PluginAPI,
@@ -42,6 +43,7 @@ function createLauncherEntries(
     mode: 'no-view' as const,
     category: 'Applications',
     icon: app.icon ? { type: 'base64', data: app.icon } : undefined,
+    kind: ItemKind.Application,
     keywords: [
       app.name.toLowerCase(),
       ...app.name.toLowerCase().split(' '),

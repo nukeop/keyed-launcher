@@ -1,5 +1,5 @@
+import { Keyboard } from '../types/keyboard';
 import { Key } from './Key';
-import { Keyboard } from '@keyed-launcher/plugin-sdk';
 import { FC } from 'react';
 
 type KeyComboProps = {

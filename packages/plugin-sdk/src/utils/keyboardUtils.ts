@@ -1,14 +1,14 @@
 import { Keyboard } from '../types/keyboard';
 import { getPlatform } from './platformUtils';
 
-export async function resolveShortcut(
+export const resolveShortcut = (
   shortcut: Keyboard.Shortcut,
-): Promise<Keyboard.KeyCombination> {
+): Keyboard.KeyCombination => {
   if ('key' in shortcut) {
     return shortcut;
   }
 
-  const platform = await getPlatform();
+  const platform = getPlatform();
 
   if (platform === 'macOS' && shortcut.macOS) {
     return shortcut.macOS;
@@ -19,7 +19,7 @@ export async function resolveShortcut(
   }
 
   throw new Error('No valid shortcut found for any platform');
-}
+};
 
 const commonShortcuts: Record<Keyboard.Shortcut.Common, Keyboard.Shortcut> = {
   [Keyboard.Shortcut.Common.Copy]: {

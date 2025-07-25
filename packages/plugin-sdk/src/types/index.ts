@@ -12,14 +12,23 @@ export interface Base64Icon {
   data: string; // Base64-encoded image data (with data:image/... prefix)
 }
 
-export interface NamedIcon {
+export interface GradientNamedIcon {
   type: 'named';
   name: string; // Icon name from Lucide React
-  gradient?: {
+  variant: 'gradient';
+  gradient: {
     from: string; // Tailwind color (e.g., 'blue-500')
     to: string; // Tailwind color (e.g., 'purple-600')
   };
 }
+
+export interface BareNamedIcon {
+  type: 'named';
+  name: string; // Icon name from Lucide React
+  variant: 'bare';
+}
+
+export type NamedIcon = GradientNamedIcon | BareNamedIcon;
 
 export type CommandIcon = EmojiIcon | Base64Icon | NamedIcon | string;
 
@@ -60,6 +69,7 @@ export interface PluginInstallMeta {
 export interface CommandManifest {
   name: string; // Unique command identifier within plugin
   displayName: string; // Display name
+  kind: ItemKind;
   subtitle?: string; // Brief description
   description: string; // Detailed description
   mode: 'view' | 'no-view' | 'inline';
@@ -123,24 +133,3 @@ export interface Plugin {
   onStartup?: () => Promise<void>;
   onUnload?: () => Promise<void>;
 }
-
-export namespace Action {
-  export interface OpenInBrowser {
-    type: 'open-in-browser';
-    url: string;
-  }
-
-  export interface CopyToClipboard {
-    type: 'copy-to-clipboard';
-    text: string;
-  }
-
-  export interface Close {
-    type: 'close';
-  }
-}
-
-export type BasicAction =
-  | Action.OpenInBrowser
-  | Action.CopyToClipboard
-  | Action.Close;

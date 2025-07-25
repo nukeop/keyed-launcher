@@ -1,4 +1,5 @@
-import { formatKeyOrModifier, Keyboard } from '@keyed-launcher/plugin-sdk';
+import { Keyboard } from '../types/keyboard';
+import { formatKeyOrModifier } from '../utils/keyboardUtils';
 
 type KeyProps = {
   content: Keyboard.Modifier | Keyboard.Key;

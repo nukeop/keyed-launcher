@@ -21,12 +21,14 @@
             "name": "volume-up",
             "displayName": "Volume Up",
             "subtitle": "Increase system volume",
+            "kind": "System Settings",
             "description": "Increase the system volume by 10%",
             "mode": "no-view",
             "category": "Volume",
             "icon": {
                 "type": "named",
                 "name": "Volume2",
+                "variant": "gradient",
                 "gradient": {
                     "from": "stone-400",
                     "to": "stone-600"
@@ -46,12 +48,14 @@
             "name": "volume-down",
             "displayName": "Volume Down",
             "subtitle": "Decrease system volume",
+            "kind": "System Settings",
             "description": "Decrease the system volume by 10%",
             "mode": "no-view",
             "category": "Volume",
             "icon": {
                 "type": "named",
                 "name": "Volume1",
+                "variant": "gradient",
                 "gradient": {
                     "from": "stone-400",
                     "to": "stone-600"
@@ -72,12 +76,14 @@
             "name": "volume-mute-toggle",
             "displayName": "Toggle Mute",
             "subtitle": "Mute or unmute system audio",
+            "kind": "System Settings",
             "description": "Toggle mute state of the system audio",
             "mode": "no-view",
             "category": "Volume",
             "icon": {
                 "type": "named",
                 "name": "VolumeX",
+                "variant": "gradient",
                 "gradient": {
                     "from": "stone-400",
                     "to": "stone-600"
@@ -97,12 +103,14 @@
             "name": "volume-set-0",
             "displayName": "Set Volume to 0%",
             "subtitle": "Silence system audio",
+            "kind": "System Settings",
             "description": "Set the system volume to 0%",
             "mode": "no-view",
             "category": "Volume",
             "icon": {
                 "type": "named",
                 "name": "VolumeX",
+                "variant": "gradient",
                 "gradient": {
                     "from": "stone-400",
                     "to": "stone-600"
@@ -124,12 +132,14 @@
             "name": "volume-set-25",
             "displayName": "Set Volume to 25%",
             "subtitle": "Low volume preset",
+            "kind": "System Settings",
             "description": "Set the system volume to 25%",
             "mode": "no-view",
             "category": "Volume",
             "icon": {
                 "type": "named",
                 "name": "Volume1",
+                "variant": "gradient",
                 "gradient": {
                     "from": "stone-400",
                     "to": "stone-600"
@@ -150,12 +160,14 @@
             "name": "volume-set-50",
             "displayName": "Set Volume to 50%",
             "subtitle": "Medium volume preset",
+            "kind": "System Settings",
             "description": "Set the system volume to 50%",
             "mode": "no-view",
             "category": "Volume",
             "icon": {
                 "type": "named",
                 "name": "Volume1",
+                "variant": "gradient",
                 "gradient": {
                     "from": "stone-400",
                     "to": "stone-600"
@@ -176,12 +188,14 @@
             "name": "volume-set-75",
             "displayName": "Set Volume to 75%",
             "subtitle": "High volume preset",
+            "kind": "System Settings",
             "description": "Set the system volume to 75%",
             "mode": "no-view",
             "category": "Volume",
             "icon": {
                 "type": "named",
                 "name": "Volume2",
+                "variant": "gradient",
                 "gradient": {
                     "from": "stone-400",
                     "to": "stone-600"
@@ -202,12 +216,15 @@
             "name": "volume-set-100",
             "displayName": "Set Volume to 100%",
             "subtitle": "Maximum volume preset",
+            "kind": "System Settings",
             "description": "Set the system volume to 100%",
             "mode": "no-view",
             "category": "Volume",
+            "variant": "gradient",
             "icon": {
                 "type": "named",
                 "name": "Volume2",
+                "variant": "gradient",
                 "gradient": {
                     "from": "stone-400",
                     "to": "stone-600"

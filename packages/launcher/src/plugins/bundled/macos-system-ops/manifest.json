@@ -29,6 +29,7 @@
             "icon": {
                 "type": "named",
                 "name": "Power",
+                "variant": "gradient",
                 "gradient": {
                     "from": "zinc-300",
                     "to": "zinc-600"
@@ -53,6 +54,7 @@
             "icon": {
                 "type": "named",
                 "name": "RotateCcw",
+                "variant": "gradient",
                 "gradient": {
                     "from": "zinc-300",
                     "to": "zinc-600"
@@ -76,6 +78,7 @@
             "icon": {
                 "type": "named",
                 "name": "Moon",
+                "variant": "gradient",
                 "gradient": {
                     "from": "zinc-300",
                     "to": "zinc-600"
@@ -99,6 +102,7 @@
             "icon": {
                 "type": "named",
                 "name": "LogOut",
+                "variant": "gradient",
                 "gradient": {
                     "from": "zinc-300",
                     "to": "zinc-600"
@@ -123,6 +127,7 @@
             "icon": {
                 "type": "named",
                 "name": "Lock",
+                "variant": "gradient",
                 "gradient": {
                     "from": "zinc-300",
                     "to": "zinc-600"

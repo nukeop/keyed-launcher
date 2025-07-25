@@ -9,8 +9,6 @@ export type {
   NoViewCommand,
   ViewCommand,
   Plugin,
-  Action,
-  BasicAction,
   EmojiIcon,
   Base64Icon,
   NamedIcon,

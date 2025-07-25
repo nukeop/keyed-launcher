@@ -2,7 +2,13 @@ import { useCommandPaletteResults } from '../hooks/useCommandPaletteResults';
 import { useInlineCommands } from '../hooks/useInlineCommands';
 import { useLauncherStore } from '../stores/launcher';
 import { ViewWithSearchBar } from './Views/ViewWithSearchBar';
-import { ItemKind, LauncherEntry, List } from '@keyed-launcher/plugin-sdk';
+import {
+  Action,
+  ActionPanel,
+  ItemKind,
+  LauncherEntry,
+  List,
+} from '@keyed-launcher/plugin-sdk';
 import { FC } from 'react';
 
 export const CommandPalette: FC = () => {
@@ -18,20 +24,43 @@ export const CommandPalette: FC = () => {
 
   return (
     <ViewWithSearchBar data-testid="command-palette">
-      <List data-testid="command-palette-list">
+      <List data-testid="command-palette-list" onSelectionChange={() => {}}>
         {allResults.map((result) => (
           <List.Item
+            data-testid="command-palette-list-item"
             key={result.id}
             id={result.id}
             title={result.title}
             subtitle={result.subtitle}
-            kind={ItemKind.Application}
+            kind={result.kind ?? ItemKind.Command}
             icon={result.icon}
-            onClick={() => handleItemClick(result)}
-            data-testid="command-palette-list-item"
-          >
-            {result.title}
-          </List.Item>
+            actions={
+              <ActionPanel title={result.title}>
+                <Action
+                  title={
+                    {
+                      [ItemKind.Application]: 'Open',
+                      [ItemKind.Command]: 'Run command',
+                      [ItemKind.PluginCommand]: 'Run command',
+                      [ItemKind.QuickLink]: 'Open',
+                      [ItemKind.SystemSettings]: 'Open',
+                    }[result.kind ?? ItemKind.Command]
+                  }
+                  onAction={() => {}}
+                  shortcut={{ key: 'return', modifiers: [] }}
+                  icon={{
+                    type: 'named',
+                    variant: 'bare',
+                    name:
+                      result.kind === ItemKind.Command
+                        ? 'Terminal'
+                        : 'AppWindow',
+                  }}
+                  style={'default'}
+                />
+              </ActionPanel>
+            }
+          />
         ))}
       </List>
     </ViewWithSearchBar>

@@ -18,6 +18,7 @@ export function registerCommand(plugin: Plugin, commandName: string): void {
     commandName: command.name,
     title: command.displayName,
     subtitle: command.subtitle,
+    kind: command.kind,
     description: command.description,
     mode: command.mode,
     category: command.category,
