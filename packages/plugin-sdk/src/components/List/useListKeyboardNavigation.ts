@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 
 export const useListKeyboardNavigation = () => {
   const { selectedId, setSelectedId, getIdByDelta } = useListContext();
+
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       event.preventDefault();
@@ -19,8 +20,6 @@ export const useListKeyboardNavigation = () => {
           break;
         case 'PageUp':
           newId = getIdByDelta(-10, true);
-          break;
-        case 'Enter':
           break;
       }
       newId && setSelectedId(newId);

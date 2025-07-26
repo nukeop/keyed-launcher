@@ -43,7 +43,7 @@ export const CommandPalette: FC = () => {
                       [ItemKind.Command]: 'Run command',
                       [ItemKind.PluginCommand]: 'Run command',
                       [ItemKind.QuickLink]: 'Open',
-                      [ItemKind.SystemSettings]: 'Open',
+                      [ItemKind.SystemSettings]: 'Apply setting',
                     }[result.kind ?? ItemKind.Command]
                   }
                   onAction={() => {}}
