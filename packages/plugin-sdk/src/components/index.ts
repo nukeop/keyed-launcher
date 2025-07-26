@@ -4,3 +4,4 @@ export * from './IconRenderer';
 export * from './ActionPanel';
 export * from './Action';
 export * from './KeyCombo';
+export * from './Transition';

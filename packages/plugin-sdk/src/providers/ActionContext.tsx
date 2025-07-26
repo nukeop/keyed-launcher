@@ -74,14 +74,15 @@ export const ActionProvider: FC<ActionProviderProps> = ({ children }) => {
         case 'Escape':
           if (isActionPanelOpen) {
             event.preventDefault();
+            event.stopPropagation();
             setIsActionPanelOpen(false);
           }
           break;
       }
     };
 
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
+    document.addEventListener('keydown', handleKeyDown, true);
+    return () => document.removeEventListener('keydown', handleKeyDown, true);
   }, [isActionPanelOpen, setIsActionPanelOpen]);
 
   const value: ActionContextType = {

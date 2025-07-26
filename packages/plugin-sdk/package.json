@@ -71,6 +71,7 @@
         "vitest": "^3.2.4"
     },
     "dependencies": {
+        "@headlessui/react": "^2.2.6",
         "@tauri-apps/api": "^2.6.0",
         "colord": "^2.9.3",
         "lucide-react": "^0.525.0",
