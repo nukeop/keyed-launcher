@@ -38,7 +38,6 @@ const mockResults: LauncherEntry[] = [
     execute: {
       mode: 'no-view',
       execute: async () => {
-        console.log('Toggling theme debugger...');
         toggleThemeDebugger();
       },
     },

@@ -7,9 +7,6 @@ import { FC } from 'react';
 
 const ShowThemes: FC<CommandContext> = ({ environment }) => {
   const themes = environment.theme.availableThemes;
-  console.log('Test');
-
-  console.log({ environment });
 
   const results: LauncherEntry[] = themes.map((theme) => ({
     id: theme.meta.id,

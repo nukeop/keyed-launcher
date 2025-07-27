@@ -1,15 +1,11 @@
-import { useCommandRegistry } from '../../stores/commands';
-import { useLauncherStore } from '../../stores/launcher';
-import { MockCommandBuilder } from '../../test/mockCommandBuilder';
-import { MockPluginBuilder } from '../../test/mockPluginBuilder';
-import { mockPerformance } from '../../test/performanceHelpers';
-import {
-  clear,
-  withDefaultPlugins,
-  withPlugin,
-} from '../../test/pluginHelpers';
-import { CommandPalette } from '../CommandPalette';
-import { ThemeProvider } from '@keyed-launcher/plugin-sdk';
+import { useCommandRegistry } from '../stores/commands';
+import { useLauncherStore } from '../stores/launcher';
+import { MockCommandBuilder } from '../test/mockCommandBuilder';
+import { MockPluginBuilder } from '../test/mockPluginBuilder';
+import { mockPerformance } from '../test/performanceHelpers';
+import { clear, withDefaultPlugins, withPlugin } from '../test/pluginHelpers';
+import { CommandPalette } from './CommandPalette';
+import { ActionProvider, ThemeProvider } from '@keyed-launcher/plugin-sdk';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
@@ -26,11 +22,13 @@ window.HTMLElement.prototype.scrollIntoView = vi.fn();
 describe('CommandPalette Integration', () => {
   const renderCommandPalette = () => {
     return render(
-      <MemoryRouter>
-        <ThemeProvider>
-          <CommandPalette />
-        </ThemeProvider>
-      </MemoryRouter>,
+      <ActionProvider>
+        <MemoryRouter>
+          <ThemeProvider>
+            <CommandPalette />
+          </ThemeProvider>
+        </MemoryRouter>
+      </ActionProvider>,
     );
   };
 

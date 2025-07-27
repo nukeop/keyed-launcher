@@ -29,6 +29,8 @@ export {
   type Platform,
 } from './utils/platformUtils';
 
+export { groupEntriesByCategory } from './utils/categoryUtils';
+
 export {
   PluginAPI,
   useEnvironment,

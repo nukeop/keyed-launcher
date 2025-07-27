@@ -5,7 +5,7 @@ import { Dummy } from './components/Dummy';
 import { LauncherTransition } from './components/LauncherTransition';
 import { ThemeDebugger } from './components/ThemeDebugger';
 import { isThemeDebuggerVisible } from './hooks/useCommandPaletteResults';
-import { userPerformanceMonitoringStartup } from './hooks/usePerformanceMonitoringStartup';
+import { usePerformanceMonitoringStartup } from './hooks/usePerformanceMonitoringStartup';
 import { PluginView } from './plugins/components/PluginVIew';
 import { useLauncherStore } from './stores/launcher';
 import { ActionProvider, ThemeProvider } from '@keyed-launcher/plugin-sdk';
@@ -15,7 +15,7 @@ function App() {
   const { isVisible } = useLauncherStore();
   const showDebugger = isThemeDebuggerVisible();
 
-  userPerformanceMonitoringStartup();
+  usePerformanceMonitoringStartup();
 
   return (
     <BrowserRouter>

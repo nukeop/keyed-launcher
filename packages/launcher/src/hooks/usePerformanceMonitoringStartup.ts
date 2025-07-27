@@ -2,7 +2,7 @@ import { useLauncherStore } from '../stores/launcher';
 import { usePerformanceTracking } from '../utils/usePerformanceTracking';
 import { useEffect } from 'react';
 
-export const userPerformanceMonitoringStartup = () => {
+export const usePerformanceMonitoringStartup = () => {
   const { showWindow } = useLauncherStore();
   const { trackStartup, trackWindowShow, startMonitoring } =
     usePerformanceTracking();

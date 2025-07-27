@@ -2,12 +2,15 @@
 
 exports[`ActionBar > matches snapshot 1`] = `
 <div
-  class="flex w-full items-center justify-between border-t border-white/20 bg-black/20 p-2 text-white"
+  class="flex w-full items-center justify-start border-t border-white/20 bg-zinc-600/80 py-2 px-3 gap-2 text-white"
   data-testid="action-bar"
 >
-  <div>
+  <span>
     ⚙️
-  </div>
+  </span>
+  <span
+    class="flex-1"
+  />
   <div
     class="select-none"
     data-testid="performance-dashboard"
@@ -45,27 +48,58 @@ exports[`ActionBar > matches snapshot 1`] = `
           <span
             class="text-white"
           >
-            128 MB
+            32 MB
           </span>
           <span
             class="text-gray-400"
           >
             / 
-            8 GB
+            64 MB
           </span>
         </div>
       </div>
     </div>
   </div>
+  <div
+    class="h-3 mx-2 w-px bg-white/20 transition-opacity duration-200 opacity-100"
+  />
+  <span
+    class="flex flex-row items-center gap-2 rounded px-2 py-1 transition-colors duration-200 bg-transparent"
+  >
+    <label
+      class="text-white/60 text-sm"
+    >
+      Actions
+    </label>
+    <span
+      class="flex flex-row gap-1"
+    >
+      <kbd
+        class="rounded bg-white/10 text-zinc-200 text-md  px-2 leading-6 [font-variant:small-caps]"
+        data-testid="key"
+      >
+        CMD
+      </kbd>
+      <kbd
+        class="rounded bg-white/10 text-zinc-200 text-md  px-2 leading-6 [font-variant:small-caps]"
+        data-testid="key"
+      >
+        K
+      </kbd>
+    </span>
+  </span>
 </div>
 `;
 
 exports[`ActionBar > matches snapshot without icon 1`] = `
 <div
-  class="flex w-full items-center justify-between border-t border-white/20 bg-black/20 p-2 text-white"
+  class="flex w-full items-center justify-start border-t border-white/20 bg-zinc-600/80 py-2 px-3 gap-2 text-white"
   data-testid="action-bar"
 >
-  <div />
+  <span />
+  <span
+    class="flex-1"
+  />
   <div
     class="select-none"
     data-testid="performance-dashboard"
@@ -103,17 +137,45 @@ exports[`ActionBar > matches snapshot without icon 1`] = `
           <span
             class="text-white"
           >
-            128 MB
+            32 MB
           </span>
           <span
             class="text-gray-400"
           >
             / 
-            8 GB
+            64 MB
           </span>
         </div>
       </div>
     </div>
   </div>
+  <div
+    class="h-3 mx-2 w-px bg-white/20 transition-opacity duration-200 opacity-100"
+  />
+  <span
+    class="flex flex-row items-center gap-2 rounded px-2 py-1 transition-colors duration-200 bg-transparent"
+  >
+    <label
+      class="text-white/60 text-sm"
+    >
+      Actions
+    </label>
+    <span
+      class="flex flex-row gap-1"
+    >
+      <kbd
+        class="rounded bg-white/10 text-zinc-200 text-md  px-2 leading-6 [font-variant:small-caps]"
+        data-testid="key"
+      >
+        CMD
+      </kbd>
+      <kbd
+        class="rounded bg-white/10 text-zinc-200 text-md  px-2 leading-6 [font-variant:small-caps]"
+        data-testid="key"
+      >
+        K
+      </kbd>
+    </span>
+  </span>
 </div>
 `;

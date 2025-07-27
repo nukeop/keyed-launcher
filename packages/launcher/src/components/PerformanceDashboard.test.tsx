@@ -1,15 +1,12 @@
-import { mockPerformance } from '../../test/performanceHelpers';
-import { isProd } from '../../utils/environment';
-import { PerformanceDashboard } from '../PerformanceDashboard';
+import { mockPerformance } from '../test/performanceHelpers';
+import { isProd } from '../utils/environment';
+import { PerformanceDashboard } from './PerformanceDashboard';
 import { render, screen, within } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 
 mockPerformance();
 
-vi.mock('../../utils/environment', () => ({
-  isDev: vi.fn(() => true),
-  isProd: vi.fn(() => false),
-}));
+vi.mock('../utils/environment');
 
 describe('PerformanceDashboard', () => {
   it('renders FPS', async () => {

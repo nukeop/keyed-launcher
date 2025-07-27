@@ -36,11 +36,12 @@ function getOrderedItemIds(children: ReactNode): string[] {
 
   Children.forEach(children, (child) => {
     if (!isValidElement(child)) return;
+    if (child.props.children) {
+      ids.push(...getOrderedItemIds(child.props.children));
+    }
 
     if (child.type === List.Item) {
       ids.push(child.props.id);
-    } else if (child.type === List.Section) {
-      ids.push(...getOrderedItemIds(child.props.children));
     }
   });
 
@@ -105,7 +106,7 @@ const ListBase: FC<ListProps> = ({
   );
 
   const getIdByDelta = useCallback(
-    (delta: number, withWraparound = false): string | null => {
+    (delta: number, withWraparound = true): string | null => {
       if (!selectedId) return null;
       const index = orderedItemIds.indexOf(selectedId);
       if (index === -1) return null;

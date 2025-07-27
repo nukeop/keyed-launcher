@@ -1,5 +1,5 @@
 export const mockPerformance = () => {
-  vi.mock('../../utils/performance', () => ({
+  vi.mock('../utils/performance', () => ({
     PerformanceMonitor: {
       getCurrentFPS: vi.fn(() => 60),
       getMemoryStats: vi.fn(() =>

@@ -6,20 +6,23 @@ export const useListKeyboardNavigation = () => {
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      event.preventDefault();
       let newId: string | null = null;
       switch (event.key) {
         case 'ArrowDown':
-          newId = getIdByDelta(1, true);
+          newId = getIdByDelta(1);
+          event.preventDefault();
           break;
         case 'ArrowUp':
-          newId = getIdByDelta(-1, true);
+          newId = getIdByDelta(-1);
+          event.preventDefault();
           break;
         case 'PageDown':
-          newId = getIdByDelta(10, true);
+          newId = getIdByDelta(10);
+          event.preventDefault();
           break;
         case 'PageUp':
-          newId = getIdByDelta(-10, true);
+          newId = getIdByDelta(-10);
+          event.preventDefault();
           break;
       }
       newId && setSelectedId(newId);
