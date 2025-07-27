@@ -33,7 +33,7 @@ export const CommandPalette: FC = () => {
                 {group.entries.map((result) => (
                   <List.Item
                     key={result.id}
-                    data-testid="command-palette-list-item"
+                    data-testid={`command-palette-list-item-${result.id}`}
                     id={result.id}
                     title={result.title}
                     subtitle={result.subtitle}

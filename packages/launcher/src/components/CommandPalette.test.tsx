@@ -106,23 +106,25 @@ describe('CommandPalette Integration', () => {
     renderCommandPalette();
 
     let selectedItem = screen.getByTestId(
-      'result-item-core-dev.theme-debugger',
+      'command-palette-list-item-core-dev.theme-debugger',
     );
     expect(selectedItem).toHaveAttribute('data-selected', 'true');
 
     await userEvent.keyboard('{ArrowDown}');
     selectedItem = screen.getByTestId(
-      'result-item-com.tools-plugin.calculator',
+      'command-palette-list-item-com.tools-plugin.calculator',
     );
     expect(selectedItem).toHaveAttribute('data-selected', 'true');
 
     await userEvent.keyboard('{ArrowDown}');
-    selectedItem = screen.getByTestId('result-item-com.tools-plugin.terminal');
+    selectedItem = screen.getByTestId(
+      'command-palette-list-item-com.tools-plugin.terminal',
+    );
     expect(selectedItem).toHaveAttribute('data-selected', 'true');
 
     await userEvent.keyboard('{ArrowUp}');
     selectedItem = screen.getByTestId(
-      'result-item-com.tools-plugin.calculator',
+      'command-palette-list-item-com.tools-plugin.calculator',
     );
     expect(selectedItem).toHaveAttribute('data-selected', 'true');
   });
@@ -208,13 +210,15 @@ describe('CommandPalette Integration', () => {
 
     await userEvent.keyboard('{ArrowDown}');
     expect(
-      screen.getByTestId('result-item-com.tools-plugin.calculator'),
+      screen.getByTestId(
+        'command-palette-list-item-com.tools-plugin.calculator',
+      ),
     ).toHaveAttribute('data-selected', 'true');
 
     await userEvent.type(screen.getByTestId('search-input'), 'term');
 
     expect(
-      screen.getByTestId('result-item-com.tools-plugin.terminal'),
+      screen.getByTestId('command-palette-list-item-com.tools-plugin.terminal'),
     ).toHaveAttribute('data-selected', 'true');
   });
 
