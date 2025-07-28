@@ -2,6 +2,7 @@ import { useLauncherStore } from '../../stores/launcher';
 import { usePerformanceTracking } from '../../utils/usePerformanceTracking';
 import { ActionBar } from '../ActionBar/ActionBar';
 import { SearchBar } from '../SearchBar';
+import { useSearchStore } from '@keyed-launcher/plugin-sdk';
 import { FC, useCallback, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -14,7 +15,8 @@ export const ViewWithSearchBar: FC<ViewWithSearchBarProps> = ({
   'data-testid': dataTestId,
   children,
 }) => {
-  const { searchQuery, setSearchQuery, hideWindow } = useLauncherStore();
+  const { hideWindow } = useLauncherStore();
+  const { searchQuery, setSearchQuery } = useSearchStore();
   const location = useLocation();
   const isRoot = location.pathname === '/';
   const navigate = useNavigate();

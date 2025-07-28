@@ -1,6 +1,5 @@
 import { useCommandPaletteResults } from '../hooks/useCommandPaletteResults';
 import { useInlineCommands } from '../hooks/useInlineCommands';
-import { useLauncherStore } from '../stores/launcher';
 import { ViewWithSearchBar } from './Views/ViewWithSearchBar';
 import {
   Action,
@@ -8,11 +7,12 @@ import {
   groupEntriesByCategory,
   ItemKind,
   List,
+  useSearchStore,
 } from '@keyed-launcher/plugin-sdk';
 import { FC, Fragment } from 'react';
 
 export const CommandPalette: FC = () => {
-  const { searchQuery } = useLauncherStore();
+  const { searchQuery } = useSearchStore();
   const { results } = useCommandPaletteResults(searchQuery);
   const { activeCommand } = useInlineCommands(searchQuery);
 
