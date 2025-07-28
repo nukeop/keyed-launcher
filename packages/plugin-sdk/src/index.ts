@@ -43,3 +43,5 @@ export type { MacOSApp, Environment, PluginAPIBridge } from './api';
 export * from './theming';
 export * from './components';
 export * from './providers';
+
+export { useSearchStore } from './stores/search';
