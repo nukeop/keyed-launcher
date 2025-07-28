@@ -2,10 +2,8 @@ import { invoke } from '@tauri-apps/api/core';
 import { create } from 'zustand';
 
 interface LauncherState {
-  searchQuery: string;
   isVisible: boolean;
   isAnimating: boolean;
-  setSearchQuery: (query: string) => void;
   setIsVisible: (visible: boolean) => void;
   setIsAnimating: (animating: boolean) => void;
   showWindow: () => void;
@@ -13,10 +11,8 @@ interface LauncherState {
 }
 
 export const useLauncherStore = create<LauncherState>((set, get) => ({
-  searchQuery: '',
   isVisible: false,
   isAnimating: false,
-  setSearchQuery: (query) => set({ searchQuery: query }),
   setIsVisible: (visible) => set({ isVisible: visible }),
   setIsAnimating: (animating) => set({ isAnimating: animating }),
 
