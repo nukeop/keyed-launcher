@@ -1,3 +1,4 @@
+import { useSearchStore } from '../../stores/search';
 import { InlineItem } from './InlineItem';
 import { Item } from './Item/Item';
 import { ListContext, ListContextType } from './ListContext';
@@ -19,9 +20,11 @@ import {
 export type ListProps = {
   children: ReactNode;
   filtering?: boolean;
+  searchText?: string;
+  onSearchTextChange?: (text: string) => void;
   isLoading?: boolean;
   selectedItemId?: string | null;
-  onSelectionChange: (id: string) => void;
+  onSelectionChange?: (id: string) => void;
   'data-testid'?: string;
 };
 
@@ -67,17 +70,32 @@ const InnerList: FC<{ children: ReactNode; 'data-testid'?: string }> = ({
 const ListBase: FC<ListProps> = ({
   children,
   filtering,
+  searchText,
+  onSearchTextChange,
   isLoading,
   selectedItemId,
   onSelectionChange,
   'data-testid': testId,
 }) => {
+  const { setSearchQuery } = useSearchStore();
   const itemRefs = useRef(new Map<string, RefObject<HTMLElement>>());
   const orderedItemIds = useMemo(() => getOrderedItemIds(children), [children]);
   const [internalSelectedId, setInternalSelectedId] = useState<string | null>(
     null,
   );
   const selectedId = selectedItemId ?? internalSelectedId;
+
+  useEffect(() => {
+    useSearchStore.subscribe(({ searchQuery }) => {
+      onSearchTextChange?.(searchQuery);
+    });
+  }, [onSearchTextChange]);
+
+  useEffect(() => {
+    if (searchText) {
+      setSearchQuery(searchText);
+    }
+  }, [setSearchQuery, searchText]);
 
   useEffect(() => {
     if (selectedItemId !== undefined) {

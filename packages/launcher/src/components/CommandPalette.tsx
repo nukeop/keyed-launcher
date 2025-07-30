@@ -22,7 +22,7 @@ export const CommandPalette: FC = () => {
 
   return (
     <ViewWithSearchBar data-testid="command-palette">
-      <List data-testid="command-palette-list" onSelectionChange={() => {}}>
+      <List data-testid="command-palette-list">
         {groupedByCategory.map((group) => {
           return (
             <Fragment key={group.category}>

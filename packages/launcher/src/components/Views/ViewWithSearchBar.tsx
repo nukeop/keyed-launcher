@@ -47,7 +47,7 @@ export const ViewWithSearchBar: FC<ViewWithSearchBarProps> = ({
 
   useEffect(() => {
     setSearchQuery('');
-  }, [location, setSearchQuery]);
+  }, [location]);
 
   return (
     <div className="flex h-full flex-1 flex-col" data-testid={dataTestId}>
