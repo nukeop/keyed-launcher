@@ -53,7 +53,7 @@ const ItemBase: FC<ItemProps> = ({
   useEffect(() => {
     if (isSelected) {
       ref.current?.focus();
-      ref?.current?.scrollIntoView({
+      ref?.current?.scrollIntoView?.({
         behavior: 'instant',
         block: 'nearest',
       });

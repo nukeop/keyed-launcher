@@ -1,12 +1,7 @@
 import { useCommandRegistry } from '../stores/commands';
 import { usePluginRegistry } from '../stores/plugins';
-import {
-  CommandContext,
-  LauncherEntry,
-  useTheme,
-} from '@keyed-launcher/plugin-sdk';
+import { LauncherEntry } from '@keyed-launcher/plugin-sdk';
 import { useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 let showThemeDebugger = false;
 let forceUpdate: (() => void) | null = null;
@@ -46,16 +41,13 @@ const mockResults: LauncherEntry[] = [
   },
 ];
 
-export function useCommandPaletteResults(searchQuery: string) {
+export function useCommandPaletteResults() {
   const [isLoading, setIsLoading] = useState(false);
   const [_updateTrigger, setUpdateTrigger] = useState(0);
   const registeredCommands = useCommandRegistry(
     (state) => state.registeredCommands,
   );
   const isPluginEnabled = usePluginRegistry((state) => state.isPluginEnabled);
-  const theme = useTheme();
-  const navigate = useNavigate();
-
   forceUpdate = () => setUpdateTrigger((prev) => prev + 1);
 
   const allResults = useMemo(() => {
@@ -68,47 +60,9 @@ export function useCommandPaletteResults(searchQuery: string) {
     return [...mockResults, ...pluginEntries];
   }, [registeredCommands, isPluginEnabled]);
 
-  const filteredResults = useMemo(() => {
-    if (!searchQuery.trim()) {
-      return allResults;
-    }
-
-    const query = searchQuery.toLowerCase();
-    return allResults.filter(
-      (result) =>
-        result.title.toLowerCase().includes(query) ||
-        (result.subtitle && result.subtitle.toLowerCase().includes(query)) ||
-        (result.keywords &&
-          result.keywords.some((keyword) =>
-            keyword.toLowerCase().includes(query),
-          )),
-    );
-  }, [searchQuery, allResults]);
-
-  const executeResult = (result: LauncherEntry) => {
-    if (result.execute) {
-      const context: CommandContext = {
-        environment: {
-          theme,
-          platform: 'web',
-          debug: true,
-        },
-      };
-
-      if (result.execute.mode === 'no-view') {
-        result.execute.execute(context).catch((error) => {
-          console.error(`Error executing command ${result.id}:`, error);
-        });
-      } else {
-        navigate(`/plugin/${result.pluginId}/${result.commandName}`);
-      }
-    }
-  };
-
   return {
-    results: filteredResults,
+    results: allResults,
     isLoading,
     setIsLoading,
-    executeResult,
   };
 }

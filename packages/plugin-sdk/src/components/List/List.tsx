@@ -1,4 +1,5 @@
 import { useSearchStore } from '../../stores/search';
+import { filterListChildren } from './filteringUtils';
 import { InlineItem } from './InlineItem';
 import { Item } from './Item/Item';
 import { ListContext, ListContextType } from './ListContext';
@@ -8,6 +9,7 @@ import {
   Children,
   FC,
   isValidElement,
+  ReactElement,
   ReactNode,
   RefObject,
   useCallback,
@@ -17,8 +19,13 @@ import {
   useState,
 } from 'react';
 
+export type ListChildren =
+  | ReactElement<typeof Item>
+  | ReactElement<typeof Section>
+  | Array<ReactElement<typeof Item> | ReactElement<typeof Section>>;
+
 export type ListProps = {
-  children: ReactNode;
+  children: ListChildren;
   filtering?: boolean;
   searchText?: string;
   onSearchTextChange?: (text: string) => void;
@@ -69,7 +76,7 @@ const InnerList: FC<{ children: ReactNode; 'data-testid'?: string }> = ({
 
 const ListBase: FC<ListProps> = ({
   children,
-  filtering,
+  filtering = true,
   searchText,
   onSearchTextChange,
   isLoading,
@@ -77,7 +84,7 @@ const ListBase: FC<ListProps> = ({
   onSelectionChange,
   'data-testid': testId,
 }) => {
-  const { setSearchQuery } = useSearchStore();
+  const { searchQuery, setSearchQuery } = useSearchStore();
   const itemRefs = useRef(new Map<string, RefObject<HTMLElement>>());
   const orderedItemIds = useMemo(() => getOrderedItemIds(children), [children]);
   const [internalSelectedId, setInternalSelectedId] = useState<string | null>(
@@ -103,7 +110,7 @@ const ListBase: FC<ListProps> = ({
     } else if (internalSelectedId === null && orderedItemIds.length > 0) {
       setInternalSelectedId(orderedItemIds[0]);
     }
-  }, [selectedItemId, orderedItemIds.join(',')]);
+  }, [internalSelectedId, orderedItemIds, selectedItemId]);
 
   const registerItem = useCallback(
     (id: string, ref: React.RefObject<HTMLElement>) => {
@@ -172,7 +179,9 @@ const ListBase: FC<ListProps> = ({
 
   return (
     <ListContext.Provider value={contextValue}>
-      <InnerList data-testid={testId}>{children}</InnerList>
+      <InnerList data-testid={testId}>
+        {filtering ? filterListChildren(children, searchQuery) : children}
+      </InnerList>
     </ListContext.Provider>
   );
 };

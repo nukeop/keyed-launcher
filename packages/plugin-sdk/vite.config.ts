@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
@@ -30,5 +31,10 @@ export default defineConfig({
     },
     sourcemap: true,
     watch: {},
+  },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: ['./src/test/setup.ts'],
   },
 });

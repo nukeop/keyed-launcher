@@ -1,8 +1,9 @@
 import { CommandIcon, IconRenderer } from '../../..';
-import { FC, ReactNode } from 'react';
+import { Item } from '../Item/Item';
+import { FC, ReactElement } from 'react';
 
 export type SectionProps = {
-  children?: ReactNode;
+  children?: ReactElement<typeof Item> | Array<ReactElement<typeof Item>>;
   title: string;
   icon?: CommandIcon;
   'data-testid'?: string;
