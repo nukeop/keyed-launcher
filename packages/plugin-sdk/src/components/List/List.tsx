@@ -86,7 +86,13 @@ const ListBase: FC<ListProps> = ({
 }) => {
   const { searchQuery, setSearchQuery } = useSearchStore();
   const itemRefs = useRef(new Map<string, RefObject<HTMLElement>>());
-  const orderedItemIds = useMemo(() => getOrderedItemIds(children), [children]);
+  const filteredChildren = filtering
+    ? filterListChildren(children, searchQuery)
+    : children;
+  const orderedItemIds = useMemo(
+    () => getOrderedItemIds(filteredChildren),
+    [filteredChildren],
+  );
   const [internalSelectedId, setInternalSelectedId] = useState<string | null>(
     null,
   );
@@ -179,9 +185,7 @@ const ListBase: FC<ListProps> = ({
 
   return (
     <ListContext.Provider value={contextValue}>
-      <InnerList data-testid={testId}>
-        {filtering ? filterListChildren(children, searchQuery) : children}
-      </InnerList>
+      <InnerList data-testid={testId}>{filteredChildren}</InnerList>
     </ListContext.Provider>
   );
 };

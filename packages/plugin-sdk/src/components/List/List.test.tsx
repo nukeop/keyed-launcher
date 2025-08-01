@@ -1,12 +1,16 @@
 import { List } from '.';
 import { ActionProvider } from '../../providers';
 import { useSearchStore } from '../../stores/search';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 
 describe('List', () => {
   it('renders an empty list', () => {
-    const list = render(<List />);
+    const list = render(
+      <List>
+        <></>
+      </List>,
+    );
     expect(list.asFragment()).toMatchSnapshot();
   });
 
@@ -74,5 +78,47 @@ describe('List', () => {
     expect(screen.queryByText('Section 2')).not.toBeNull();
     expect(screen.queryByText('Test 1')).not.toBeNull();
     expect(screen.queryByText('Test 2')).not.toBeNull();
+  });
+
+  it('keyboard navigation works correctly with filtered items', () => {
+    useSearchStore.setState({ searchQuery: 'Apple' });
+
+    render(
+      <ActionProvider>
+        <List filtering>
+          <List.Item id="apple1" title="Apple 1" />
+          <List.Item id="banana1" title="Banana 1" />
+          <List.Item id="apple2" title="Apple 2" />
+          <List.Item id="banana2" title="Banana 2" />
+          <List.Item id="apple3" title="Apple 3" />
+        </List>
+      </ActionProvider>,
+    );
+
+    expect(screen.queryByText('Apple 1')).not.toBeNull();
+    expect(screen.queryByText('Apple 2')).not.toBeNull();
+    expect(screen.queryByText('Apple 3')).not.toBeNull();
+    expect(screen.queryByText('Banana 1')).toBeNull();
+    expect(screen.queryByText('Banana 2')).toBeNull();
+
+    const apple1 = screen
+      .getByText('Apple 1')
+      .closest('[data-testid="plugin-list-item"]');
+    const apple2 = screen
+      .getByText('Apple 2')
+      .closest('[data-testid="plugin-list-item"]');
+    const apple3 = screen
+      .getByText('Apple 3')
+      .closest('[data-testid="plugin-list-item"]');
+
+    expect(apple1?.getAttribute('data-selected')).toBe('true');
+
+    fireEvent.keyDown(document, { key: 'ArrowDown' });
+    expect(apple1?.getAttribute('data-selected')).toBe('false');
+    expect(apple2?.getAttribute('data-selected')).toBe('true');
+
+    fireEvent.keyDown(document, { key: 'ArrowDown' });
+    expect(apple2?.getAttribute('data-selected')).toBe('false');
+    expect(apple3?.getAttribute('data-selected')).toBe('true');
   });
 });
