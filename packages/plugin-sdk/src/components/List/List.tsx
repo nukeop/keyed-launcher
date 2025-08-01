@@ -1,6 +1,5 @@
 import { useSearchStore } from '../../stores/search';
 import { filterListChildren } from './filteringUtils';
-import { InlineItem } from './InlineItem';
 import { Item } from './Item/Item';
 import { ListContext, ListContextType } from './ListContext';
 import { Section } from './Section/Section';
@@ -38,7 +37,6 @@ export type ListProps = {
 interface ListComponent extends FC<ListProps> {
   Item: typeof Item;
   Section: typeof Section;
-  InlineItem: typeof InlineItem;
 }
 
 function getOrderedItemIds(children: ReactNode): string[] {
@@ -197,4 +195,3 @@ const ListBase: FC<ListProps> = ({
 export const List = ListBase as ListComponent;
 List.Item = Item;
 List.Section = Section;
-List.InlineItem = InlineItem;

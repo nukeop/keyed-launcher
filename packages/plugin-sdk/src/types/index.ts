@@ -16,7 +16,7 @@ export interface GradientNamedIcon {
   type: 'named';
   name: string; // Icon name from Lucide React
   variant: 'gradient';
-  gradient: {
+  gradient?: {
     from: string; // Tailwind color (e.g., 'blue-500')
     to: string; // Tailwind color (e.g., 'purple-600')
   };

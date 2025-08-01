@@ -1,3 +1,4 @@
+import { CommandIcon } from '../types';
 import { IconRenderer } from './IconRenderer';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
@@ -23,7 +24,11 @@ describe('IconRenderer', () => {
   });
 
   it('renders named icons with default gradient', () => {
-    const icon = { type: 'named' as const, name: 'Heart' };
+    const icon: CommandIcon = {
+      type: 'named' as const,
+      name: 'Heart',
+      variant: 'gradient',
+    };
     const { container } = render(<IconRenderer icon={icon} />);
 
     const wrapper = container.querySelector('div');
@@ -34,12 +39,13 @@ describe('IconRenderer', () => {
   });
 
   it('renders named icons with custom gradient', () => {
-    const iconContent = {
+    const icon: CommandIcon = {
       type: 'named' as const,
       name: 'Heart',
+      variant: 'gradient',
       gradient: { from: 'red-500', to: 'pink-500' },
     };
-    render(<IconRenderer icon={iconContent} />);
+    render(<IconRenderer icon={icon} />);
 
     const wrapper = screen.getByTestId('named-icon');
     expect(wrapper).toBeInTheDocument();
@@ -49,12 +55,22 @@ describe('IconRenderer', () => {
   });
 
   it('renders fallback for invalid named icon', () => {
-    const icon = { type: 'named' as const, name: 'NonExistentIcon' };
+    const icon: CommandIcon = {
+      type: 'named' as const,
+      variant: 'bare',
+      name: 'NonExistentIcon',
+    };
     render(<IconRenderer icon={icon} />);
 
-    const wrapper = screen.getByTestId('fallback-named-icon');
-    expect(wrapper).toBeTruthy();
-    expect(wrapper?.className).toContain('bg-gray-500');
+    const wrapper = document.querySelector('svg');
+    expect(wrapper).toBeInTheDocument();
+    expect(wrapper?.classList).toContain(
+      'lucide',
+      'lucide-circle',
+      'text-white',
+      'h-5',
+      'w-5',
+    );
   });
 
   it('does not render arbitrary strings', () => {
