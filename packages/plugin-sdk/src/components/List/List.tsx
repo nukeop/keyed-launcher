@@ -88,7 +88,7 @@ const ListBase: FC<ListProps> = ({
   onSelectionChange,
   'data-testid': testId,
 }) => {
-  const { searchQuery, setSearchQuery } = useSearchStore();
+  const { searchQuery, setSearchQuery, setIsLoading } = useSearchStore();
   const itemRefs = useRef(new Map<string, RefObject<HTMLElement>>());
   const filteredChildren = filtering
     ? filterListChildren(children, searchQuery)
@@ -125,6 +125,12 @@ const ListBase: FC<ListProps> = ({
   useEffect(() => {
     setInternalSelectedId(orderedItemIds[0]);
   }, [orderedItemIds, searchQuery]);
+
+  useEffect(() => {
+    if (isLoading !== undefined) {
+      setIsLoading(isLoading);
+    }
+  }, [isLoading, setIsLoading]);
 
   const registerItem = useCallback(
     (id: string, ref: React.RefObject<HTMLElement>) => {

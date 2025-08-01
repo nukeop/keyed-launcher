@@ -2,9 +2,20 @@ import { useLauncherStore } from '../../stores/launcher';
 import { usePerformanceTracking } from '../../utils/usePerformanceTracking';
 import { ActionBar } from '../ActionBar/ActionBar';
 import { SearchBar } from '../SearchBar';
+import styles from './LoadingBar.module.css';
 import { useSearchStore } from '@keyed-launcher/plugin-sdk';
 import { FC, useCallback, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+
+const LoadingBar: FC = () => {
+  return (
+    <div className="h-px bg-gray-700 relative overflow-hidden">
+      <div
+        className={`absolute inset-0 bg-gradient-to-r from-transparent via-blue-400 to-transparent w-1/3 opacity-80 ${styles['loading-sweep']}`}
+      />
+    </div>
+  );
+};
 
 export type ViewWithSearchBarProps = {
   'data-testid'?: string;
@@ -16,7 +27,7 @@ export const ViewWithSearchBar: FC<ViewWithSearchBarProps> = ({
   children,
 }) => {
   const { hideWindow } = useLauncherStore();
-  const { searchQuery, setSearchQuery } = useSearchStore();
+  const { searchQuery, setSearchQuery, isLoading } = useSearchStore();
   const location = useLocation();
   const isRoot = location.pathname === '/';
   const navigate = useNavigate();
@@ -47,7 +58,7 @@ export const ViewWithSearchBar: FC<ViewWithSearchBarProps> = ({
 
   useEffect(() => {
     setSearchQuery('');
-  }, [location]);
+  }, [location, setSearchQuery]);
 
   return (
     <div className="flex h-full flex-1 flex-col" data-testid={dataTestId}>
@@ -57,6 +68,7 @@ export const ViewWithSearchBar: FC<ViewWithSearchBarProps> = ({
         placeholder="Type to search..."
         onBackClick={isRoot ? undefined : () => navigate('/')}
       />
+      {isLoading ? <LoadingBar /> : <div className="h-px bg-gray-700" />}
       <div className="flex-1 overflow-y-hidden">{children}</div>
       <ActionBar icon="⚙️" />
     </div>
