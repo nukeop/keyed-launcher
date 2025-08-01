@@ -118,6 +118,10 @@ const ListBase: FC<ListProps> = ({
     }
   }, [internalSelectedId, orderedItemIds, selectedItemId]);
 
+  useEffect(() => {
+    setInternalSelectedId(orderedItemIds[0]);
+  }, [searchQuery]);
+
   const registerItem = useCallback(
     (id: string, ref: React.RefObject<HTMLElement>) => {
       itemRefs.current.set(id, ref);
