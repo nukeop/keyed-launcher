@@ -1,4 +1,5 @@
 import { useSearchStore } from '../../stores/search';
+import { EmptyView } from './EmptyView/EmptyView';
 import { filterListChildren } from './filteringUtils';
 import { Item } from './Item/Item';
 import { ListContext, ListContextType } from './ListContext';
@@ -37,6 +38,7 @@ export type ListProps = {
 interface ListComponent extends FC<ListProps> {
   Item: typeof Item;
   Section: typeof Section;
+  EmptyView: typeof EmptyView;
 }
 
 function getOrderedItemIds(children: ReactNode): string[] {
@@ -61,13 +63,17 @@ const InnerList: FC<{ children: ReactNode; 'data-testid'?: string }> = ({
   'data-testid': testId,
 }) => {
   useListKeyboardNavigation();
+
+  const childrenArray = Children.toArray(children);
+  const isEmpty = childrenArray.length === 0;
+
   return (
     <div
       role="listbox"
       className="flex h-full flex-1 flex-col overflow-y-auto px-2 py-2 my-2"
       data-testid={testId ?? 'plugin-list'}
     >
-      {children}
+      {isEmpty ? <EmptyView /> : children}
     </div>
   );
 };
@@ -118,7 +124,7 @@ const ListBase: FC<ListProps> = ({
 
   useEffect(() => {
     setInternalSelectedId(orderedItemIds[0]);
-  }, [searchQuery]);
+  }, [orderedItemIds, searchQuery]);
 
   const registerItem = useCallback(
     (id: string, ref: React.RefObject<HTMLElement>) => {
@@ -195,3 +201,4 @@ const ListBase: FC<ListProps> = ({
 export const List = ListBase as ListComponent;
 List.Item = Item;
 List.Section = Section;
+List.EmptyView = EmptyView;
