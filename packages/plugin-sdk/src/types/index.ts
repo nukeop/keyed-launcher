@@ -84,7 +84,6 @@ export interface CommandManifest {
 export interface CommandContext {
   environment: {
     theme: ThemeContextType;
-    platform: string;
     debug: boolean;
   };
 }

@@ -1,12 +1,12 @@
 import { useActionContext } from '../../providers';
 import { resolveShortcut } from '../../utils/keyboardUtils';
-import { ActionProps } from '../Action/Action';
+import { Action, ActionProps } from '../Action/Action';
 import { KeyCombo } from '../KeyCombo';
 import { Transition } from '../Transition';
-import { FC, isValidElement, ReactNode, useEffect, useState } from 'react';
+import { FC, isValidElement, ReactElement, useEffect, useState } from 'react';
 
 export type ActionPanelProps = {
-  children: ReactNode;
+  children: ReactElement<typeof Action> | Array<ReactElement<typeof Action>>;
   title: string;
 };
 
@@ -17,12 +17,13 @@ export const ActionPanel: FC<ActionPanelProps> = ({ children, title }) => {
   );
 
   useEffect(() => {
-    if (Array.isArray(children) && isValidElement(children[0])) {
-      setFirstChildProps(children[0].props as ActionProps);
+    if (Array.isArray(children) && isValidElement(children)) {
+      // This cast is required as Typescript sees this as FC<ActionProps> instead of just ActionProps
+      setFirstChildProps(children[0].props as unknown as ActionProps);
     }
 
     if (isValidElement(children)) {
-      setFirstChildProps(children.props as ActionProps);
+      setFirstChildProps(children.props as unknown as ActionProps);
     }
   }, [children]);
 

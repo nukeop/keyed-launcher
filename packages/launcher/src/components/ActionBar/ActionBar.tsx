@@ -8,7 +8,7 @@ export type ActionBarProps = {
 };
 
 export const ActionBar: FC<ActionBarProps> = ({ icon, children }) => {
-  const { currentActions, isActionPanelOpen } = useActionContext();
+  const { currentActionPanel, isActionPanelOpen } = useActionContext();
 
   return (
     <div
@@ -19,9 +19,9 @@ export const ActionBar: FC<ActionBarProps> = ({ icon, children }) => {
       <span className="flex-1"></span>
       <PerformanceDashboard />
       {children}
-      {currentActions && (
+      {currentActionPanel && (
         <div data-testid="current-actions" className="flex items-center gap-2">
-          {currentActions}
+          {currentActionPanel}
         </div>
       )}
       <div

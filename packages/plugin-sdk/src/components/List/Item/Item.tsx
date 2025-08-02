@@ -42,7 +42,7 @@ const ItemBase: FC<ItemProps> = ({
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const { registerItem, unregisterItem, selectedId } = useListContext();
-  const { setCurrentActions } = useActionContext();
+  const { setCurrentActionPanel } = useActionContext();
   const isSelected = selectedId === id;
 
   useEffect(() => {
@@ -62,11 +62,11 @@ const ItemBase: FC<ItemProps> = ({
 
   useEffect(() => {
     if (isSelected && actions) {
-      setCurrentActions(actions);
+      setCurrentActionPanel(actions);
     } else if (isSelected && !actions) {
-      setCurrentActions(null);
+      setCurrentActionPanel(null);
     }
-  }, [isSelected, actions, setCurrentActions]);
+  }, [isSelected, actions, setCurrentActionPanel]);
 
   return (
     <div

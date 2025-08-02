@@ -1,4 +1,5 @@
-import { Action, ActionProps } from '../components';
+import { Action, ActionPanel, ActionProps } from '../components';
+import { ActionPanelProps } from '../components/ActionPanel/ActionPanel';
 import { Keyboard } from '../types/keyboard';
 import {
   createContext,
@@ -12,8 +13,8 @@ import {
 } from 'react';
 
 export type ActionContextType = {
-  currentActions: ReactNode | null;
-  setCurrentActions: (actions: ReactNode | null) => void;
+  currentActionPanel: ReactNode | null;
+  setCurrentActionPanel: (actions: ReactNode | null) => void;
   isActionPanelOpen: boolean;
   setIsActionPanelOpen: (isOpen: boolean) => void;
   keyboardShortcuts: Keyboard.Shortcut[];
@@ -36,31 +37,29 @@ export type ActionProviderProps = {
 
 export const ActionProvider: FC<ActionProviderProps> = ({ children }) => {
   const [isActionPanelOpen, setIsActionPanelOpen] = useState(false);
-  const [currentActions, setCurrentActions] = useState<ReactNode | null>(null);
+  const [currentActionPanel, setCurrentActionPanel] =
+    useState<ReactNode | null>(null);
 
   const { keyboardShortcuts, actionCallbacks } = useMemo(() => {
     const shortcuts: Keyboard.Shortcut[] = [];
     const callbacks: (() => void)[] = [];
 
-    if (Array.isArray(currentActions)) {
-      currentActions.forEach((action) => {
+    if (
+      isValidElement(currentActionPanel) &&
+      currentActionPanel.type === ActionPanel
+    ) {
+      const actions = (currentActionPanel.props as ActionPanelProps).children;
+      const actionComponents = Array.isArray(actions) ? actions : [actions];
+      actionComponents.forEach((action) => {
         if (isValidElement(action) && action.type === Action) {
-          const props = action.props as ActionProps;
+          const props = action.props as unknown as ActionProps;
           shortcuts.push(props.shortcut);
           callbacks.push(props.onAction);
         }
       });
-    } else if (
-      isValidElement(currentActions) &&
-      currentActions.type === Action
-    ) {
-      const props = currentActions.props as ActionProps;
-      shortcuts.push(props.shortcut);
-      callbacks.push(props.onAction);
     }
-
     return { keyboardShortcuts: shortcuts, actionCallbacks: callbacks };
-  }, [currentActions]);
+  }, [currentActionPanel]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -86,8 +85,8 @@ export const ActionProvider: FC<ActionProviderProps> = ({ children }) => {
   }, [isActionPanelOpen, setIsActionPanelOpen]);
 
   const value: ActionContextType = {
-    currentActions,
-    setCurrentActions,
+    currentActionPanel,
+    setCurrentActionPanel,
     isActionPanelOpen,
     setIsActionPanelOpen,
     keyboardShortcuts,

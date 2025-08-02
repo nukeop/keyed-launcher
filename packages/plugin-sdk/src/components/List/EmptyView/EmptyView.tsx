@@ -2,7 +2,10 @@ import { Search } from 'lucide-react';
 import { FC } from 'react';
 
 export const EmptyView: FC = () => (
-  <div className="flex flex-col items-center justify-center h-full text-center py-12">
+  <div
+    data-testid="empty-view"
+    className="flex flex-col items-center justify-center h-full text-center py-12"
+  >
     <div className="mb-6 relative">
       <div className="w-24 h-24 bg-gray-700/80 rounded-full flex items-center justify-center border border-gray-600/50">
         <Search className="w-10 h-10 text-gray-300" strokeWidth={1.5} />

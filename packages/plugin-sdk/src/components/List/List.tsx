@@ -1,3 +1,4 @@
+import { useActionKeyboardShortcuts } from '../../hooks/useActionKeyboardShortcuts';
 import { useSearchStore } from '../../stores/search';
 import { EmptyView } from './EmptyView/EmptyView';
 import { filterListChildren } from './filteringUtils';
@@ -63,6 +64,7 @@ const InnerList: FC<{ children: ReactNode; 'data-testid'?: string }> = ({
   'data-testid': testId,
 }) => {
   useListKeyboardNavigation();
+  useActionKeyboardShortcuts();
 
   const childrenArray = Children.toArray(children);
   const isEmpty = childrenArray.length === 0;
@@ -100,6 +102,7 @@ const ListBase: FC<ListProps> = ({
   const [internalSelectedId, setInternalSelectedId] = useState<string | null>(
     null,
   );
+  const prevSearchQueryRef = useRef(searchQuery);
   const selectedId = selectedItemId ?? internalSelectedId;
 
   useEffect(() => {
@@ -123,7 +126,12 @@ const ListBase: FC<ListProps> = ({
   }, [internalSelectedId, orderedItemIds, selectedItemId]);
 
   useEffect(() => {
-    setInternalSelectedId(orderedItemIds[0]);
+    const searchQueryChanged = prevSearchQueryRef.current !== searchQuery;
+
+    if (searchQueryChanged) {
+      setInternalSelectedId(orderedItemIds[0]);
+      prevSearchQueryRef.current = searchQuery;
+    }
   }, [orderedItemIds, searchQuery]);
 
   useEffect(() => {

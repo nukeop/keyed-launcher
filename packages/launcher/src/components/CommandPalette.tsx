@@ -4,21 +4,46 @@ import { ViewWithSearchBar } from './Views/ViewWithSearchBar';
 import {
   Action,
   ActionPanel,
+  CommandContext,
   groupEntriesByCategory,
   ItemKind,
+  LauncherEntry,
   List,
   useSearchStore,
+  useTheme,
 } from '@keyed-launcher/plugin-sdk';
 import { FC } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export const CommandPalette: FC = () => {
   const { searchQuery } = useSearchStore();
   const { results } = useCommandPaletteResults();
   const { activeCommand } = useInlineCommands(searchQuery);
+  const theme = useTheme();
+  const navigate = useNavigate();
 
   const allResults = activeCommand ? [activeCommand, ...results] : results;
 
   const groupedByCategory = groupEntriesByCategory(allResults);
+
+  const executeResult = (result: LauncherEntry) => {
+    if (result.execute) {
+      const context: CommandContext = {
+        environment: {
+          theme,
+          debug: true,
+        },
+      };
+
+      if (result.execute.mode === 'no-view') {
+        result.execute.execute(context).catch((error) => {
+          console.error(`Error executing command ${result.id}:`, error);
+        });
+      } else {
+        navigate(`/plugin/${result.pluginId}/${result.commandName}`);
+      }
+    }
+  };
 
   return (
     <ViewWithSearchBar data-testid="command-palette">
@@ -50,7 +75,7 @@ export const CommandPalette: FC = () => {
                           [ItemKind.SystemSettings]: 'Apply setting',
                         }[result.kind ?? ItemKind.Command]
                       }
-                      onAction={() => {}}
+                      onAction={() => executeResult(result)}
                       shortcut={{ key: 'return', modifiers: [] }}
                       icon={{
                         type: 'named',
