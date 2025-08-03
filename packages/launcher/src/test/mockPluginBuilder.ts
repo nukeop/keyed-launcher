@@ -1,5 +1,6 @@
 import {
   CommandManifest,
+  ItemKind,
   Plugin,
   PluginManifest,
 } from '@keyed-launcher/plugin-sdk';
@@ -45,6 +46,7 @@ export class MockPluginBuilder {
       description: command.description || 'Default description',
       mode: command.mode || 'no-view',
       handler: command.handler || 'commands/default.js',
+      kind: command.kind || ItemKind.Command,
       ...command,
     };
 

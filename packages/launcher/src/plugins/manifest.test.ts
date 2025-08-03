@@ -1,5 +1,5 @@
 import { createDefaultManifest, validatePluginManifest } from './manifest';
-import { PluginManifest } from '@keyed-launcher/plugin-sdk';
+import { ItemKind, PluginManifest } from '@keyed-launcher/plugin-sdk';
 import { describe, expect, it } from 'vitest';
 
 describe('manifest validation', () => {
@@ -17,6 +17,7 @@ describe('manifest validation', () => {
         description: 'A test command',
         mode: 'no-view',
         handler: 'commands/test.js',
+        kind: ItemKind.Command,
       },
     ],
   };

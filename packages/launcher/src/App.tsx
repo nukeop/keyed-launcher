@@ -7,7 +7,7 @@ import { LauncherTransition } from './components/LauncherTransition';
 import { ThemeDebugger } from './components/ThemeDebugger';
 import { isThemeDebuggerVisible } from './hooks/useCommandPaletteResults';
 import { usePerformanceMonitoringStartup } from './hooks/usePerformanceMonitoringStartup';
-import { PluginView } from './plugins/components/PluginVIew';
+import { PluginView } from './plugins/components/PluginView';
 import { useLauncherStore } from './stores/launcher';
 import { ActionProvider, ThemeProvider } from '@keyed-launcher/plugin-sdk';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';

@@ -2,6 +2,7 @@ import { RegisteredCommand } from '../stores/commands';
 import {
   CommandManifest,
   InlineCommand,
+  ItemKind,
   LauncherEntry,
   NoViewCommand,
   ViewCommand,
@@ -96,6 +97,7 @@ export class MockCommandBuilder {
       description: this.manifest.description || 'A mock command for testing',
       mode: this.manifest.mode || 'no-view',
       handler: this.manifest.handler || 'commands/mock.js',
+      kind: this.manifest.kind || ItemKind.Command,
     };
   }
 
