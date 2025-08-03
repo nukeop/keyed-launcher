@@ -1,0 +1,259 @@
+import { PluginManifest } from '@keyed-launcher/plugin-sdk';
+
+type UnknownRecord = Record<string, unknown>;
+
+interface UnvalidatedManifest extends UnknownRecord {
+  id?: unknown;
+  name?: unknown;
+  version?: unknown;
+  apiVersion?: unknown;
+  description?: unknown;
+  author?: unknown;
+  commands?: unknown;
+}
+
+interface UnvalidatedCommand extends UnknownRecord {
+  name?: unknown;
+  displayName?: unknown;
+  description?: unknown;
+  mode?: unknown;
+  handler?: unknown;
+  icon?: unknown;
+}
+
+export async function loadPluginManifest(
+  manifestPath: string,
+): Promise<PluginManifest> {
+  try {
+    const manifestData = await import(/* @vite-ignore */ manifestPath);
+    if (!manifestData) {
+      throw new Error(`Failed to load manifest from ${manifestPath}`);
+    }
+    return validatePluginManifest(manifestData, manifestPath);
+  } catch (error) {
+    throw new Error(
+      `Error loading plugin manifest from ${manifestPath}: ${error}`,
+    );
+  }
+}
+
+export function validatePluginManifest(
+  data: unknown,
+  source: string,
+): PluginManifest {
+  const errors: string[] = [];
+
+  if (!data || typeof data !== 'object') {
+    throw new Error(
+      `Invalid manifest format in ${source}: must be a JSON object`,
+    );
+  }
+
+  const manifest = data as UnvalidatedManifest;
+
+  if (!manifest.id || typeof manifest.id !== 'string') {
+    errors.push('Missing or invalid "id" field');
+  } else if (!isValidPluginId(manifest.id)) {
+    errors.push(
+      'Invalid plugin ID format (should be like "com.author.plugin-name")',
+    );
+  }
+
+  if (!manifest.name || typeof manifest.name !== 'string') {
+    errors.push('Missing or invalid "name" field');
+  }
+
+  if (!manifest.version || typeof manifest.version !== 'string') {
+    errors.push('Missing or invalid "version" field');
+  } else if (!isValidVersion(manifest.version)) {
+    errors.push(
+      'Invalid version format (should be semantic version like "1.0.0")',
+    );
+  }
+
+  if (!manifest.apiVersion || typeof manifest.apiVersion !== 'string') {
+    errors.push('Missing or invalid "apiVersion" field');
+  } else if (!isCompatibleApiVersion(manifest.apiVersion)) {
+    errors.push(
+      `Incompatible API version "${manifest.apiVersion}" (supported: 1.0.0)`,
+    );
+  }
+
+  if (!manifest.description || typeof manifest.description !== 'string') {
+    errors.push('Missing or invalid "description" field');
+  }
+
+  if (!manifest.author || typeof manifest.author !== 'string') {
+    errors.push('Missing or invalid "author" field');
+  }
+
+  if (!manifest.commands || !Array.isArray(manifest.commands)) {
+    errors.push('Missing or invalid "commands" field (must be an array)');
+  } else {
+    manifest.commands.forEach((command: unknown, index: number) => {
+      const commandErrors = validateCommand(
+        command as UnvalidatedCommand,
+        index,
+      );
+      errors.push(...commandErrors);
+    });
+  }
+
+  if (errors.length > 0) {
+    throw new Error(
+      `Invalid plugin manifest in ${source}:\n${errors.map((e) => `  - ${e}`).join('\n')}`,
+    );
+  }
+
+  return manifest as PluginManifest;
+}
+
+function isValidPluginId(id: string): boolean {
+  return /^[a-z0-9]+(\.[a-z0-9\-]+)+$/.test(id);
+}
+
+function isValidVersion(version: string): boolean {
+  return /^\d+\.\d+\.\d+(-[a-zA-Z0-9\-\.]+)?$/.test(version);
+}
+
+function isCompatibleApiVersion(apiVersion: string): boolean {
+  return apiVersion === '1.0.0';
+}
+
+function validateCommand(command: UnvalidatedCommand, index: number): string[] {
+  const errors: string[] = [];
+
+  if (!command || typeof command !== 'object') {
+    errors.push(`Command ${index}: must be an object`);
+    return errors;
+  }
+
+  if (!command.name || typeof command.name !== 'string') {
+    errors.push(`Command ${index}: missing or invalid "name" field`);
+  } else if (!/^[a-zA-Z0-9\-_]+$/.test(command.name)) {
+    errors.push(
+      `Command ${index}: invalid name format (only alphanumeric, hyphens, and underscores allowed)`,
+    );
+  }
+
+  if (!command.displayName || typeof command.displayName !== 'string') {
+    errors.push(`Command ${index}: missing or invalid "displayName" field`);
+  }
+
+  if (!command.description || typeof command.description !== 'string') {
+    errors.push(`Command ${index}: missing or invalid "description" field`);
+  }
+
+  if (
+    !command.mode ||
+    typeof command.mode !== 'string' ||
+    !['view', 'no-view', 'inline'].includes(command.mode)
+  ) {
+    errors.push(
+      `Command ${index}: missing or invalid "mode" field (must be "view", "no-view", or "inline")`,
+    );
+  }
+
+  if (!command.handler || typeof command.handler !== 'string') {
+    errors.push(`Command ${index}: missing or invalid "handler" field`);
+  }
+
+  if (command.icon !== undefined) {
+    const iconErrors = validateIcon(command.icon, index);
+    errors.push(...iconErrors);
+  }
+
+  return errors;
+}
+
+function validateIcon(icon: unknown, commandIndex: number): string[] {
+  const errors: string[] = [];
+
+  if (typeof icon === 'string') {
+    return errors;
+  }
+
+  if (typeof icon !== 'object' || icon === null) {
+    errors.push(`Command ${commandIndex}: icon must be a string or object`);
+    return errors;
+  }
+
+  const iconObj = icon as Record<string, unknown>;
+
+  if (!iconObj.type || typeof iconObj.type !== 'string') {
+    errors.push(
+      `Command ${commandIndex}: icon object must have a "type" field`,
+    );
+    return errors;
+  }
+
+  switch (iconObj.type) {
+    case 'emoji':
+      if (!iconObj.emoji || typeof iconObj.emoji !== 'string') {
+        errors.push(
+          `Command ${commandIndex}: emoji icon must have an "emoji" field`,
+        );
+      }
+      break;
+
+    case 'base64':
+      if (!iconObj.data || typeof iconObj.data !== 'string') {
+        errors.push(
+          `Command ${commandIndex}: base64 icon must have a "data" field`,
+        );
+      } else if (!iconObj.data.startsWith('data:image/')) {
+        errors.push(
+          `Command ${commandIndex}: base64 icon data must start with "data:image/"`,
+        );
+      }
+      break;
+
+    case 'named':
+      if (!iconObj.name || typeof iconObj.name !== 'string') {
+        errors.push(
+          `Command ${commandIndex}: named icon must have a "name" field`,
+        );
+      }
+
+      // Validate gradient if present
+      if (iconObj.gradient !== undefined) {
+        if (typeof iconObj.gradient !== 'object' || iconObj.gradient === null) {
+          errors.push(
+            `Command ${commandIndex}: named icon gradient must be an object`,
+          );
+        } else {
+          const gradient = iconObj.gradient as Record<string, unknown>;
+          if (!gradient.from || typeof gradient.from !== 'string') {
+            errors.push(
+              `Command ${commandIndex}: named icon gradient must have a "from" field`,
+            );
+          }
+          if (!gradient.to || typeof gradient.to !== 'string') {
+            errors.push(
+              `Command ${commandIndex}: named icon gradient must have a "to" field`,
+            );
+          }
+        }
+      }
+      break;
+
+    default:
+      errors.push(
+        `Command ${commandIndex}: unsupported icon type "${iconObj.type}"`,
+      );
+  }
+
+  return errors;
+}
+
+export function createDefaultManifest(pluginId: string): PluginManifest {
+  return {
+    id: pluginId,
+    name: 'New Plugin',
+    version: '1.0.0',
+    apiVersion: '1.0.0',
+    description: 'A new plugin for Keyed Launcher',
+    author: 'Plugin Author',
+    commands: [],
+  };
+}

@@ -1,0 +1,181 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ActionBar > matches snapshot 1`] = `
+<div
+  class="flex w-full items-center justify-start border-t border-white/20 bg-zinc-600/80 py-2 px-3 gap-2 text-white"
+  data-testid="action-bar"
+>
+  <span>
+    ⚙️
+  </span>
+  <span
+    class="flex-1"
+  />
+  <div
+    class="select-none"
+    data-testid="performance-dashboard"
+  >
+    <div
+      class="font-mono text-xs text-white"
+    >
+      <div
+        class="flex items-center gap-4"
+      >
+        <div
+          class="flex items-center gap-2"
+          data-testid="fps"
+        >
+          <span
+            class="font-bold text-yellow-400"
+          >
+            FPS
+          </span>
+          <span
+            class="font-bold text-green-400"
+          >
+            60
+          </span>
+        </div>
+        <div
+          class="flex items-center gap-2"
+          data-testid="ram"
+        >
+          <span
+            class="font-bold text-blue-400"
+          >
+            RAM
+          </span>
+          <span
+            class="text-white"
+          >
+            32 MB
+          </span>
+          <span
+            class="text-gray-400"
+          >
+            / 
+            64 MB
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="h-3 mx-2 w-px bg-white/20 transition-opacity duration-200 opacity-100"
+  />
+  <span
+    class="flex flex-row items-center gap-2 rounded px-2 py-1 transition-colors duration-200 bg-transparent"
+  >
+    <label
+      class="text-white/60 text-sm"
+    >
+      Actions
+    </label>
+    <span
+      class="flex flex-row gap-1"
+    >
+      <kbd
+        class="rounded bg-white/10 text-zinc-200 text-md  px-2 leading-6 [font-variant:small-caps]"
+        data-testid="key"
+      >
+        CMD
+      </kbd>
+      <kbd
+        class="rounded bg-white/10 text-zinc-200 text-md  px-2 leading-6 [font-variant:small-caps]"
+        data-testid="key"
+      >
+        K
+      </kbd>
+    </span>
+  </span>
+</div>
+`;
+
+exports[`ActionBar > matches snapshot without icon 1`] = `
+<div
+  class="flex w-full items-center justify-start border-t border-white/20 bg-zinc-600/80 py-2 px-3 gap-2 text-white"
+  data-testid="action-bar"
+>
+  <span />
+  <span
+    class="flex-1"
+  />
+  <div
+    class="select-none"
+    data-testid="performance-dashboard"
+  >
+    <div
+      class="font-mono text-xs text-white"
+    >
+      <div
+        class="flex items-center gap-4"
+      >
+        <div
+          class="flex items-center gap-2"
+          data-testid="fps"
+        >
+          <span
+            class="font-bold text-yellow-400"
+          >
+            FPS
+          </span>
+          <span
+            class="font-bold text-green-400"
+          >
+            60
+          </span>
+        </div>
+        <div
+          class="flex items-center gap-2"
+          data-testid="ram"
+        >
+          <span
+            class="font-bold text-blue-400"
+          >
+            RAM
+          </span>
+          <span
+            class="text-white"
+          >
+            32 MB
+          </span>
+          <span
+            class="text-gray-400"
+          >
+            / 
+            64 MB
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="h-3 mx-2 w-px bg-white/20 transition-opacity duration-200 opacity-100"
+  />
+  <span
+    class="flex flex-row items-center gap-2 rounded px-2 py-1 transition-colors duration-200 bg-transparent"
+  >
+    <label
+      class="text-white/60 text-sm"
+    >
+      Actions
+    </label>
+    <span
+      class="flex flex-row gap-1"
+    >
+      <kbd
+        class="rounded bg-white/10 text-zinc-200 text-md  px-2 leading-6 [font-variant:small-caps]"
+        data-testid="key"
+      >
+        CMD
+      </kbd>
+      <kbd
+        class="rounded bg-white/10 text-zinc-200 text-md  px-2 leading-6 [font-variant:small-caps]"
+        data-testid="key"
+      >
+        K
+      </kbd>
+    </span>
+  </span>
+</div>
+`;

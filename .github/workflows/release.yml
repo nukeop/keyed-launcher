@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     tags:
-      - 'v*.*.*'
+      - 'launcher@*.*.*'
 
 env:
   CARGO_TERM_COLOR: always
@@ -30,11 +30,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: latest
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
+          cache: 'pnpm'
 
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable
@@ -49,7 +54,7 @@ jobs:
             ~/.cargo/registry/index/
             ~/.cargo/registry/cache/
             ~/.cargo/git/db/
-            src-tauri/target/
+            packages/launcher/src-tauri/target/
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
       - name: Install dependencies (Ubuntu only)
@@ -59,10 +64,17 @@ jobs:
           sudo apt-get install -y libwebkit2gtk-4.0-dev libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
 
       - name: Install frontend dependencies
-        run: npm ci
+        run: pnpm install
 
       - name: Build frontend
-        run: npm run build
+        run: pnpm build
+
+      - name: Extract version from tag
+        id: version
+        run: |
+          # Extract version from tag (launcher@1.0.0 -> 1.0.0)
+          VERSION=${GITHUB_REF#refs/tags/launcher@}
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Build Tauri app
         uses: tauri-apps/tauri-action@v0
@@ -72,7 +84,7 @@ jobs:
         with:
           args: ${{ matrix.args }}
           tagName: ${{ github.ref_name }}
-          releaseName: 'Keyed Launcher ${{ github.ref_name }}'
+          releaseName: 'Keyed Launcher ${{ steps.version.outputs.version }}'
           releaseBody: 'See the assets to download this version and install.'
           releaseDraft: false
           prerelease: false

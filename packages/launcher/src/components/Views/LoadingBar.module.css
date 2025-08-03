@@ -1,0 +1,12 @@
+@keyframes loading-sweep {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(300%);
+  }
+}
+
+.loading-sweep {
+  animation: loading-sweep 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}

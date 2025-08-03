@@ -1,0 +1,43 @@
+@import 'tailwindcss';
+
+@source '../../plugin-sdk';
+
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  --color-black: var(--color-black-500, #000);
+  --color-white: var(--color-white-500, #fff);
+
+  /* Theme Spacing */
+  --spacing-xs: var(--spacing-xs, 0.25rem);
+  --spacing-sm: var(--spacing-sm, 0.5rem);
+  --spacing-md: var(--spacing-md, 1rem);
+  --spacing-lg: var(--spacing-lg, 1.5rem);
+  --spacing-xl: var(--spacing-xl, 2rem);
+  --spacing-2xl: var(--spacing-2xl, 3rem);
+
+  /* Theme Border Radius */
+  --radius-sm: var(--radius-sm, 0.25rem);
+  --radius-md: var(--radius-md, 0.5rem);
+  --radius-lg: var(--radius-lg, 0.75rem);
+  --radius-xl: var(--radius-xl, 1rem);
+
+  /* Theme Shadows */
+  --shadow-sm: var(--shadow-sm, 0 1px 2px rgba(0, 0, 0, 0.1));
+  --shadow-md: var(--shadow-md, 0 4px 8px rgba(0, 0, 0, 0.15));
+  --shadow-lg: var(--shadow-lg, 0 8px 16px rgba(0, 0, 0, 0.2));
+  --shadow-xl: var(--shadow-xl, 0 16px 32px rgba(0, 0, 0, 0.25));
+}
+
+html,
+body {
+  background: transparent;
+}
+
+html,
+body,
+#root {
+  @apply relative h-full w-full;
+}

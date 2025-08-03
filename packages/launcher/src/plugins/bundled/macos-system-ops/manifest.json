@@ -1,0 +1,151 @@
+{
+    "id": "com.keyed-launcher.macos-system-ops",
+    "name": "macOS System Operations",
+    "version": "1.0.0",
+    "apiVersion": "1.0.0",
+    "description": "Essential macOS system operations - shutdown, restart, sleep, logout, and lock screen",
+    "author": "nukeop",
+    "namespace": "keyed-launcher",
+    "license": "MIT",
+    "category": "System",
+    "keywords": [
+        "system",
+        "power",
+        "shutdown",
+        "restart",
+        "sleep",
+        "logout",
+        "lock",
+        "macos"
+    ],
+    "commands": [
+        {
+            "name": "shutdown",
+            "displayName": "Shut Down",
+            "subtitle": "Power off the system",
+            "kind": "Command",
+            "description": "Shut down the Mac immediately",
+            "mode": "no-view",
+            "category": "Power",
+            "icon": {
+                "type": "named",
+                "name": "Power",
+                "variant": "gradient",
+                "gradient": {
+                    "from": "zinc-300",
+                    "to": "zinc-600"
+                }
+            },
+            "keywords": [
+                "shutdown",
+                "power",
+                "off",
+                "halt",
+                "turn off"
+            ],
+            "handler": "commands/shutdown.ts"
+        },
+        {
+            "name": "restart",
+            "displayName": "Restart",
+            "subtitle": "Reboot the system",
+            "kind": "Command",
+            "description": "Restart the Mac immediately",
+            "mode": "no-view",
+            "category": "Power",
+            "icon": {
+                "type": "named",
+                "name": "RotateCcw",
+                "variant": "gradient",
+                "gradient": {
+                    "from": "zinc-300",
+                    "to": "zinc-600"
+                }
+            },
+            "keywords": [
+                "restart",
+                "reboot",
+                "reset",
+                "power cycle"
+            ],
+            "handler": "commands/restart.ts"
+        },
+        {
+            "name": "sleep",
+            "displayName": "Sleep",
+            "subtitle": "Put the system to sleep",
+            "kind": "Command",
+            "description": "Put the Mac to sleep mode",
+            "mode": "no-view",
+            "category": "Power",
+            "icon": {
+                "type": "named",
+                "name": "Moon",
+                "variant": "gradient",
+                "gradient": {
+                    "from": "zinc-300",
+                    "to": "zinc-600"
+                }
+            },
+            "keywords": [
+                "sleep",
+                "suspend",
+                "standby",
+                "power save"
+            ],
+            "handler": "commands/sleep.ts"
+        },
+        {
+            "name": "logout",
+            "displayName": "Log Out",
+            "subtitle": "Log out current user",
+            "kind": "Command",
+            "description": "Log out the current user session",
+            "mode": "no-view",
+            "category": "Session",
+            "icon": {
+                "type": "named",
+                "name": "LogOut",
+                "variant": "gradient",
+                "gradient": {
+                    "from": "zinc-300",
+                    "to": "zinc-600"
+                }
+            },
+            "keywords": [
+                "logout",
+                "log out",
+                "sign out",
+                "session",
+                "user"
+            ],
+            "handler": "commands/logout.ts"
+        },
+        {
+            "name": "lock-screen",
+            "displayName": "Lock Screen",
+            "subtitle": "Lock the screen",
+            "kind": "Command",
+            "description": "Lock the screen and require password to unlock",
+            "mode": "no-view",
+            "category": "Security",
+            "icon": {
+                "type": "named",
+                "name": "Lock",
+                "variant": "gradient",
+                "gradient": {
+                    "from": "zinc-300",
+                    "to": "zinc-600"
+                }
+            },
+            "keywords": [
+                "lock",
+                "screen",
+                "security",
+                "password",
+                "protect"
+            ],
+            "handler": "commands/lock-screen.ts"
+        }
+    ]
+}
