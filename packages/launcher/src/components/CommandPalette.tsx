@@ -63,6 +63,7 @@ export const CommandPalette: FC = () => {
                 subtitle={result.subtitle}
                 kind={result.kind ?? ItemKind.Command}
                 icon={result.icon}
+                onAction={() => executeResult(result)}
                 actions={
                   <ActionPanel title={result.title}>
                     <Action

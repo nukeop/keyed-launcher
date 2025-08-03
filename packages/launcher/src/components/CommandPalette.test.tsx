@@ -111,9 +111,10 @@ describe('CommandPalette Integration', () => {
     expect(selectedItem).toHaveAttribute('data-selected', 'true');
 
     await userEvent.keyboard('{ArrowDown}');
-    selectedItem = screen.getByTestId(
+    selectedItem = await screen.findByTestId(
       'command-palette-list-item-com.tools-plugin.calculator',
     );
+    screen.debug();
     expect(selectedItem).toHaveAttribute('data-selected', 'true');
 
     await userEvent.keyboard('{ArrowDown}');
@@ -151,7 +152,6 @@ describe('CommandPalette Integration', () => {
     expect(spy).toHaveBeenCalledWith({
       environment: {
         debug: true,
-        platform: 'web',
         theme: expect.anything(),
       },
     });
@@ -180,7 +180,6 @@ describe('CommandPalette Integration', () => {
     expect(spy).toHaveBeenCalledWith({
       environment: {
         debug: true,
-        platform: 'web',
         theme: expect.anything(),
       },
     });
@@ -201,7 +200,7 @@ describe('CommandPalette Integration', () => {
     const searchInput = screen.getByTestId('search-input');
     await userEvent.type(searchInput, 'zxcvbnm');
 
-    expect(screen.getByTestId('empty-results')).toBeInTheDocument();
+    expect(screen.getByTestId('empty-view')).toBeInTheDocument();
     expect(screen.getByText('No results')).toBeInTheDocument();
   });
 
@@ -277,19 +276,28 @@ describe('CommandPalette Integration', () => {
     renderCommandPalette();
 
     // First item should be selected initially
-    const firstItem = screen.getAllByTestId(/^result-item-/)[0];
+    const firstItem = screen.getByTestId(
+      'command-palette-list-item-core-dev.theme-debugger',
+    );
     expect(firstItem).toHaveAttribute('data-selected', 'true');
 
     // Page Down should move 10 positions down
     await userEvent.keyboard('{PageDown}');
 
-    const eleventhItem = screen.getAllByTestId(/^result-item-/)[10];
+    const eleventhItem = screen.getByTestId(
+      'command-palette-list-item-com.test.mock-plugin.item10',
+    );
     expect(eleventhItem).toHaveAttribute('data-selected', 'true');
 
     // Page Down again should go to the last item (16)
     await userEvent.keyboard('{PageDown}');
 
-    const lastItem = screen.getAllByTestId(/^result-item-/)[15];
+    const lastItem = screen.getByTestId(
+      'command-palette-list-item-com.test.mock-plugin.item15',
+    );
+
+    const aaa = document.querySelector('[data-selected="true"]');
+    console.log(aaa);
     expect(lastItem).toHaveAttribute('data-selected', 'true');
   });
 
@@ -313,19 +321,25 @@ describe('CommandPalette Integration', () => {
     await userEvent.keyboard('{PageDown}');
     await userEvent.keyboard('{PageDown}');
 
-    const lastItem = screen.getAllByTestId(/^result-item-/)[15];
+    const lastItem = screen.getByTestId(
+      'command-palette-list-item-com.test.mock-plugin.item15',
+    );
     expect(lastItem).toHaveAttribute('data-selected', 'true');
 
     // Page Up should move 10 positions up
     await userEvent.keyboard('{PageUp}');
 
-    const fifthItem = screen.getAllByTestId(/^result-item-/)[5];
+    const fifthItem = screen.getByTestId(
+      'command-palette-list-item-com.test.mock-plugin.item5',
+    );
     expect(fifthItem).toHaveAttribute('data-selected', 'true');
 
     // Page Up again should go to the first item
     await userEvent.keyboard('{PageUp}');
 
-    const firstItem = screen.getAllByTestId(/^result-item-/)[0];
+    const firstItem = screen.getByTestId(
+      'command-palette-list-item-core-dev.theme-debugger',
+    );
     expect(firstItem).toHaveAttribute('data-selected', 'true');
   });
 
@@ -340,6 +354,6 @@ describe('CommandPalette Integration', () => {
     await userEvent.keyboard('{PageDown}');
     await userEvent.keyboard('{PageUp}');
 
-    expect(screen.getByTestId('empty-results')).toBeInTheDocument();
+    expect(screen.getByTestId('empty-view')).toBeInTheDocument();
   });
 });

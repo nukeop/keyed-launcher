@@ -159,7 +159,7 @@ const ListBase: FC<ListProps> = ({
   );
 
   const getIdByDelta = useCallback(
-    (delta: number, withWraparound = true): string | null => {
+    (delta: number, withWraparound = false): string | null => {
       if (!selectedId) return null;
       const index = orderedItemIds.indexOf(selectedId);
       if (index === -1) return null;
@@ -170,7 +170,7 @@ const ListBase: FC<ListProps> = ({
       if (withWraparound) {
         next = (next + len) % len;
       } else {
-        if (next < 0 || next >= len) return null;
+        next = Math.min(Math.max(next, 0), len - 1);
       }
 
       return orderedItemIds[next] ?? null;
