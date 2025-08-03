@@ -71,24 +71,25 @@ export const PluginsList: FC<PluginsListProps> = ({ searchQuery = '' }) => {
     <div className="flex flex-col space-y-2">
       {filteredAndGroupedPlugins.map((group) => (
         <div key={group.category}>
-          <List.CategoryHeader
+          <List.Section
             title={`${group.category} (${group.plugins.length})`}
             data-testid="plugin-category-header"
-          />
-          {group.plugins.map((plugin) => {
-            const status = getPluginStatus(plugin.manifest.id);
-            const enabled = isPluginEnabled(plugin.manifest.id);
+          >
+            {group.plugins.map((plugin) => {
+              const status = getPluginStatus(plugin.manifest.id);
+              const enabled = isPluginEnabled(plugin.manifest.id);
 
-            return (
-              <PluginItem
-                key={plugin.manifest.id}
-                plugin={plugin}
-                status={status}
-                enabled={enabled}
-                data-testid={`plugin-item-${plugin.manifest.id}`}
-              />
-            );
-          })}
+              return (
+                <PluginItem
+                  key={plugin.manifest.id}
+                  plugin={plugin}
+                  status={status}
+                  enabled={enabled}
+                  data-testid={`plugin-item-${plugin.manifest.id}`}
+                />
+              );
+            })}
+          </List.Section>
         </div>
       ))}
     </div>

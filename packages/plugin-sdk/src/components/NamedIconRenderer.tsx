@@ -1,4 +1,4 @@
-import { GradientNamedIcon, NamedIcon } from '../types';
+import { NamedIcon } from '../types';
 import { isBareNamedIcon, isGradientNamedIcon } from '../utils/iconUtils';
 import { icons } from 'lucide-react';
 import { FC } from 'react';

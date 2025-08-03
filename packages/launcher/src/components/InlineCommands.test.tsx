@@ -1,10 +1,13 @@
 import { useCommandRegistry } from '../stores/commands';
-import { useLauncherStore } from '../stores/launcher';
 import { MockPluginBuilder } from '../test/mockPluginBuilder';
 import { mockPerformance } from '../test/performanceHelpers';
 import { clear, withPlugin } from '../test/pluginHelpers';
 import { CommandPalette } from './CommandPalette';
-import { ActionProvider, ThemeProvider } from '@keyed-launcher/plugin-sdk';
+import {
+  ActionProvider,
+  ThemeProvider,
+  useSearchStore,
+} from '@keyed-launcher/plugin-sdk';
 import { render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
@@ -71,8 +74,8 @@ describe.skip('Inline Commands', () => {
   };
 
   const setSearchQuery = (query: string) => {
-    const launcherStore = useLauncherStore.getState();
-    launcherStore.setSearchQuery(query);
+    const searchStore = useSearchStore.getState();
+    searchStore.setSearchQuery(query);
   };
 
   beforeEach(() => {

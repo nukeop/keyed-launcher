@@ -82,7 +82,7 @@ export function createCommandExecutor(
           })) ?? false
         );
       },
-      execute: async (context: CommandContext): Promise<React.ReactElement> => {
+      execute: async (): Promise<React.ReactElement> => {
         const result = await safePluginExecution(
           plugin.manifest.id,
           async () => {
