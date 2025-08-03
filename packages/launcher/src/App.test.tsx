@@ -3,10 +3,13 @@ import { registerCommand } from './plugins/commands';
 import { CommandRegistry, useCommandRegistry } from './stores/commands';
 import { PluginRegistry, usePluginRegistry } from './stores/plugins';
 import { MockPluginBuilder } from './test/mockPluginBuilder';
+import { mockPerformance } from './test/performanceHelpers';
 import { setInvoke } from './test/tauri';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeAll, describe, expect, it, vi } from 'vitest';
+
+mockPerformance();
 
 vi.mock('@tauri-apps/api/core', () => ({
   invoke: vi.fn(),
@@ -19,18 +22,6 @@ vi.mock('./utils/usePerformanceTracking', () => ({
     trackWindowHide: vi.fn(),
     startMonitoring: () => undefined,
   }),
-}));
-
-vi.mock('./utils/performance', () => ({
-  PerformanceMonitor: {
-    getCurrentFPS: vi.fn(() => 60),
-    getMemoryStats: vi.fn(() =>
-      Promise.resolve({
-        used: '32 MB',
-        total: '64 MB',
-      }),
-    ),
-  },
 }));
 
 vi.mock('./utils/environment', () => ({
@@ -108,13 +99,13 @@ describe('App Integration', () => {
     render(<App />);
 
     let selectedItem = await screen.findByTestId(
-      'result-item-core-dev.theme-debugger',
+      'command-palette-list-item-core-dev.theme-debugger',
     );
     expect(selectedItem).toHaveAttribute('data-selected', 'true');
 
     await user.keyboard('{ArrowDown}');
     selectedItem = await screen.findByTestId(
-      'result-item-test-plugin.command-test',
+      'command-palette-list-item-test-plugin.command-test',
     );
     expect(selectedItem).toHaveAttribute('data-selected', 'true');
   });
@@ -126,7 +117,6 @@ describe('App Integration', () => {
     expect(commandExecute).toHaveBeenCalledWith({
       environment: {
         debug: true,
-        platform: 'web',
         theme: expect.anything(),
       },
     });

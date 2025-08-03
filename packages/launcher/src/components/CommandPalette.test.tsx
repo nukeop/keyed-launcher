@@ -296,8 +296,6 @@ describe('CommandPalette Integration', () => {
       'command-palette-list-item-com.test.mock-plugin.item15',
     );
 
-    const aaa = document.querySelector('[data-selected="true"]');
-    console.log(aaa);
     expect(lastItem).toHaveAttribute('data-selected', 'true');
   });
 
